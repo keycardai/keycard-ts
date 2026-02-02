@@ -1,0 +1,98 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import { APIResource } from '../../core/resource';
+import { APIPromise } from '../../core/api-promise';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
+
+export class Users extends APIResource {
+  /**
+   * Returns details of a specific user by user ID
+   */
+  retrieve(id: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<User> {
+    const { zoneId } = params;
+    return this._client.get(path`/zones/${zoneId}/users/${id}`, { ...options, __security: {} });
+  }
+
+  /**
+   * Returns a list of users in the specified zone. Can be filtered by email address.
+   */
+  list(zoneID: string, options?: RequestOptions): APIPromise<UserListResponse> {
+    return this._client.get(path`/zones/${zoneID}/users`, { ...options, __security: {} });
+  }
+}
+
+/**
+ * An authenticated user entity
+ */
+export interface User {
+  /**
+   * Unique identifier of the user
+   */
+  id: string;
+
+  /**
+   * Entity creation timestamp
+   */
+  created_at: string;
+
+  /**
+   * Email address of the user
+   */
+  email: string;
+
+  /**
+   * Issuer identifier of the identity provider
+   */
+  issuer: string;
+
+  /**
+   * Organization that owns this user
+   */
+  organization_id: string;
+
+  /**
+   * Subject identifier from the identity provider
+   */
+  subject: string;
+
+  /**
+   * Entity update timestamp
+   */
+  updated_at: string;
+
+  /**
+   * Zone this user belongs to
+   */
+  zone_id: string;
+
+  /**
+   * Date when the user was last authenticated
+   */
+  authenticated_at?: string;
+
+  /**
+   * Reference to the identity provider. This field is undefined when the source
+   * identity provider is deleted but the user is not deleted.
+   */
+  provider_id?: string;
+}
+
+export interface UserListResponse {
+  items: Array<User>;
+}
+
+export interface UserRetrieveParams {
+  /**
+   * Zone ID
+   */
+  zoneId: string;
+}
+
+export declare namespace Users {
+  export {
+    type User as User,
+    type UserListResponse as UserListResponse,
+    type UserRetrieveParams as UserRetrieveParams,
+  };
+}
