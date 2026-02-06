@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource invitations', () => {
   // Prism tests are disabled
@@ -28,10 +23,7 @@ describe('resource invitations', () => {
     await expect(
       client.invitations.retrieve(
         'token',
-        {
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
@@ -55,10 +47,7 @@ describe('resource invitations', () => {
     await expect(
       client.invitations.accept(
         'token',
-        {
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);

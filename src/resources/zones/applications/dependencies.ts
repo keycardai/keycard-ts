@@ -19,10 +19,7 @@ export class Dependencies extends APIResource {
     options?: RequestOptions,
   ): APIPromise<Resource> {
     const { zoneId, id } = params;
-    return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
-      ...options,
-      __security: {},
-    });
+    return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, options);
   }
 
   /**
@@ -34,11 +31,7 @@ export class Dependencies extends APIResource {
     options?: RequestOptions,
   ): APIPromise<DependencyListResponse> {
     const { zoneId, ...query } = params;
-    return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies`, {
-      query,
-      ...options,
-      __security: {},
-    });
+    return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies`, { query, ...options });
   }
 
   /**
@@ -50,7 +43,6 @@ export class Dependencies extends APIResource {
       query: { when_accessing },
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
     });
   }
 
@@ -62,7 +54,6 @@ export class Dependencies extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
     });
   }
 }

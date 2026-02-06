@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource serviceAccounts', () => {
   // Prism tests are disabled
@@ -28,7 +23,6 @@ describe('resource serviceAccounts', () => {
       name: 'name',
       description: 'description',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
@@ -52,7 +46,6 @@ describe('resource serviceAccounts', () => {
       organization_id: 'x',
       expand: ['permissions'],
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
@@ -77,7 +70,6 @@ describe('resource serviceAccounts', () => {
       description: 'description',
       name: 'name',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
@@ -105,7 +97,6 @@ describe('resource serviceAccounts', () => {
           expand: ['permissions'],
           limit: 1,
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -131,7 +122,6 @@ describe('resource serviceAccounts', () => {
     const response = await client.organizations.serviceAccounts.delete('ab3def8hij2klm9opq5rst7uvw', {
       organization_id: 'x',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 });

@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource zones', () => {
   // Prism tests are disabled
@@ -26,7 +21,6 @@ describe('resource zones', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.create({
       name: 'x',
-      cname: 'cname',
       default_mcp_gateway_application: true,
       description: 'description',
       directory_open_signups_enabled: true,
@@ -75,7 +69,6 @@ describe('resource zones', () => {
       client.zones.update(
         'zoneId',
         {
-          cname: 'cname',
           default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
           description: 'description',
           directory_open_signups_enabled: true,

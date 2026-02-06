@@ -1,8 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as OrganizationsAPI from './organizations';
-import * as UsersAPI from './users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -16,19 +14,15 @@ export class Invitations extends APIResource {
     organizationID: string,
     params: InvitationCreateParams,
     options?: RequestOptions,
-  ): APIPromise<Invitation> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID, ...body } = params;
+  ): APIPromise<InvitationCreateResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post(path`/organizations/${organizationID}/invitations`, {
       body,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -40,18 +34,14 @@ export class Invitations extends APIResource {
     params: InvitationListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<InvitationListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID, ...query } = params ?? {};
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
     return this._client.get(path`/organizations/${organizationID}/invitations`, {
       query,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -59,23 +49,21 @@ export class Invitations extends APIResource {
    * Delete an invitation
    */
   delete(invitationID: string, params: InvitationDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID } = params;
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
     return this._client.delete(path`/organizations/${organization_id}/invitations/${invitationID}`, {
       ...options,
       headers: buildHeaders([
         {
           Accept: '*/*',
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
 
-export interface Invitation {
+export interface InvitationCreateResponse {
   /**
    * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
    */
@@ -109,12 +97,12 @@ export interface Invitation {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: 'org_admin' | 'org_member' | 'org_viewer';
 
   /**
    * Status of an invitation
    */
-  status: InvitationStatus;
+  status: 'pending' | 'accepted' | 'expired' | 'revoked';
 
   /**
    * The time the entity was mostly recently updated in utc
@@ -130,18 +118,13 @@ export interface Invitation {
   permissions?: { [key: string]: { [key: string]: boolean } };
 }
 
-/**
- * Status of an invitation
- */
-export type InvitationStatus = 'pending' | 'accepted' | 'expired' | 'revoked';
-
 export interface InvitationListResponse {
-  items: Array<Invitation>;
+  items: Array<InvitationListResponse.Item>;
 
   /**
    * Pagination information using cursor-based pagination
    */
-  page_info: OrganizationsAPI.PageInfoCursor;
+  page_info: InvitationListResponse.PageInfo;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -150,6 +133,88 @@ export interface InvitationListResponse {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
+export namespace InvitationListResponse {
+  export interface Item {
+    /**
+     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+     */
+    id: string;
+
+    /**
+     * The time the entity was created in utc
+     */
+    created_at: string;
+
+    /**
+     * ID of the user who created the invitation
+     */
+    created_by: string;
+
+    /**
+     * Email address for the invitation
+     */
+    email: string;
+
+    /**
+     * When the invitation expires
+     */
+    expires_at: string;
+
+    /**
+     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+     */
+    organization_id: string;
+
+    /**
+     * Role that will be assigned when invitation is accepted
+     */
+    role: 'org_admin' | 'org_member' | 'org_viewer';
+
+    /**
+     * Status of an invitation
+     */
+    status: 'pending' | 'accepted' | 'expired' | 'revoked';
+
+    /**
+     * The time the entity was mostly recently updated in utc
+     */
+    updated_at: string;
+
+    /**
+     * Permissions granted to the authenticated principal for this resource. Only
+     * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+     * resource types (e.g., "organizations"), values are objects mapping permission
+     * names to boolean values indicating if the permission is granted.
+     */
+    permissions?: { [key: string]: { [key: string]: boolean } };
+  }
+
+  /**
+   * Pagination information using cursor-based pagination
+   */
+  export interface PageInfo {
+    /**
+     * Whether there are more items after the current page
+     */
+    has_next_page: boolean;
+
+    /**
+     * Whether there are more items before the current page
+     */
+    has_prev_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string;
+  }
 }
 
 export interface InvitationCreateParams {
@@ -162,19 +227,13 @@ export interface InvitationCreateParams {
    * Body param: Role to assign when invitation is accepted (defaults to org_admin if
    * not provided)
    */
-  role?: UsersAPI.OrganizationRole;
+  role?: 'org_admin' | 'org_member' | 'org_viewer';
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface InvitationListParams {
@@ -204,12 +263,6 @@ export interface InvitationListParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface InvitationDeleteParams {
@@ -223,18 +276,11 @@ export interface InvitationDeleteParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export declare namespace Invitations {
   export {
-    type Invitation as Invitation,
-    type InvitationStatus as InvitationStatus,
+    type InvitationCreateResponse as InvitationCreateResponse,
     type InvitationListResponse as InvitationListResponse,
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,

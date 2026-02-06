@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource invitations', () => {
   // Prism tests are disabled
@@ -28,7 +23,6 @@ describe('resource invitations', () => {
       email: 'dev@stainless.com',
       role: 'org_admin',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
@@ -56,7 +50,6 @@ describe('resource invitations', () => {
           expand: ['permissions'],
           limit: 1,
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -82,7 +75,6 @@ describe('resource invitations', () => {
     const response = await client.organizations.invitations.delete('ab3def8hij2klm9opq5rst7uvw', {
       organization_id: 'x',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 });

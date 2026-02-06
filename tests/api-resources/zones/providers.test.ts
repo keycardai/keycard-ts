@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource providers', () => {
   // Prism tests are disabled
@@ -30,11 +25,12 @@ describe('resource providers', () => {
       client_id: 'client_id',
       client_secret: 'client_secret',
       description: 'description',
-      domains: ['string'],
-      metadata: { internal_claims: { foo: 'bar' } },
+      metadata: {},
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
+          authorization_resource_enabled: true,
+          authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],
           jwks_uri: 'https://example.com',
           registration_endpoint: 'https://example.com',
@@ -82,13 +78,14 @@ describe('resource providers', () => {
       client_id: 'client_id',
       client_secret: 'client_secret',
       description: 'description',
-      domains: ['string'],
       identifier: 'x',
-      metadata: { internal_claims: { foo: 'bar' } },
+      metadata: {},
       name: 'x',
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
+          authorization_resource_enabled: true,
+          authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],
           jwks_uri: 'https://example.com',
           registration_endpoint: 'https://example.com',

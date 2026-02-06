@@ -24,11 +24,16 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
-import { ServiceAccountToken, ServiceAccountTokenCreateParams } from './resources/service-account-token';
 import {
-  Organization,
+  ServiceAccountToken,
+  ServiceAccountTokenCreateParams,
+  ServiceAccountTokenCreateResponse,
+} from './resources/service-account-token';
+import {
   OrganizationCreateParams,
+  OrganizationCreateResponse,
   OrganizationExchangeTokenParams,
+  OrganizationExchangeTokenResponse,
   OrganizationListIdentitiesParams,
   OrganizationListIdentitiesResponse,
   OrganizationListParams,
@@ -36,11 +41,10 @@ import {
   OrganizationListRolesParams,
   OrganizationListRolesResponse,
   OrganizationRetrieveParams,
+  OrganizationRetrieveResponse,
   OrganizationUpdateParams,
+  OrganizationUpdateResponse,
   Organizations,
-  PageInfoCursor,
-  RoleScope,
-  TokenResponse,
 } from './resources/organizations/organizations';
 import {
   EncryptionKeyAwsKmsConfig,
@@ -59,7 +63,6 @@ import {
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -259,54 +262,7 @@ export class KeycardAPI {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    if (this.username && this.password && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
-    if (this.apiKey && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
-    throw new Error(
-      'Could not resolve authentication method. Expected either username, password or apiKey to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
-    );
-  }
-
-  protected async authHeaders(
-    opts: FinalRequestOptions,
-    schemes: { svcOrgManagementBasicAuth?: boolean; vaultBearerAuth?: boolean },
-  ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([
-      schemes.svcOrgManagementBasicAuth ? await this.svcOrgManagementBasicAuth(opts) : null,
-      schemes.vaultBearerAuth ? await this.vaultBearerAuth(opts) : null,
-    ]);
-  }
-
-  protected async svcOrgManagementBasicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (!this.username) {
-      return undefined;
-    }
-
-    if (!this.password) {
-      return undefined;
-    }
-
-    const credentials = `${this.username}:${this.password}`;
-    const Authorization = `Basic ${toBase64(credentials)}`;
-    return buildHeaders([{ Authorization }]);
-  }
-
-  protected async vaultBearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (this.apiKey == null) {
-      return undefined;
-    }
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+    return;
   }
 
   protected stringifyQuery(query: Record<string, unknown>): string {
@@ -731,10 +687,6 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(
-        options,
-        options.__security ?? { svcOrgManagementBasicAuth: true, vaultBearerAuth: true },
-      ),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -838,11 +790,11 @@ export declare namespace KeycardAPI {
 
   export {
     Organizations as Organizations,
-    type Organization as Organization,
-    type PageInfoCursor as PageInfoCursor,
-    type RoleScope as RoleScope,
-    type TokenResponse as TokenResponse,
+    type OrganizationCreateResponse as OrganizationCreateResponse,
+    type OrganizationRetrieveResponse as OrganizationRetrieveResponse,
+    type OrganizationUpdateResponse as OrganizationUpdateResponse,
     type OrganizationListResponse as OrganizationListResponse,
+    type OrganizationExchangeTokenResponse as OrganizationExchangeTokenResponse,
     type OrganizationListIdentitiesResponse as OrganizationListIdentitiesResponse,
     type OrganizationListRolesResponse as OrganizationListRolesResponse,
     type OrganizationCreateParams as OrganizationCreateParams,
@@ -856,6 +808,7 @@ export declare namespace KeycardAPI {
 
   export {
     ServiceAccountToken as ServiceAccountToken,
+    type ServiceAccountTokenCreateResponse as ServiceAccountTokenCreateResponse,
     type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams,
   };
 

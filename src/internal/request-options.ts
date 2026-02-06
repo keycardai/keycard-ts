@@ -75,8 +75,6 @@ export type RequestOptions = {
    */
   defaultBaseURL?: string | undefined;
 
-  __security?: { svcOrgManagementBasicAuth?: boolean; vaultBearerAuth?: boolean };
-
   __binaryResponse?: boolean | undefined;
 };
 
