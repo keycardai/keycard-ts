@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
-import * as OrganizationsAPI from '../organizations';
 import * as CredentialsAPI from './credentials';
 import {
   CredentialCreateParams,
@@ -10,9 +9,10 @@ import {
   CredentialListParams,
   CredentialListResponse,
   CredentialRetrieveParams,
+  CredentialRetrieveResponse,
   CredentialUpdateParams,
+  CredentialUpdateResponse,
   Credentials,
-  ServiceAccountCredential,
 } from './credentials';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
@@ -29,19 +29,15 @@ export class ServiceAccounts extends APIResource {
     organizationID: string,
     params: ServiceAccountCreateParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID, ...body } = params;
+  ): APIPromise<ServiceAccountCreateResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post(path`/organizations/${organizationID}/service-accounts`, {
       body,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -52,24 +48,15 @@ export class ServiceAccounts extends APIResource {
     serviceAccountID: string,
     params: ServiceAccountRetrieveParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const {
-      organization_id,
-      'X-Client-Request-ID': xClientRequestID,
-      'X-Request-ID': xRequestID,
-      ...query
-    } = params;
+  ): APIPromise<ServiceAccountRetrieveResponse> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
     return this._client.get(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
       query,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -80,24 +67,15 @@ export class ServiceAccounts extends APIResource {
     serviceAccountID: string,
     params: ServiceAccountUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const {
-      organization_id,
-      'X-Client-Request-ID': xClientRequestID,
-      'X-Request-ID': xRequestID,
-      ...body
-    } = params;
+  ): APIPromise<ServiceAccountUpdateResponse> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
       body,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -109,18 +87,14 @@ export class ServiceAccounts extends APIResource {
     params: ServiceAccountListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ServiceAccountListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID, ...query } = params ?? {};
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
     return this._client.get(path`/organizations/${organizationID}/service-accounts`, {
       query,
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -132,23 +106,91 @@ export class ServiceAccounts extends APIResource {
     params: ServiceAccountDeleteParams,
     options?: RequestOptions,
   ): APIPromise<void> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID } = params;
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
     return this._client.delete(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
       ...options,
       headers: buildHeaders([
         {
           Accept: '*/*',
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
 
-export interface ServiceAccount {
+export interface ServiceAccountCreateResponse {
+  /**
+   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+   */
+  id: string;
+
+  /**
+   * The time the entity was created in utc
+   */
+  created_at: string;
+
+  /**
+   * A name for the entity to be displayed in UI
+   */
+  name: string;
+
+  /**
+   * The time the entity was mostly recently updated in utc
+   */
+  updated_at: string;
+
+  /**
+   * Optional description of the service account
+   */
+  description?: string;
+
+  /**
+   * Permissions granted to the authenticated principal for this resource. Only
+   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+   * resource types (e.g., "organizations"), values are objects mapping permission
+   * names to boolean values indicating if the permission is granted.
+   */
+  permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
+export interface ServiceAccountRetrieveResponse {
+  /**
+   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+   */
+  id: string;
+
+  /**
+   * The time the entity was created in utc
+   */
+  created_at: string;
+
+  /**
+   * A name for the entity to be displayed in UI
+   */
+  name: string;
+
+  /**
+   * The time the entity was mostly recently updated in utc
+   */
+  updated_at: string;
+
+  /**
+   * Optional description of the service account
+   */
+  description?: string;
+
+  /**
+   * Permissions granted to the authenticated principal for this resource. Only
+   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+   * resource types (e.g., "organizations"), values are objects mapping permission
+   * names to boolean values indicating if the permission is granted.
+   */
+  permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
+export interface ServiceAccountUpdateResponse {
   /**
    * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
    */
@@ -184,12 +226,12 @@ export interface ServiceAccount {
 }
 
 export interface ServiceAccountListResponse {
-  items: Array<ServiceAccount>;
+  items: Array<ServiceAccountListResponse.Item>;
 
   /**
    * Pagination information using cursor-based pagination
    */
-  page_info: OrganizationsAPI.PageInfoCursor;
+  page_info: ServiceAccountListResponse.PageInfo;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -198,6 +240,68 @@ export interface ServiceAccountListResponse {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
+export namespace ServiceAccountListResponse {
+  export interface Item {
+    /**
+     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+     */
+    id: string;
+
+    /**
+     * The time the entity was created in utc
+     */
+    created_at: string;
+
+    /**
+     * A name for the entity to be displayed in UI
+     */
+    name: string;
+
+    /**
+     * The time the entity was mostly recently updated in utc
+     */
+    updated_at: string;
+
+    /**
+     * Optional description of the service account
+     */
+    description?: string;
+
+    /**
+     * Permissions granted to the authenticated principal for this resource. Only
+     * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+     * resource types (e.g., "organizations"), values are objects mapping permission
+     * names to boolean values indicating if the permission is granted.
+     */
+    permissions?: { [key: string]: { [key: string]: boolean } };
+  }
+
+  /**
+   * Pagination information using cursor-based pagination
+   */
+  export interface PageInfo {
+    /**
+     * Whether there are more items after the current page
+     */
+    has_next_page: boolean;
+
+    /**
+     * Whether there are more items before the current page
+     */
+    has_prev_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string;
+  }
 }
 
 export interface ServiceAccountCreateParams {
@@ -216,12 +320,6 @@ export interface ServiceAccountCreateParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface ServiceAccountRetrieveParams {
@@ -241,12 +339,6 @@ export interface ServiceAccountRetrieveParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface ServiceAccountUpdateParams {
@@ -270,12 +362,6 @@ export interface ServiceAccountUpdateParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface ServiceAccountListParams {
@@ -305,12 +391,6 @@ export interface ServiceAccountListParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface ServiceAccountDeleteParams {
@@ -324,19 +404,15 @@ export interface ServiceAccountDeleteParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 ServiceAccounts.Credentials = Credentials;
 
 export declare namespace ServiceAccounts {
   export {
-    type ServiceAccount as ServiceAccount,
+    type ServiceAccountCreateResponse as ServiceAccountCreateResponse,
+    type ServiceAccountRetrieveResponse as ServiceAccountRetrieveResponse,
+    type ServiceAccountUpdateResponse as ServiceAccountUpdateResponse,
     type ServiceAccountListResponse as ServiceAccountListResponse,
     type ServiceAccountCreateParams as ServiceAccountCreateParams,
     type ServiceAccountRetrieveParams as ServiceAccountRetrieveParams,
@@ -347,8 +423,9 @@ export declare namespace ServiceAccounts {
 
   export {
     Credentials as Credentials,
-    type ServiceAccountCredential as ServiceAccountCredential,
     type CredentialCreateResponse as CredentialCreateResponse,
+    type CredentialRetrieveResponse as CredentialRetrieveResponse,
+    type CredentialUpdateResponse as CredentialUpdateResponse,
     type CredentialListResponse as CredentialListResponse,
     type CredentialCreateParams as CredentialCreateParams,
     type CredentialRetrieveParams as CredentialRetrieveParams,

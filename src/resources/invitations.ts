@@ -1,8 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as OrganizationsInvitationsAPI from './organizations/invitations';
-import * as UsersAPI from './organizations/users';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -17,17 +15,13 @@ export class Invitations extends APIResource {
     params: InvitationRetrieveParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<InvitationRetrieveResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID } = params ?? {};
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
     return this._client.get(path`/invitations/${token}`, {
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -39,17 +33,13 @@ export class Invitations extends APIResource {
     params: InvitationAcceptParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<InvitationAcceptResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID } = params ?? {};
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
     return this._client.post(path`/invitations/${token}/accept`, {
       ...options,
       headers: buildHeaders([
-        {
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
-        },
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
@@ -81,12 +71,12 @@ export interface InvitationRetrieveResponse {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: 'org_admin' | 'org_member' | 'org_viewer';
 
   /**
    * Status of an invitation
    */
-  status: OrganizationsInvitationsAPI.InvitationStatus;
+  status: 'pending' | 'accepted' | 'expired' | 'revoked';
 }
 
 /**
@@ -120,12 +110,6 @@ export interface InvitationRetrieveParams {
    * by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Unique request identifier only provided if the upstream caller is a Keycard
-   * service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export interface InvitationAcceptParams {
@@ -134,12 +118,6 @@ export interface InvitationAcceptParams {
    * by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Unique request identifier only provided if the upstream caller is a Keycard
-   * service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export declare namespace Invitations {

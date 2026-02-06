@@ -9,11 +9,11 @@ export {
 } from './invitations';
 export {
   Organizations,
-  type Organization,
-  type PageInfoCursor,
-  type RoleScope,
-  type TokenResponse,
+  type OrganizationCreateResponse,
+  type OrganizationRetrieveResponse,
+  type OrganizationUpdateResponse,
   type OrganizationListResponse,
+  type OrganizationExchangeTokenResponse,
   type OrganizationListIdentitiesResponse,
   type OrganizationListRolesResponse,
   type OrganizationCreateParams,
@@ -24,7 +24,11 @@ export {
   type OrganizationListIdentitiesParams,
   type OrganizationListRolesParams,
 } from './organizations/organizations';
-export { ServiceAccountToken, type ServiceAccountTokenCreateParams } from './service-account-token';
+export {
+  ServiceAccountToken,
+  type ServiceAccountTokenCreateResponse,
+  type ServiceAccountTokenCreateParams,
+} from './service-account-token';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,

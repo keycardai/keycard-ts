@@ -80,10 +80,9 @@ export {
 } from './resources';
 export {
   Secrets,
-  type Secret,
-  type SecretPasswordFields,
-  type SecretTokenFields,
+  type SecretCreateResponse,
   type SecretRetrieveResponse,
+  type SecretUpdateResponse,
   type SecretListResponse,
   type SecretCreateParams,
   type SecretRetrieveParams,

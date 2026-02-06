@@ -11,7 +11,7 @@ export class UserAgents extends APIResource {
    */
   retrieve(id: string, params: UserAgentRetrieveParams, options?: RequestOptions): APIPromise<UserAgent> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/user-agents/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/user-agents/${id}`, options);
   }
 
   /**
@@ -20,7 +20,7 @@ export class UserAgents extends APIResource {
    * Dynamic Client Registration.
    */
   list(zoneID: string, options?: RequestOptions): APIPromise<UserAgentListResponse> {
-    return this._client.get(path`/zones/${zoneID}/user-agents`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/user-agents`, options);
   }
 }
 

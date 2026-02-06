@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as OrganizationsAPI from './organizations/organizations';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -13,8 +12,8 @@ export class ServiceAccountToken extends APIResource {
   create(
     params: ServiceAccountTokenCreateParams,
     options?: RequestOptions,
-  ): APIPromise<OrganizationsAPI.TokenResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, 'X-Request-ID': xRequestID, ...body } = params;
+  ): APIPromise<ServiceAccountTokenCreateResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post('/service-account-token', {
       body,
       ...options,
@@ -22,13 +21,31 @@ export class ServiceAccountToken extends APIResource {
         {
           'Content-Type': 'application/x-www-form-urlencoded',
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-          ...(xRequestID != null ? { 'X-Request-ID': xRequestID } : undefined),
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
+}
+
+/**
+ * OAuth2-style token response for M2M tokens
+ */
+export interface ServiceAccountTokenCreateResponse {
+  /**
+   * The M2M access token
+   */
+  access_token: string;
+
+  /**
+   * Token type (always "Bearer")
+   */
+  token_type: string;
+
+  /**
+   * Token expiration time in seconds
+   */
+  expires_in?: number;
 }
 
 export interface ServiceAccountTokenCreateParams {
@@ -52,14 +69,11 @@ export interface ServiceAccountTokenCreateParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-
-  /**
-   * Header param: Unique request identifier only provided if the upstream caller is
-   * a Keycard service.
-   */
-  'X-Request-ID'?: string;
 }
 
 export declare namespace ServiceAccountToken {
-  export { type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams };
+  export {
+    type ServiceAccountTokenCreateResponse as ServiceAccountTokenCreateResponse,
+    type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams,
+  };
 }

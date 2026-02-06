@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource credentials', () => {
   // Prism tests are disabled
@@ -34,7 +29,6 @@ describe('resource credentials', () => {
         name: 'name',
         description: 'description',
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
   });
@@ -63,7 +57,6 @@ describe('resource credentials', () => {
         service_account_id: 'ab3def8hij2klm9opq5rst7uvw',
         expand: ['permissions'],
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
   });
@@ -93,7 +86,6 @@ describe('resource credentials', () => {
         description: 'description',
         name: 'name',
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
   });
@@ -124,7 +116,6 @@ describe('resource credentials', () => {
         expand: ['permissions'],
         limit: 1,
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
   });
@@ -152,7 +143,6 @@ describe('resource credentials', () => {
         organization_id: 'x',
         service_account_id: 'ab3def8hij2klm9opq5rst7uvw',
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
   });

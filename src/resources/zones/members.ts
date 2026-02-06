@@ -17,10 +17,7 @@ export class Members extends APIResource {
     options?: RequestOptions,
   ): APIPromise<ZoneMember> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/members/${organizationUserID}`, {
-      ...options,
-      __security: {},
-    });
+    return this._client.get(path`/zones/${zoneId}/members/${organizationUserID}`, options);
   }
 
   /**
@@ -33,11 +30,7 @@ export class Members extends APIResource {
     options?: RequestOptions,
   ): APIPromise<ZoneMember> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/members/${organizationUserID}`, {
-      body,
-      ...options,
-      __security: {},
-    });
+    return this._client.patch(path`/zones/${zoneId}/members/${organizationUserID}`, { body, ...options });
   }
 
   /**
@@ -49,7 +42,7 @@ export class Members extends APIResource {
     query: MemberListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<MemberListResponse> {
-    return this._client.get(path`/zones/${zoneID}/members`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/members`, { query, ...options });
   }
 
   /**
@@ -61,7 +54,6 @@ export class Members extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/members/${organizationUserID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
     });
   }
 
@@ -69,7 +61,7 @@ export class Members extends APIResource {
    * Adds an organization user to a zone with the specified role.
    */
   add(zoneID: string, body: MemberAddParams, options?: RequestOptions): APIPromise<ZoneMember> {
-    return this._client.post(path`/zones/${zoneID}/members`, { body, ...options, __security: {} });
+    return this._client.post(path`/zones/${zoneID}/members`, { body, ...options });
   }
 }
 

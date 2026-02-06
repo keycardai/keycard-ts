@@ -13,7 +13,7 @@ export class Providers extends APIResource {
    * actors to authenticate
    */
   create(zoneID: string, body: ProviderCreateParams, options?: RequestOptions): APIPromise<Provider> {
-    return this._client.post(path`/zones/${zoneID}/providers`, { body, ...options, __security: {} });
+    return this._client.post(path`/zones/${zoneID}/providers`, { body, ...options });
   }
 
   /**
@@ -21,7 +21,7 @@ export class Providers extends APIResource {
    */
   retrieve(id: string, params: ProviderRetrieveParams, options?: RequestOptions): APIPromise<Provider> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/providers/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/providers/${id}`, options);
   }
 
   /**
@@ -29,7 +29,7 @@ export class Providers extends APIResource {
    */
   update(id: string, params: ProviderUpdateParams, options?: RequestOptions): APIPromise<Provider> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/providers/${id}`, { body, ...options, __security: {} });
+    return this._client.patch(path`/zones/${zoneId}/providers/${id}`, { body, ...options });
   }
 
   /**
@@ -40,7 +40,7 @@ export class Providers extends APIResource {
     query: ProviderListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ProviderListResponse> {
-    return this._client.get(path`/zones/${zoneID}/providers`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/providers`, { query, ...options });
   }
 
   /**
@@ -51,7 +51,6 @@ export class Providers extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/providers/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
     });
   }
 }
@@ -117,15 +116,9 @@ export interface Provider {
   description?: string | null;
 
   /**
-   * Domains for identifier-first login flow. Must be globally unique across all
-   * providers.
-   */
-  domains?: Array<string> | null;
-
-  /**
    * Provider metadata
    */
-  metadata?: Provider.Metadata | null;
+  metadata?: unknown | null;
 
   /**
    * Protocol-specific configuration
@@ -136,16 +129,6 @@ export interface Provider {
 }
 
 export namespace Provider {
-  /**
-   * Provider metadata
-   */
-  export interface Metadata {
-    /**
-     * Additional claims to inject when provider is used for zone login
-     */
-    internal_claims?: { [key: string]: unknown };
-  }
-
   /**
    * Protocol-specific configuration
    */
@@ -167,6 +150,17 @@ export namespace Provider {
      */
     export interface Oauth2 {
       authorization_endpoint?: string | null;
+
+      /**
+       * Whether to include the resource parameter in authorization requests.
+       */
+      authorization_resource_enabled?: boolean | null;
+
+      /**
+       * The resource parameter value to include in authorization requests. Defaults to
+       * "resource" when authorization_resource_enabled is true.
+       */
+      authorization_resource_parameter?: string | null;
 
       code_challenge_methods_supported?: Array<string> | null;
 
@@ -224,15 +218,9 @@ export interface ProviderCreateParams {
   description?: string | null;
 
   /**
-   * Domains for identifier-first login flow. Must be globally unique across all
-   * providers.
-   */
-  domains?: Array<string>;
-
-  /**
    * Provider metadata
    */
-  metadata?: ProviderCreateParams.Metadata;
+  metadata?: unknown;
 
   /**
    * Protocol-specific configuration for provider creation
@@ -241,16 +229,6 @@ export interface ProviderCreateParams {
 }
 
 export namespace ProviderCreateParams {
-  /**
-   * Provider metadata
-   */
-  export interface Metadata {
-    /**
-     * Additional claims to inject when provider is used for zone login
-     */
-    internal_claims?: { [key: string]: unknown };
-  }
-
   /**
    * Protocol-specific configuration for provider creation
    */
@@ -272,6 +250,17 @@ export namespace ProviderCreateParams {
      */
     export interface Oauth2 {
       authorization_endpoint?: string;
+
+      /**
+       * Whether to include the resource parameter in authorization requests.
+       */
+      authorization_resource_enabled?: boolean;
+
+      /**
+       * The resource parameter value to include in authorization requests. Defaults to
+       * "resource" when authorization_resource_enabled is true.
+       */
+      authorization_resource_parameter?: string;
 
       code_challenge_methods_supported?: Array<string>;
 
@@ -320,12 +309,6 @@ export interface ProviderUpdateParams {
   description?: string | null;
 
   /**
-   * Body param: Domains for identifier-first login flow. Must be globally unique
-   * across all providers. Set to null to remove all domains.
-   */
-  domains?: Array<string> | null;
-
-  /**
    * Body param: User specified identifier, unique within the zone
    */
   identifier?: string;
@@ -333,7 +316,7 @@ export interface ProviderUpdateParams {
   /**
    * Body param: Provider metadata. Set to null to remove all metadata.
    */
-  metadata?: ProviderUpdateParams.Metadata | null;
+  metadata?: unknown | null;
 
   /**
    * Body param: Human-readable name
@@ -348,17 +331,6 @@ export interface ProviderUpdateParams {
 }
 
 export namespace ProviderUpdateParams {
-  /**
-   * Provider metadata. Set to null to remove all metadata.
-   */
-  export interface Metadata {
-    /**
-     * Additional claims to inject when provider is used for zone login. Set to null to
-     * remove.
-     */
-    internal_claims?: { [key: string]: unknown } | null;
-  }
-
   /**
    * Protocol-specific configuration. Set to null to remove all protocols.
    */
@@ -380,6 +352,18 @@ export namespace ProviderUpdateParams {
      */
     export interface Oauth2 {
       authorization_endpoint?: string | null;
+
+      /**
+       * Whether to include the resource parameter in authorization requests. Set to null
+       * to unset.
+       */
+      authorization_resource_enabled?: boolean | null;
+
+      /**
+       * The resource parameter value to include in authorization requests. Defaults to
+       * "resource" when authorization_resource_enabled is true. Set to null to unset.
+       */
+      authorization_resource_parameter?: string | null;
 
       code_challenge_methods_supported?: Array<string> | null;
 

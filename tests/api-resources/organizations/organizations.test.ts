@@ -2,12 +2,7 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource organizations', () => {
   // Prism tests are disabled
@@ -27,11 +22,7 @@ describe('resource organizations', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.organizations.create(
-        {
-          name: 'name',
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
+        { name: 'name', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
@@ -55,11 +46,7 @@ describe('resource organizations', () => {
     await expect(
       client.organizations.retrieve(
         'x',
-        {
-          expand: ['permissions'],
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
+        { expand: ['permissions'], 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
@@ -100,7 +87,6 @@ describe('resource organizations', () => {
           expand: ['permissions'],
           limit: 1,
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -125,10 +111,7 @@ describe('resource organizations', () => {
     await expect(
       client.organizations.exchangeToken(
         'x',
-        {
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
@@ -159,7 +142,6 @@ describe('resource organizations', () => {
           limit: 1,
           role: 'org_admin',
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -188,7 +170,6 @@ describe('resource organizations', () => {
           expand: ['permissions'],
           scope: 'organization',
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          'X-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
       ),
