@@ -42,6 +42,11 @@ export interface User {
   email: string;
 
   /**
+   * Whether the email address has been verified
+   */
+  email_verified: boolean;
+
+  /**
    * Issuer identifier of the identity provider
    */
   issuer: string;
