@@ -82,6 +82,12 @@ export interface Grant {
   provider_id: string;
 
   /**
+   * Indicates whether a refresh token is stored for this grant. Grants with refresh
+   * tokens can be refreshed even after access token expiration.
+   */
+  refresh_token_set: boolean;
+
+  /**
    * ID of resource receiving grant
    */
   resource_id: string;
@@ -119,6 +125,12 @@ export interface Grant {
    * actors (Users or Applications) to authenticate.
    */
   provider?: ProvidersAPI.Provider;
+
+  /**
+   * Timestamp when this grant's tokens were last refreshed. Omitted if grant was
+   * never refreshed.
+   */
+  refreshed_at?: string;
 
   /**
    * @deprecated A Resource is a system that exposes protected information or
