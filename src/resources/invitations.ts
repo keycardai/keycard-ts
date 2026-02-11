@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as OrganizationsInvitationsAPI from './organizations/invitations';
+import * as UsersAPI from './organizations/users';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -22,6 +24,7 @@ export class Invitations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -40,6 +43,7 @@ export class Invitations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 }
@@ -71,12 +75,12 @@ export interface InvitationRetrieveResponse {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: 'org_admin' | 'org_member' | 'org_viewer';
+  role: UsersAPI.OrganizationRole;
 
   /**
    * Status of an invitation
    */
-  status: 'pending' | 'accepted' | 'expired' | 'revoked';
+  status: OrganizationsInvitationsAPI.InvitationStatus;
 }
 
 /**

@@ -30,7 +30,11 @@ import {
   Grant,
 } from './delegated-grants';
 import * as McpGatewaysAPI from './mcp-gateways';
-import { McpGatewayCreateServerParams, McpGatewayCreateServerResponse, McpGateways } from './mcp-gateways';
+import {
+  McpGatewayCreateMcpServerParams,
+  McpGatewayCreateMcpServerResponse,
+  McpGateways,
+} from './mcp-gateways';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -66,15 +70,16 @@ import {
 } from './resources';
 import * as SecretsAPI from './secrets';
 import {
+  Secret,
   SecretCreateParams,
-  SecretCreateResponse,
   SecretDeleteParams,
   SecretListParams,
   SecretListResponse,
+  SecretPasswordFields,
   SecretRetrieveParams,
   SecretRetrieveResponse,
+  SecretTokenFields,
   SecretUpdateParams,
-  SecretUpdateResponse,
   Secrets,
 } from './secrets';
 import * as SessionsAPI from './sessions';
@@ -133,7 +138,7 @@ export class Zones extends APIResource {
    * environment for IAM resources.
    */
   create(body: ZoneCreateParams, options?: RequestOptions): APIPromise<Zone> {
-    return this._client.post('/zones', { body, ...options });
+    return this._client.post('/zones', { body, ...options, __security: {} });
   }
 
   /**
@@ -144,7 +149,7 @@ export class Zones extends APIResource {
     query: ZoneRetrieveParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.get(path`/zones/${zoneID}`, { query, ...options });
+    return this._client.get(path`/zones/${zoneID}`, { query, ...options, __security: {} });
   }
 
   /**
@@ -155,7 +160,7 @@ export class Zones extends APIResource {
     body: ZoneUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.patch(path`/zones/${zoneID}`, { body, ...options });
+    return this._client.patch(path`/zones/${zoneID}`, { body, ...options, __security: {} });
   }
 
   /**
@@ -165,7 +170,7 @@ export class Zones extends APIResource {
     query: ZoneListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListResponse> {
-    return this._client.get('/zones', { query, ...options });
+    return this._client.get('/zones', { query, ...options, __security: {} });
   }
 
   /**
@@ -175,6 +180,7 @@ export class Zones extends APIResource {
     return this._client.delete(path`/zones/${zoneID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      __security: {},
     });
   }
 
@@ -191,6 +197,7 @@ export class Zones extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/mcp-servers/${downstreamID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      __security: {},
     });
   }
 
@@ -205,7 +212,11 @@ export class Zones extends APIResource {
     query: ZoneListSessionResourceAccessParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListSessionResourceAccessResponse> {
-    return this._client.get(path`/zones/${zoneID}/session-resource-access`, { query, ...options });
+    return this._client.get(path`/zones/${zoneID}/session-resource-access`, {
+      query,
+      ...options,
+      __security: {},
+    });
   }
 }
 
@@ -737,8 +748,8 @@ export declare namespace Zones {
 
   export {
     McpGateways as McpGateways,
-    type McpGatewayCreateServerResponse as McpGatewayCreateServerResponse,
-    type McpGatewayCreateServerParams as McpGatewayCreateServerParams,
+    type McpGatewayCreateMcpServerResponse as McpGatewayCreateMcpServerResponse,
+    type McpGatewayCreateMcpServerParams as McpGatewayCreateMcpServerParams,
   };
 
   export {
@@ -800,9 +811,10 @@ export declare namespace Zones {
 
   export {
     Secrets as Secrets,
-    type SecretCreateResponse as SecretCreateResponse,
+    type Secret as Secret,
+    type SecretPasswordFields as SecretPasswordFields,
+    type SecretTokenFields as SecretTokenFields,
     type SecretRetrieveResponse as SecretRetrieveResponse,
-    type SecretUpdateResponse as SecretUpdateResponse,
     type SecretListResponse as SecretListResponse,
     type SecretCreateParams as SecretCreateParams,
     type SecretRetrieveParams as SecretRetrieveParams,

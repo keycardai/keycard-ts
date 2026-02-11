@@ -24,16 +24,11 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
+import { ServiceAccountToken, ServiceAccountTokenCreateParams } from './resources/service-account-token';
 import {
-  ServiceAccountToken,
-  ServiceAccountTokenCreateParams,
-  ServiceAccountTokenCreateResponse,
-} from './resources/service-account-token';
-import {
+  Organization,
   OrganizationCreateParams,
-  OrganizationCreateResponse,
   OrganizationExchangeTokenParams,
-  OrganizationExchangeTokenResponse,
   OrganizationListIdentitiesParams,
   OrganizationListIdentitiesResponse,
   OrganizationListParams,
@@ -41,10 +36,11 @@ import {
   OrganizationListRolesParams,
   OrganizationListRolesResponse,
   OrganizationRetrieveParams,
-  OrganizationRetrieveResponse,
   OrganizationUpdateParams,
-  OrganizationUpdateResponse,
   Organizations,
+  PageInfoCursor,
+  RoleScope,
+  TokenResponse,
 } from './resources/organizations/organizations';
 import {
   EncryptionKeyAwsKmsConfig,
@@ -63,6 +59,7 @@ import {
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -184,7 +181,7 @@ export class KeycardAPI {
    * @param {string | null | undefined} [opts.apiKey=process.env['KEYCARD_API_API_KEY'] ?? null]
    * @param {string | null | undefined} [opts.username=process.env['KEYCARD_API_USERNAME'] ?? null]
    * @param {string | null | undefined} [opts.password=process.env['KEYCARD_API_PASSWORD'] ?? null]
-   * @param {string} [opts.baseURL=process.env['KEYCARD_API_BASE_URL'] ?? /mgmt/v1] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['KEYCARD_API_BASE_URL'] ?? https://api.example.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -204,7 +201,7 @@ export class KeycardAPI {
       username,
       password,
       ...opts,
-      baseURL: baseURL || `/mgmt/v1`,
+      baseURL: baseURL || `https://api.example.com`,
     };
 
     this.baseURL = options.baseURL!;
@@ -254,7 +251,7 @@ export class KeycardAPI {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== '/mgmt/v1';
+    return this.baseURL !== 'https://api.example.com';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -262,7 +259,54 @@ export class KeycardAPI {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    return;
+    if (this.username && this.password && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
+    if (this.apiKey && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
+    throw new Error(
+      'Could not resolve authentication method. Expected either username, password or apiKey to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
+    );
+  }
+
+  protected async authHeaders(
+    opts: FinalRequestOptions,
+    schemes: { orgManagementBasicAuth?: boolean; vaultAPIBearerAuth?: boolean },
+  ): Promise<NullableHeaders | undefined> {
+    return buildHeaders([
+      schemes.orgManagementBasicAuth ? await this.orgManagementBasicAuth(opts) : null,
+      schemes.vaultAPIBearerAuth ? await this.vaultAPIBearerAuth(opts) : null,
+    ]);
+  }
+
+  protected async orgManagementBasicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (!this.username) {
+      return undefined;
+    }
+
+    if (!this.password) {
+      return undefined;
+    }
+
+    const credentials = `${this.username}:${this.password}`;
+    const Authorization = `Basic ${toBase64(credentials)}`;
+    return buildHeaders([{ Authorization }]);
+  }
+
+  protected async vaultAPIBearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (this.apiKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   protected stringifyQuery(query: Record<string, unknown>): string {
@@ -687,6 +731,10 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
+      await this.authHeaders(
+        options,
+        options.__security ?? { orgManagementBasicAuth: true, vaultAPIBearerAuth: true },
+      ),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -790,11 +838,11 @@ export declare namespace KeycardAPI {
 
   export {
     Organizations as Organizations,
-    type OrganizationCreateResponse as OrganizationCreateResponse,
-    type OrganizationRetrieveResponse as OrganizationRetrieveResponse,
-    type OrganizationUpdateResponse as OrganizationUpdateResponse,
+    type Organization as Organization,
+    type PageInfoCursor as PageInfoCursor,
+    type RoleScope as RoleScope,
+    type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,
-    type OrganizationExchangeTokenResponse as OrganizationExchangeTokenResponse,
     type OrganizationListIdentitiesResponse as OrganizationListIdentitiesResponse,
     type OrganizationListRolesResponse as OrganizationListRolesResponse,
     type OrganizationCreateParams as OrganizationCreateParams,
@@ -808,7 +856,6 @@ export declare namespace KeycardAPI {
 
   export {
     ServiceAccountToken as ServiceAccountToken,
-    type ServiceAccountTokenCreateResponse as ServiceAccountTokenCreateResponse,
     type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams,
   };
 

@@ -45,8 +45,8 @@ export {
 } from './delegated-grants';
 export {
   McpGateways,
-  type McpGatewayCreateServerResponse,
-  type McpGatewayCreateServerParams,
+  type McpGatewayCreateMcpServerResponse,
+  type McpGatewayCreateMcpServerParams,
 } from './mcp-gateways';
 export {
   Members,
@@ -80,9 +80,10 @@ export {
 } from './resources';
 export {
   Secrets,
-  type SecretCreateResponse,
+  type Secret,
+  type SecretPasswordFields,
+  type SecretTokenFields,
   type SecretRetrieveResponse,
-  type SecretUpdateResponse,
   type SecretListResponse,
   type SecretCreateParams,
   type SecretRetrieveParams,

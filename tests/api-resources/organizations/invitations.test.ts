@@ -2,7 +2,12 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new KeycardAPI({
+  apiKey: 'My API Key',
+  username: 'My Username',
+  password: 'My Password',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource invitations', () => {
   // Prism tests are disabled

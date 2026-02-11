@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as OrganizationsAPI from '../organizations';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
@@ -25,6 +26,7 @@ export class Credentials extends APIResource {
           { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
           options?.headers,
         ]),
+        __security: {},
       },
     );
   }
@@ -36,7 +38,7 @@ export class Credentials extends APIResource {
     credentialID: string,
     params: CredentialRetrieveParams,
     options?: RequestOptions,
-  ): APIPromise<CredentialRetrieveResponse> {
+  ): APIPromise<ServiceAccountCredential> {
     const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
     return this._client.get(
       path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`,
@@ -47,6 +49,7 @@ export class Credentials extends APIResource {
           { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
           options?.headers,
         ]),
+        __security: {},
       },
     );
   }
@@ -58,7 +61,7 @@ export class Credentials extends APIResource {
     credentialID: string,
     params: CredentialUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<CredentialUpdateResponse> {
+  ): APIPromise<ServiceAccountCredential> {
     const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(
       path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`,
@@ -69,6 +72,7 @@ export class Credentials extends APIResource {
           { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
           options?.headers,
         ]),
+        __security: {},
       },
     );
   }
@@ -91,6 +95,7 @@ export class Credentials extends APIResource {
           { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
           options?.headers,
         ]),
+        __security: {},
       },
     );
   }
@@ -111,9 +116,53 @@ export class Credentials extends APIResource {
           },
           options?.headers,
         ]),
+        __security: {},
       },
     );
   }
+}
+
+/**
+ * Service account credential (without secret)
+ */
+export interface ServiceAccountCredential {
+  /**
+   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+   */
+  id: string;
+
+  /**
+   * The client ID for authentication
+   */
+  client_id: string;
+
+  /**
+   * The time the entity was created in utc
+   */
+  created_at: string;
+
+  /**
+   * A name for the entity to be displayed in UI
+   */
+  name: string;
+
+  /**
+   * Optional description of the credential
+   */
+  description?: string;
+
+  /**
+   * When the credential was last used
+   */
+  last_used_at?: string;
+
+  /**
+   * Permissions granted to the authenticated principal for this resource. Only
+   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+   * resource types (e.g., "organizations"), values are objects mapping permission
+   * names to boolean values indicating if the permission is granted.
+   */
+  permissions?: { [key: string]: { [key: string]: boolean } };
 }
 
 /**
@@ -151,99 +200,13 @@ export interface CredentialCreateResponse {
   description?: string;
 }
 
-/**
- * Service account credential (without secret)
- */
-export interface CredentialRetrieveResponse {
-  /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-   */
-  id: string;
-
-  /**
-   * The client ID for authentication
-   */
-  client_id: string;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  /**
-   * Optional description of the credential
-   */
-  description?: string;
-
-  /**
-   * When the credential was last used
-   */
-  last_used_at?: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-/**
- * Service account credential (without secret)
- */
-export interface CredentialUpdateResponse {
-  /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-   */
-  id: string;
-
-  /**
-   * The client ID for authentication
-   */
-  client_id: string;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  /**
-   * Optional description of the credential
-   */
-  description?: string;
-
-  /**
-   * When the credential was last used
-   */
-  last_used_at?: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
 export interface CredentialListResponse {
-  items: Array<CredentialListResponse.Item>;
+  items: Array<ServiceAccountCredential>;
 
   /**
    * Pagination information using cursor-based pagination
    */
-  page_info: CredentialListResponse.PageInfo;
+  page_info: OrganizationsAPI.PageInfoCursor;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -252,76 +215,6 @@ export interface CredentialListResponse {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export namespace CredentialListResponse {
-  /**
-   * Service account credential (without secret)
-   */
-  export interface Item {
-    /**
-     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-     */
-    id: string;
-
-    /**
-     * The client ID for authentication
-     */
-    client_id: string;
-
-    /**
-     * The time the entity was created in utc
-     */
-    created_at: string;
-
-    /**
-     * A name for the entity to be displayed in UI
-     */
-    name: string;
-
-    /**
-     * Optional description of the credential
-     */
-    description?: string;
-
-    /**
-     * When the credential was last used
-     */
-    last_used_at?: string;
-
-    /**
-     * Permissions granted to the authenticated principal for this resource. Only
-     * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-     * resource types (e.g., "organizations"), values are objects mapping permission
-     * names to boolean values indicating if the permission is granted.
-     */
-    permissions?: { [key: string]: { [key: string]: boolean } };
-  }
-
-  /**
-   * Pagination information using cursor-based pagination
-   */
-  export interface PageInfo {
-    /**
-     * Whether there are more items after the current page
-     */
-    has_next_page: boolean;
-
-    /**
-     * Whether there are more items before the current page
-     */
-    has_prev_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string;
-  }
 }
 
 export interface CredentialCreateParams {
@@ -453,9 +346,8 @@ export interface CredentialDeleteParams {
 
 export declare namespace Credentials {
   export {
+    type ServiceAccountCredential as ServiceAccountCredential,
     type CredentialCreateResponse as CredentialCreateResponse,
-    type CredentialRetrieveResponse as CredentialRetrieveResponse,
-    type CredentialUpdateResponse as CredentialUpdateResponse,
     type CredentialListResponse as CredentialListResponse,
     type CredentialCreateParams as CredentialCreateParams,
     type CredentialRetrieveParams as CredentialRetrieveParams,

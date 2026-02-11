@@ -6,7 +6,7 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
-export class SSOConnection extends APIResource {
+export class SSOConnectionResource extends APIResource {
   /**
    * Get SSO connection configuration for organization
    */
@@ -14,7 +14,7 @@ export class SSOConnection extends APIResource {
     organizationID: string,
     params: SSOConnectionRetrieveParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<SSOConnectionRetrieveResponse> {
+  ): APIPromise<SSOConnection> {
     const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
     return this._client.get(path`/organizations/${organizationID}/sso-connection`, {
       query,
@@ -23,6 +23,7 @@ export class SSOConnection extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -33,7 +34,7 @@ export class SSOConnection extends APIResource {
     organizationID: string,
     params: SSOConnectionUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<SSOConnectionUpdateResponse> {
+  ): APIPromise<SSOConnection> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(path`/organizations/${organizationID}/sso-connection`, {
       body,
@@ -42,6 +43,7 @@ export class SSOConnection extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -63,6 +65,7 @@ export class SSOConnection extends APIResource {
         },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -73,7 +76,7 @@ export class SSOConnection extends APIResource {
     organizationID: string,
     params: SSOConnectionEnableParams,
     options?: RequestOptions,
-  ): APIPromise<SSOConnectionEnableResponse> {
+  ): APIPromise<SSOConnection> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post(path`/organizations/${organizationID}/sso-connection`, {
       body,
@@ -82,6 +85,7 @@ export class SSOConnection extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 }
@@ -89,7 +93,7 @@ export class SSOConnection extends APIResource {
 /**
  * SSO connection configuration for an organization
  */
-export interface SSOConnectionRetrieveResponse {
+export interface SSOConnection {
   /**
    * Unique identifier for the SSO connection
    */
@@ -131,294 +135,68 @@ export interface SSOConnectionRetrieveResponse {
   /**
    * Protocol configuration for SSO connection
    */
-  protocols?: SSOConnectionRetrieveResponse.Protocols | null;
-}
-
-export namespace SSOConnectionRetrieveResponse {
-  /**
-   * Protocol configuration for SSO connection
-   */
-  export interface Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    oauth2?: Protocols.Oauth2 | null;
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    openid?: Protocols.Openid | null;
-  }
-
-  export namespace Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    export interface Oauth2 {
-      /**
-       * OAuth 2.0 authorization endpoint
-       */
-      authorization_endpoint?: string | null;
-
-      /**
-       * Supported PKCE code challenge methods
-       */
-      code_challenge_methods_supported?: Array<string> | null;
-
-      /**
-       * JSON Web Key Set endpoint
-       */
-      jwks_uri?: string | null;
-
-      /**
-       * OAuth 2.0 registration endpoint
-       */
-      registration_endpoint?: string | null;
-
-      /**
-       * Supported OAuth 2.0 scopes
-       */
-      scopes_supported?: Array<string> | null;
-
-      /**
-       * OAuth 2.0 token endpoint
-       */
-      token_endpoint?: string | null;
-    }
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    export interface Openid {
-      /**
-       * OpenID Connect UserInfo endpoint
-       */
-      userinfo_endpoint?: string | null;
-    }
-  }
+  protocols?: SSOConnectionProtocol | null;
 }
 
 /**
- * SSO connection configuration for an organization
+ * Protocol configuration for SSO connection
  */
-export interface SSOConnectionUpdateResponse {
+export interface SSOConnectionProtocol {
   /**
-   * Unique identifier for the SSO connection
+   * OAuth 2.0 protocol configuration for SSO connection
    */
-  id: string;
+  oauth2?: SSOConnectionProtocol.Oauth2 | null;
 
   /**
-   * OAuth 2.0 client ID
+   * OpenID Connect protocol configuration for SSO connection
    */
-  client_id: string | null;
-
-  /**
-   * Whether a client secret is configured
-   */
-  client_secret_set: boolean;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * SSO provider identifier (e.g., issuer URL)
-   */
-  identifier: string;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-
-  /**
-   * Protocol configuration for SSO connection
-   */
-  protocols?: SSOConnectionUpdateResponse.Protocols | null;
+  openid?: SSOConnectionProtocol.Openid | null;
 }
 
-export namespace SSOConnectionUpdateResponse {
+export namespace SSOConnectionProtocol {
   /**
-   * Protocol configuration for SSO connection
+   * OAuth 2.0 protocol configuration for SSO connection
    */
-  export interface Protocols {
+  export interface Oauth2 {
     /**
-     * OAuth 2.0 protocol configuration for SSO connection
+     * OAuth 2.0 authorization endpoint
      */
-    oauth2?: Protocols.Oauth2 | null;
+    authorization_endpoint?: string | null;
 
     /**
-     * OpenID Connect protocol configuration for SSO connection
+     * Supported PKCE code challenge methods
      */
-    openid?: Protocols.Openid | null;
+    code_challenge_methods_supported?: Array<string> | null;
+
+    /**
+     * JSON Web Key Set endpoint
+     */
+    jwks_uri?: string | null;
+
+    /**
+     * OAuth 2.0 registration endpoint
+     */
+    registration_endpoint?: string | null;
+
+    /**
+     * Supported OAuth 2.0 scopes
+     */
+    scopes_supported?: Array<string> | null;
+
+    /**
+     * OAuth 2.0 token endpoint
+     */
+    token_endpoint?: string | null;
   }
 
-  export namespace Protocols {
+  /**
+   * OpenID Connect protocol configuration for SSO connection
+   */
+  export interface Openid {
     /**
-     * OAuth 2.0 protocol configuration for SSO connection
+     * OpenID Connect UserInfo endpoint
      */
-    export interface Oauth2 {
-      /**
-       * OAuth 2.0 authorization endpoint
-       */
-      authorization_endpoint?: string | null;
-
-      /**
-       * Supported PKCE code challenge methods
-       */
-      code_challenge_methods_supported?: Array<string> | null;
-
-      /**
-       * JSON Web Key Set endpoint
-       */
-      jwks_uri?: string | null;
-
-      /**
-       * OAuth 2.0 registration endpoint
-       */
-      registration_endpoint?: string | null;
-
-      /**
-       * Supported OAuth 2.0 scopes
-       */
-      scopes_supported?: Array<string> | null;
-
-      /**
-       * OAuth 2.0 token endpoint
-       */
-      token_endpoint?: string | null;
-    }
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    export interface Openid {
-      /**
-       * OpenID Connect UserInfo endpoint
-       */
-      userinfo_endpoint?: string | null;
-    }
-  }
-}
-
-/**
- * SSO connection configuration for an organization
- */
-export interface SSOConnectionEnableResponse {
-  /**
-   * Unique identifier for the SSO connection
-   */
-  id: string;
-
-  /**
-   * OAuth 2.0 client ID
-   */
-  client_id: string | null;
-
-  /**
-   * Whether a client secret is configured
-   */
-  client_secret_set: boolean;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * SSO provider identifier (e.g., issuer URL)
-   */
-  identifier: string;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-
-  /**
-   * Protocol configuration for SSO connection
-   */
-  protocols?: SSOConnectionEnableResponse.Protocols | null;
-}
-
-export namespace SSOConnectionEnableResponse {
-  /**
-   * Protocol configuration for SSO connection
-   */
-  export interface Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    oauth2?: Protocols.Oauth2 | null;
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    openid?: Protocols.Openid | null;
-  }
-
-  export namespace Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    export interface Oauth2 {
-      /**
-       * OAuth 2.0 authorization endpoint
-       */
-      authorization_endpoint?: string | null;
-
-      /**
-       * Supported PKCE code challenge methods
-       */
-      code_challenge_methods_supported?: Array<string> | null;
-
-      /**
-       * JSON Web Key Set endpoint
-       */
-      jwks_uri?: string | null;
-
-      /**
-       * OAuth 2.0 registration endpoint
-       */
-      registration_endpoint?: string | null;
-
-      /**
-       * Supported OAuth 2.0 scopes
-       */
-      scopes_supported?: Array<string> | null;
-
-      /**
-       * OAuth 2.0 token endpoint
-       */
-      token_endpoint?: string | null;
-    }
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    export interface Openid {
-      /**
-       * OpenID Connect UserInfo endpoint
-       */
-      userinfo_endpoint?: string | null;
-    }
+    userinfo_endpoint?: string | null;
   }
 }
 
@@ -455,77 +233,13 @@ export interface SSOConnectionUpdateParams {
   /**
    * Body param: Protocol configuration for SSO connection
    */
-  protocols?: SSOConnectionUpdateParams.Protocols | null;
+  protocols?: SSOConnectionProtocol | null;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-}
-
-export namespace SSOConnectionUpdateParams {
-  /**
-   * Protocol configuration for SSO connection
-   */
-  export interface Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    oauth2?: Protocols.Oauth2 | null;
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    openid?: Protocols.Openid | null;
-  }
-
-  export namespace Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    export interface Oauth2 {
-      /**
-       * OAuth 2.0 authorization endpoint
-       */
-      authorization_endpoint?: string | null;
-
-      /**
-       * Supported PKCE code challenge methods
-       */
-      code_challenge_methods_supported?: Array<string> | null;
-
-      /**
-       * JSON Web Key Set endpoint
-       */
-      jwks_uri?: string | null;
-
-      /**
-       * OAuth 2.0 registration endpoint
-       */
-      registration_endpoint?: string | null;
-
-      /**
-       * Supported OAuth 2.0 scopes
-       */
-      scopes_supported?: Array<string> | null;
-
-      /**
-       * OAuth 2.0 token endpoint
-       */
-      token_endpoint?: string | null;
-    }
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    export interface Openid {
-      /**
-       * OpenID Connect UserInfo endpoint
-       */
-      userinfo_endpoint?: string | null;
-    }
-  }
 }
 
 export interface SSOConnectionDisableParams {
@@ -555,7 +269,7 @@ export interface SSOConnectionEnableParams {
   /**
    * Body param: Protocol configuration for SSO connection
    */
-  protocols?: SSOConnectionEnableParams.Protocols | null;
+  protocols?: SSOConnectionProtocol | null;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -564,75 +278,10 @@ export interface SSOConnectionEnableParams {
   'X-Client-Request-ID'?: string;
 }
 
-export namespace SSOConnectionEnableParams {
-  /**
-   * Protocol configuration for SSO connection
-   */
-  export interface Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    oauth2?: Protocols.Oauth2 | null;
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    openid?: Protocols.Openid | null;
-  }
-
-  export namespace Protocols {
-    /**
-     * OAuth 2.0 protocol configuration for SSO connection
-     */
-    export interface Oauth2 {
-      /**
-       * OAuth 2.0 authorization endpoint
-       */
-      authorization_endpoint?: string | null;
-
-      /**
-       * Supported PKCE code challenge methods
-       */
-      code_challenge_methods_supported?: Array<string> | null;
-
-      /**
-       * JSON Web Key Set endpoint
-       */
-      jwks_uri?: string | null;
-
-      /**
-       * OAuth 2.0 registration endpoint
-       */
-      registration_endpoint?: string | null;
-
-      /**
-       * Supported OAuth 2.0 scopes
-       */
-      scopes_supported?: Array<string> | null;
-
-      /**
-       * OAuth 2.0 token endpoint
-       */
-      token_endpoint?: string | null;
-    }
-
-    /**
-     * OpenID Connect protocol configuration for SSO connection
-     */
-    export interface Openid {
-      /**
-       * OpenID Connect UserInfo endpoint
-       */
-      userinfo_endpoint?: string | null;
-    }
-  }
-}
-
-export declare namespace SSOConnection {
+export declare namespace SSOConnectionResource {
   export {
-    type SSOConnectionRetrieveResponse as SSOConnectionRetrieveResponse,
-    type SSOConnectionUpdateResponse as SSOConnectionUpdateResponse,
-    type SSOConnectionEnableResponse as SSOConnectionEnableResponse,
+    type SSOConnection as SSOConnection,
+    type SSOConnectionProtocol as SSOConnectionProtocol,
     type SSOConnectionRetrieveParams as SSOConnectionRetrieveParams,
     type SSOConnectionUpdateParams as SSOConnectionUpdateParams,
     type SSOConnectionDisableParams as SSOConnectionDisableParams,

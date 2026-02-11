@@ -2,7 +2,12 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new KeycardAPI({
+  apiKey: 'My API Key',
+  username: 'My Username',
+  password: 'My Password',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource secrets', () => {
   // Prism tests are disabled
@@ -29,6 +34,7 @@ describe('resource secrets', () => {
       name: 'name',
       description: 'description',
       metadata: {},
+      body_zone_id: 'x',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });

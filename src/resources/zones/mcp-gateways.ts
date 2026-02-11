@@ -11,15 +11,16 @@ export class McpGateways extends APIResource {
   /**
    * Creates all resources required to access an MCP server through an MCP gateway
    */
-  createServer(
+  createMcpServer(
     applicationID: string,
-    params: McpGatewayCreateServerParams,
+    params: McpGatewayCreateMcpServerParams,
     options?: RequestOptions,
-  ): APIPromise<McpGatewayCreateServerResponse> {
+  ): APIPromise<McpGatewayCreateMcpServerResponse> {
     const { zoneId, ...body } = params;
     return this._client.post(path`/zones/${zoneId}/mcp-gateways/${applicationID}/mcp-servers`, {
       body,
       ...options,
+      __security: {},
     });
   }
 }
@@ -28,7 +29,7 @@ export class McpGateways extends APIResource {
  * Response containing the created upstream provider, upstream resource, and
  * downstream resource for an MCP server
  */
-export interface McpGatewayCreateServerResponse {
+export interface McpGatewayCreateMcpServerResponse {
   /**
    * A Resource is a system that exposes protected information or functionality. It
    * requires authentication of the requesting actor, which may be a user or
@@ -50,7 +51,7 @@ export interface McpGatewayCreateServerResponse {
   upstream_resource: DependenciesAPI.Resource;
 }
 
-export interface McpGatewayCreateServerParams {
+export interface McpGatewayCreateMcpServerParams {
   /**
    * Path param: Zone ID
    */
@@ -59,20 +60,20 @@ export interface McpGatewayCreateServerParams {
   /**
    * Body param: Downstream MCP server config
    */
-  downstream: McpGatewayCreateServerParams.Downstream;
+  downstream: McpGatewayCreateMcpServerParams.Downstream;
 
   /**
    * Body param: Upstream MCP server config
    */
-  upstream: McpGatewayCreateServerParams.Upstream;
+  upstream: McpGatewayCreateMcpServerParams.Upstream;
 
   /**
    * Body param: Credential provider for the upstream connection
    */
-  upstream_provider: McpGatewayCreateServerParams.UpstreamProvider;
+  upstream_provider: McpGatewayCreateMcpServerParams.UpstreamProvider;
 }
 
-export namespace McpGatewayCreateServerParams {
+export namespace McpGatewayCreateMcpServerParams {
   /**
    * Downstream MCP server config
    */
@@ -116,7 +117,7 @@ export namespace McpGatewayCreateServerParams {
 
 export declare namespace McpGateways {
   export {
-    type McpGatewayCreateServerResponse as McpGatewayCreateServerResponse,
-    type McpGatewayCreateServerParams as McpGatewayCreateServerParams,
+    type McpGatewayCreateMcpServerResponse as McpGatewayCreateMcpServerResponse,
+    type McpGatewayCreateMcpServerParams as McpGatewayCreateMcpServerParams,
   };
 }

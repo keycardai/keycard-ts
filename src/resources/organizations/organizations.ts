@@ -1,13 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as OrganizationsAPI from './organizations';
 import * as InvitationsAPI from './invitations';
 import {
+  Invitation,
   InvitationCreateParams,
-  InvitationCreateResponse,
   InvitationDeleteParams,
   InvitationListParams,
   InvitationListResponse,
+  InvitationStatus,
   Invitations,
 } from './invitations';
 import * as SSOConnectionAPI from './sso-connection';
@@ -15,34 +17,32 @@ import {
   SSOConnection,
   SSOConnectionDisableParams,
   SSOConnectionEnableParams,
-  SSOConnectionEnableResponse,
+  SSOConnectionProtocol,
+  SSOConnectionResource,
   SSOConnectionRetrieveParams,
-  SSOConnectionRetrieveResponse,
   SSOConnectionUpdateParams,
-  SSOConnectionUpdateResponse,
 } from './sso-connection';
 import * as UsersAPI from './users';
 import {
+  OrganizationRole,
+  OrganizationStatus,
+  OrganizationUser,
   UserDeleteParams,
   UserListParams,
   UserListResponse,
   UserRetrieveParams,
-  UserRetrieveResponse,
   UserUpdateParams,
-  UserUpdateResponse,
   Users,
 } from './users';
 import * as ServiceAccountsAPI from './service-accounts/service-accounts';
 import {
+  ServiceAccount,
   ServiceAccountCreateParams,
-  ServiceAccountCreateResponse,
   ServiceAccountDeleteParams,
   ServiceAccountListParams,
   ServiceAccountListResponse,
   ServiceAccountRetrieveParams,
-  ServiceAccountRetrieveResponse,
   ServiceAccountUpdateParams,
-  ServiceAccountUpdateResponse,
   ServiceAccounts,
 } from './service-accounts/service-accounts';
 import { APIPromise } from '../../core/api-promise';
@@ -54,12 +54,14 @@ export class Organizations extends APIResource {
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
   invitations: InvitationsAPI.Invitations = new InvitationsAPI.Invitations(this._client);
   serviceAccounts: ServiceAccountsAPI.ServiceAccounts = new ServiceAccountsAPI.ServiceAccounts(this._client);
-  ssoConnection: SSOConnectionAPI.SSOConnection = new SSOConnectionAPI.SSOConnection(this._client);
+  ssoConnection: SSOConnectionAPI.SSOConnectionResource = new SSOConnectionAPI.SSOConnectionResource(
+    this._client,
+  );
 
   create(
     params: OrganizationCreateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<OrganizationCreateResponse> {
+  ): APIPromise<Organization> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params ?? {};
     return this._client.post('/organizations', {
       body,
@@ -68,6 +70,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -78,7 +81,7 @@ export class Organizations extends APIResource {
     organizationID: string,
     params: OrganizationRetrieveParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<OrganizationRetrieveResponse> {
+  ): APIPromise<Organization> {
     const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
     return this._client.get(path`/organizations/${organizationID}`, {
       query,
@@ -87,6 +90,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -97,7 +101,7 @@ export class Organizations extends APIResource {
     organizationID: string,
     params: OrganizationUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<OrganizationUpdateResponse> {
+  ): APIPromise<Organization> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(path`/organizations/${organizationID}`, {
       body,
@@ -106,6 +110,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -124,6 +129,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -134,7 +140,7 @@ export class Organizations extends APIResource {
     organizationID: string,
     params: OrganizationExchangeTokenParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<OrganizationExchangeTokenResponse> {
+  ): APIPromise<TokenResponse> {
     const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
     return this._client.post(path`/organizations/${organizationID}/token`, {
       ...options,
@@ -142,6 +148,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -161,6 +168,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -188,11 +196,12 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 }
 
-export interface OrganizationCreateResponse {
+export interface Organization {
   /**
    * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
    */
@@ -232,174 +241,43 @@ export interface OrganizationCreateResponse {
   permissions?: { [key: string]: { [key: string]: boolean } };
 }
 
-export interface OrganizationRetrieveResponse {
+/**
+ * Pagination information using cursor-based pagination
+ */
+export interface PageInfoCursor {
   /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
+   * Whether there are more items after the current page
    */
-  id: string;
+  has_next_page: boolean;
 
   /**
-   * The time the entity was created in utc
+   * Whether there are more items before the current page
    */
-  created_at: string;
+  has_prev_page: boolean;
 
   /**
-   * A domain name segment for the entity, often derived from the name.
+   * Cursor pointing to the last item in the current page
    */
-  label: string;
+  end_cursor?: string;
 
   /**
-   * A name for the entity to be displayed in UI
+   * Cursor pointing to the first item in the current page
    */
-  name: string;
-
-  /**
-   * Whether SSO is enabled for this organization
-   */
-  sso_enabled: boolean;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
+  start_cursor?: string;
 }
 
-export interface OrganizationUpdateResponse {
-  /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-   */
-  id: string;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * A domain name segment for the entity, often derived from the name.
-   */
-  label: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  /**
-   * Whether SSO is enabled for this organization
-   */
-  sso_enabled: boolean;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export interface OrganizationListResponse {
-  items: Array<OrganizationListResponse.Item>;
-
-  /**
-   * Pagination information using cursor-based pagination
-   */
-  page_info: OrganizationListResponse.PageInfo;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export namespace OrganizationListResponse {
-  export interface Item {
-    /**
-     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-     */
-    id: string;
-
-    /**
-     * The time the entity was created in utc
-     */
-    created_at: string;
-
-    /**
-     * A domain name segment for the entity, often derived from the name.
-     */
-    label: string;
-
-    /**
-     * A name for the entity to be displayed in UI
-     */
-    name: string;
-
-    /**
-     * Whether SSO is enabled for this organization
-     */
-    sso_enabled: boolean;
-
-    /**
-     * The time the entity was mostly recently updated in utc
-     */
-    updated_at: string;
-
-    /**
-     * Permissions granted to the authenticated principal for this resource. Only
-     * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-     * resource types (e.g., "organizations"), values are objects mapping permission
-     * names to boolean values indicating if the permission is granted.
-     */
-    permissions?: { [key: string]: { [key: string]: boolean } };
-  }
-
-  /**
-   * Pagination information using cursor-based pagination
-   */
-  export interface PageInfo {
-    /**
-     * Whether there are more items after the current page
-     */
-    has_next_page: boolean;
-
-    /**
-     * Whether there are more items before the current page
-     */
-    has_prev_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string;
-  }
-}
+/**
+ * The scope at which a role can be assigned.
+ *
+ * - organization: Roles that apply at the organization level (e.g., org_admin)
+ * - zone: Roles that apply at the zone level (e.g., zone_manager)
+ */
+export type RoleScope = 'organization' | 'zone';
 
 /**
  * OAuth2-style token response for M2M tokens
  */
-export interface OrganizationExchangeTokenResponse {
+export interface TokenResponse {
   /**
    * The M2M access token
    */
@@ -416,6 +294,23 @@ export interface OrganizationExchangeTokenResponse {
   expires_in?: number;
 }
 
+export interface OrganizationListResponse {
+  items: Array<Organization>;
+
+  /**
+   * Pagination information using cursor-based pagination
+   */
+  page_info: PageInfoCursor;
+
+  /**
+   * Permissions granted to the authenticated principal for this resource. Only
+   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
+   * resource types (e.g., "organizations"), values are objects mapping permission
+   * names to boolean values indicating if the permission is granted.
+   */
+  permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
 /**
  * List of identities (users and invitations) in an organization
  */
@@ -425,7 +320,7 @@ export interface OrganizationListIdentitiesResponse {
   /**
    * Pagination information using cursor-based pagination
    */
-  page_info: OrganizationListIdentitiesResponse.PageInfo;
+  page_info: PageInfoCursor;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -459,7 +354,7 @@ export namespace OrganizationListIdentitiesResponse {
     /**
      * Role in the organization
      */
-    role: 'org_admin' | 'org_member' | 'org_viewer';
+    role: UsersAPI.OrganizationRole;
 
     /**
      * Identity provider issuer
@@ -489,31 +384,6 @@ export namespace OrganizationListIdentitiesResponse {
      * names to boolean values indicating if the permission is granted.
      */
     permissions?: { [key: string]: { [key: string]: boolean } };
-  }
-
-  /**
-   * Pagination information using cursor-based pagination
-   */
-  export interface PageInfo {
-    /**
-     * Whether there are more items after the current page
-     */
-    has_next_page: boolean;
-
-    /**
-     * Whether there are more items before the current page
-     */
-    has_prev_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string;
   }
 }
 
@@ -558,7 +428,7 @@ export namespace OrganizationListRolesResponse {
     /**
      * The scope at which this role can be assigned (organization or zone)
      */
-    scope: 'organization' | 'zone';
+    scope: OrganizationsAPI.RoleScope;
   }
 }
 
@@ -664,7 +534,7 @@ export interface OrganizationListIdentitiesParams {
   /**
    * Query param: Filter identities by role
    */
-  role?: 'org_admin' | 'org_member' | 'org_viewer';
+  role?: UsersAPI.OrganizationRole;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -683,7 +553,7 @@ export interface OrganizationListRolesParams {
   /**
    * Query param: Filter roles by scope (organization or zone level)
    */
-  scope?: 'organization' | 'zone';
+  scope?: RoleScope;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -695,15 +565,15 @@ export interface OrganizationListRolesParams {
 Organizations.Users = Users;
 Organizations.Invitations = Invitations;
 Organizations.ServiceAccounts = ServiceAccounts;
-Organizations.SSOConnection = SSOConnection;
+Organizations.SSOConnectionResource = SSOConnectionResource;
 
 export declare namespace Organizations {
   export {
-    type OrganizationCreateResponse as OrganizationCreateResponse,
-    type OrganizationRetrieveResponse as OrganizationRetrieveResponse,
-    type OrganizationUpdateResponse as OrganizationUpdateResponse,
+    type Organization as Organization,
+    type PageInfoCursor as PageInfoCursor,
+    type RoleScope as RoleScope,
+    type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,
-    type OrganizationExchangeTokenResponse as OrganizationExchangeTokenResponse,
     type OrganizationListIdentitiesResponse as OrganizationListIdentitiesResponse,
     type OrganizationListRolesResponse as OrganizationListRolesResponse,
     type OrganizationCreateParams as OrganizationCreateParams,
@@ -717,8 +587,9 @@ export declare namespace Organizations {
 
   export {
     Users as Users,
-    type UserRetrieveResponse as UserRetrieveResponse,
-    type UserUpdateResponse as UserUpdateResponse,
+    type OrganizationRole as OrganizationRole,
+    type OrganizationStatus as OrganizationStatus,
+    type OrganizationUser as OrganizationUser,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
     type UserUpdateParams as UserUpdateParams,
@@ -728,7 +599,8 @@ export declare namespace Organizations {
 
   export {
     Invitations as Invitations,
-    type InvitationCreateResponse as InvitationCreateResponse,
+    type Invitation as Invitation,
+    type InvitationStatus as InvitationStatus,
     type InvitationListResponse as InvitationListResponse,
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,
@@ -737,9 +609,7 @@ export declare namespace Organizations {
 
   export {
     ServiceAccounts as ServiceAccounts,
-    type ServiceAccountCreateResponse as ServiceAccountCreateResponse,
-    type ServiceAccountRetrieveResponse as ServiceAccountRetrieveResponse,
-    type ServiceAccountUpdateResponse as ServiceAccountUpdateResponse,
+    type ServiceAccount as ServiceAccount,
     type ServiceAccountListResponse as ServiceAccountListResponse,
     type ServiceAccountCreateParams as ServiceAccountCreateParams,
     type ServiceAccountRetrieveParams as ServiceAccountRetrieveParams,
@@ -749,10 +619,9 @@ export declare namespace Organizations {
   };
 
   export {
-    SSOConnection as SSOConnection,
-    type SSOConnectionRetrieveResponse as SSOConnectionRetrieveResponse,
-    type SSOConnectionUpdateResponse as SSOConnectionUpdateResponse,
-    type SSOConnectionEnableResponse as SSOConnectionEnableResponse,
+    SSOConnectionResource as SSOConnectionResource,
+    type SSOConnection as SSOConnection,
+    type SSOConnectionProtocol as SSOConnectionProtocol,
     type SSOConnectionRetrieveParams as SSOConnectionRetrieveParams,
     type SSOConnectionUpdateParams as SSOConnectionUpdateParams,
     type SSOConnectionDisableParams as SSOConnectionDisableParams,

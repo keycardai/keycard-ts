@@ -2,7 +2,8 @@
 
 export {
   Invitations,
-  type InvitationCreateResponse,
+  type Invitation,
+  type InvitationStatus,
   type InvitationListResponse,
   type InvitationCreateParams,
   type InvitationListParams,
@@ -10,11 +11,11 @@ export {
 } from './invitations';
 export {
   Organizations,
-  type OrganizationCreateResponse,
-  type OrganizationRetrieveResponse,
-  type OrganizationUpdateResponse,
+  type Organization,
+  type PageInfoCursor,
+  type RoleScope,
+  type TokenResponse,
   type OrganizationListResponse,
-  type OrganizationExchangeTokenResponse,
   type OrganizationListIdentitiesResponse,
   type OrganizationListRolesResponse,
   type OrganizationCreateParams,
@@ -26,10 +27,9 @@ export {
   type OrganizationListRolesParams,
 } from './organizations';
 export {
-  SSOConnection,
-  type SSOConnectionRetrieveResponse,
-  type SSOConnectionUpdateResponse,
-  type SSOConnectionEnableResponse,
+  SSOConnectionResource,
+  type SSOConnection,
+  type SSOConnectionProtocol,
   type SSOConnectionRetrieveParams,
   type SSOConnectionUpdateParams,
   type SSOConnectionDisableParams,
@@ -37,9 +37,7 @@ export {
 } from './sso-connection';
 export {
   ServiceAccounts,
-  type ServiceAccountCreateResponse,
-  type ServiceAccountRetrieveResponse,
-  type ServiceAccountUpdateResponse,
+  type ServiceAccount,
   type ServiceAccountListResponse,
   type ServiceAccountCreateParams,
   type ServiceAccountRetrieveParams,
@@ -49,8 +47,9 @@ export {
 } from './service-accounts/index';
 export {
   Users,
-  type UserRetrieveResponse,
-  type UserUpdateResponse,
+  type OrganizationRole,
+  type OrganizationStatus,
+  type OrganizationUser,
   type UserListResponse,
   type UserRetrieveParams,
   type UserUpdateParams,
