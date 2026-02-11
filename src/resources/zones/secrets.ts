@@ -7,11 +7,7 @@ import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 export class Secrets extends APIResource {
-  create(
-    zoneID: string,
-    params: SecretCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<SecretCreateResponse> {
+  create(zoneID: string, params: SecretCreateParams, options?: RequestOptions): APIPromise<Secret> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post(path`/zones/${zoneID}/secrets`, {
       body,
@@ -20,6 +16,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: { vaultAPIBearerAuth: true },
     });
   }
 
@@ -35,10 +32,11 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: { vaultAPIBearerAuth: true },
     });
   }
 
-  update(id: string, params: SecretUpdateParams, options?: RequestOptions): APIPromise<SecretUpdateResponse> {
+  update(id: string, params: SecretUpdateParams, options?: RequestOptions): APIPromise<Secret> {
     const { zone_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(path`/zones/${zone_id}/secrets/${id}`, {
       body,
@@ -47,6 +45,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: { vaultAPIBearerAuth: true },
     });
   }
 
@@ -63,6 +62,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: { vaultAPIBearerAuth: true },
     });
   }
 
@@ -77,11 +77,12 @@ export class Secrets extends APIResource {
         },
         options?.headers,
       ]),
+      __security: { vaultAPIBearerAuth: true },
     });
   }
 }
 
-export interface SecretCreateResponse {
+export interface Secret {
   /**
    * A globally unique opaque identifier
    */
@@ -119,6 +120,20 @@ export interface SecretCreateResponse {
    * A JSON object containing arbitrary metadata. Metadata will not be encrypted.
    */
   metadata?: unknown;
+}
+
+export interface SecretPasswordFields {
+  password: string;
+
+  type: 'password';
+
+  username: string;
+}
+
+export interface SecretTokenFields {
+  token: string;
+
+  type: 'token';
 }
 
 export interface SecretRetrieveResponse {
@@ -129,9 +144,7 @@ export interface SecretRetrieveResponse {
 
   created_at: string;
 
-  data:
-    | SecretRetrieveResponse.VaultAPISecretTokenFields
-    | SecretRetrieveResponse.VaultAPISecretPasswordFields;
+  data: SecretTokenFields | SecretPasswordFields;
 
   /**
    * A globally unique opaque identifier
@@ -163,111 +176,13 @@ export interface SecretRetrieveResponse {
   metadata?: unknown;
 }
 
-export namespace SecretRetrieveResponse {
-  export interface VaultAPISecretTokenFields {
-    token: string;
-
-    type: 'token';
-  }
-
-  export interface VaultAPISecretPasswordFields {
-    password: string;
-
-    type: 'password';
-
-    username: string;
-  }
-}
-
-export interface SecretUpdateResponse {
-  /**
-   * A globally unique opaque identifier
-   */
-  id: string;
-
-  created_at: string;
-
-  /**
-   * A globally unique opaque identifier
-   */
-  entity_id: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  type: 'token' | 'password';
-
-  updated_at: string;
-
-  version: number;
-
-  /**
-   * A globally unique opaque identifier
-   */
-  zone_id: string;
-
-  /**
-   * A description of the entity
-   */
-  description?: string;
-
-  /**
-   * A JSON object containing arbitrary metadata. Metadata will not be encrypted.
-   */
-  metadata?: unknown;
-}
-
-export type SecretListResponse = Array<SecretListResponse.SecretListResponseItem>;
-
-export namespace SecretListResponse {
-  export interface SecretListResponseItem {
-    /**
-     * A globally unique opaque identifier
-     */
-    id: string;
-
-    created_at: string;
-
-    /**
-     * A globally unique opaque identifier
-     */
-    entity_id: string;
-
-    /**
-     * A name for the entity to be displayed in UI
-     */
-    name: string;
-
-    type: 'token' | 'password';
-
-    updated_at: string;
-
-    version: number;
-
-    /**
-     * A globally unique opaque identifier
-     */
-    zone_id: string;
-
-    /**
-     * A description of the entity
-     */
-    description?: string;
-
-    /**
-     * A JSON object containing arbitrary metadata. Metadata will not be encrypted.
-     */
-    metadata?: unknown;
-  }
-}
+export type SecretListResponse = Array<Secret>;
 
 export interface SecretCreateParams {
   /**
    * Body param
    */
-  data: SecretCreateParams.VaultAPISecretTokenFields | SecretCreateParams.VaultAPISecretPasswordFields;
+  data: SecretTokenFields | SecretPasswordFields;
 
   /**
    * Body param: A globally unique opaque identifier
@@ -291,26 +206,17 @@ export interface SecretCreateParams {
   metadata?: unknown;
 
   /**
+   * Body param: Optional zone ID. This field is provided for API compatibility but
+   * is ignored during processing. The zone ID is derived from the path parameter
+   * (/zones/{zone_id}/secrets) and takes precedence.
+   */
+  body_zone_id?: string;
+
+  /**
    * Header param: Unique request identifier specified by the originating caller and
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-}
-
-export namespace SecretCreateParams {
-  export interface VaultAPISecretTokenFields {
-    token: string;
-
-    type: 'token';
-  }
-
-  export interface VaultAPISecretPasswordFields {
-    password: string;
-
-    type: 'password';
-
-    username: string;
-  }
 }
 
 export interface SecretRetrieveParams {
@@ -335,7 +241,7 @@ export interface SecretUpdateParams {
   /**
    * Body param
    */
-  data?: SecretUpdateParams.VaultAPISecretTokenFields | SecretUpdateParams.VaultAPISecretPasswordFields;
+  data?: SecretTokenFields | SecretPasswordFields;
 
   /**
    * Body param: A description of the entity
@@ -358,22 +264,6 @@ export interface SecretUpdateParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
-}
-
-export namespace SecretUpdateParams {
-  export interface VaultAPISecretTokenFields {
-    token: string;
-
-    type: 'token';
-  }
-
-  export interface VaultAPISecretPasswordFields {
-    password: string;
-
-    type: 'password';
-
-    username: string;
-  }
 }
 
 export interface SecretListParams {
@@ -409,9 +299,10 @@ export interface SecretDeleteParams {
 
 export declare namespace Secrets {
   export {
-    type SecretCreateResponse as SecretCreateResponse,
+    type Secret as Secret,
+    type SecretPasswordFields as SecretPasswordFields,
+    type SecretTokenFields as SecretTokenFields,
     type SecretRetrieveResponse as SecretRetrieveResponse,
-    type SecretUpdateResponse as SecretUpdateResponse,
     type SecretListResponse as SecretListResponse,
     type SecretCreateParams as SecretCreateParams,
     type SecretRetrieveParams as SecretRetrieveParams,

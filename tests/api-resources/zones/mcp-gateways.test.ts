@@ -2,12 +2,17 @@
 
 import KeycardAPI from 'keycard-api';
 
-const client = new KeycardAPI({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new KeycardAPI({
+  apiKey: 'My API Key',
+  username: 'My Username',
+  password: 'My Password',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource mcpGateways', () => {
   // Prism tests are disabled
-  test.skip('createServer: only required params', async () => {
-    const responsePromise = client.zones.mcpGateways.createServer('applicationId', {
+  test.skip('createMcpServer: only required params', async () => {
+    const responsePromise = client.zones.mcpGateways.createMcpServer('applicationId', {
       zoneId: 'zoneId',
       downstream: {},
       upstream: { identifier: 'x', name: 'x' },
@@ -23,8 +28,8 @@ describe('resource mcpGateways', () => {
   });
 
   // Prism tests are disabled
-  test.skip('createServer: required and optional params', async () => {
-    const response = await client.zones.mcpGateways.createServer('applicationId', {
+  test.skip('createMcpServer: required and optional params', async () => {
+    const response = await client.zones.mcpGateways.createMcpServer('applicationId', {
       zoneId: 'zoneId',
       downstream: { slug: 'slug' },
       upstream: { identifier: 'x', name: 'x' },

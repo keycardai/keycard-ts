@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as OrganizationsAPI from '../organizations';
 import * as CredentialsAPI from './credentials';
 import {
   CredentialCreateParams,
@@ -9,10 +10,9 @@ import {
   CredentialListParams,
   CredentialListResponse,
   CredentialRetrieveParams,
-  CredentialRetrieveResponse,
   CredentialUpdateParams,
-  CredentialUpdateResponse,
   Credentials,
+  ServiceAccountCredential,
 } from './credentials';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
@@ -29,7 +29,7 @@ export class ServiceAccounts extends APIResource {
     organizationID: string,
     params: ServiceAccountCreateParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccountCreateResponse> {
+  ): APIPromise<ServiceAccount> {
     const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.post(path`/organizations/${organizationID}/service-accounts`, {
       body,
@@ -38,6 +38,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -48,7 +49,7 @@ export class ServiceAccounts extends APIResource {
     serviceAccountID: string,
     params: ServiceAccountRetrieveParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccountRetrieveResponse> {
+  ): APIPromise<ServiceAccount> {
     const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
     return this._client.get(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
       query,
@@ -57,6 +58,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -67,7 +69,7 @@ export class ServiceAccounts extends APIResource {
     serviceAccountID: string,
     params: ServiceAccountUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<ServiceAccountUpdateResponse> {
+  ): APIPromise<ServiceAccount> {
     const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
     return this._client.patch(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
       body,
@@ -76,6 +78,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -95,6 +98,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -116,81 +120,12 @@ export class ServiceAccounts extends APIResource {
         },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 }
 
-export interface ServiceAccountCreateResponse {
-  /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-   */
-  id: string;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Optional description of the service account
-   */
-  description?: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export interface ServiceAccountRetrieveResponse {
-  /**
-   * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-   */
-  id: string;
-
-  /**
-   * The time the entity was created in utc
-   */
-  created_at: string;
-
-  /**
-   * A name for the entity to be displayed in UI
-   */
-  name: string;
-
-  /**
-   * The time the entity was mostly recently updated in utc
-   */
-  updated_at: string;
-
-  /**
-   * Optional description of the service account
-   */
-  description?: string;
-
-  /**
-   * Permissions granted to the authenticated principal for this resource. Only
-   * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-   * resource types (e.g., "organizations"), values are objects mapping permission
-   * names to boolean values indicating if the permission is granted.
-   */
-  permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export interface ServiceAccountUpdateResponse {
+export interface ServiceAccount {
   /**
    * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
    */
@@ -226,12 +161,12 @@ export interface ServiceAccountUpdateResponse {
 }
 
 export interface ServiceAccountListResponse {
-  items: Array<ServiceAccountListResponse.Item>;
+  items: Array<ServiceAccount>;
 
   /**
    * Pagination information using cursor-based pagination
    */
-  page_info: ServiceAccountListResponse.PageInfo;
+  page_info: OrganizationsAPI.PageInfoCursor;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -240,68 +175,6 @@ export interface ServiceAccountListResponse {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
-}
-
-export namespace ServiceAccountListResponse {
-  export interface Item {
-    /**
-     * Identifier for API resources. A 26-char nanoid (URL/DNS safe).
-     */
-    id: string;
-
-    /**
-     * The time the entity was created in utc
-     */
-    created_at: string;
-
-    /**
-     * A name for the entity to be displayed in UI
-     */
-    name: string;
-
-    /**
-     * The time the entity was mostly recently updated in utc
-     */
-    updated_at: string;
-
-    /**
-     * Optional description of the service account
-     */
-    description?: string;
-
-    /**
-     * Permissions granted to the authenticated principal for this resource. Only
-     * populated when the 'expand[]=permissions' query parameter is provided. Keys are
-     * resource types (e.g., "organizations"), values are objects mapping permission
-     * names to boolean values indicating if the permission is granted.
-     */
-    permissions?: { [key: string]: { [key: string]: boolean } };
-  }
-
-  /**
-   * Pagination information using cursor-based pagination
-   */
-  export interface PageInfo {
-    /**
-     * Whether there are more items after the current page
-     */
-    has_next_page: boolean;
-
-    /**
-     * Whether there are more items before the current page
-     */
-    has_prev_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string;
-  }
 }
 
 export interface ServiceAccountCreateParams {
@@ -410,9 +283,7 @@ ServiceAccounts.Credentials = Credentials;
 
 export declare namespace ServiceAccounts {
   export {
-    type ServiceAccountCreateResponse as ServiceAccountCreateResponse,
-    type ServiceAccountRetrieveResponse as ServiceAccountRetrieveResponse,
-    type ServiceAccountUpdateResponse as ServiceAccountUpdateResponse,
+    type ServiceAccount as ServiceAccount,
     type ServiceAccountListResponse as ServiceAccountListResponse,
     type ServiceAccountCreateParams as ServiceAccountCreateParams,
     type ServiceAccountRetrieveParams as ServiceAccountRetrieveParams,
@@ -423,9 +294,8 @@ export declare namespace ServiceAccounts {
 
   export {
     Credentials as Credentials,
+    type ServiceAccountCredential as ServiceAccountCredential,
     type CredentialCreateResponse as CredentialCreateResponse,
-    type CredentialRetrieveResponse as CredentialRetrieveResponse,
-    type CredentialUpdateResponse as CredentialUpdateResponse,
     type CredentialListResponse as CredentialListResponse,
     type CredentialCreateParams as CredentialCreateParams,
     type CredentialRetrieveParams as CredentialRetrieveParams,

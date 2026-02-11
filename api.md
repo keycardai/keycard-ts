@@ -94,11 +94,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/zones/mcp-gateways.ts">McpGatewayCreateServerResponse</a></code>
+- <code><a href="./src/resources/zones/mcp-gateways.ts">McpGatewayCreateMcpServerResponse</a></code>
 
 Methods:
 
-- <code title="post /zones/{zoneId}/mcp-gateways/{applicationId}/mcp-servers">client.zones.mcpGateways.<a href="./src/resources/zones/mcp-gateways.ts">createServer</a>(applicationID, { ...params }) -> McpGatewayCreateServerResponse</code>
+- <code title="post /zones/{zoneId}/mcp-gateways/{applicationId}/mcp-servers">client.zones.mcpGateways.<a href="./src/resources/zones/mcp-gateways.ts">createMcpServer</a>(applicationID, { ...params }) -> McpGatewayCreateMcpServerResponse</code>
 
 ## Providers
 
@@ -187,16 +187,17 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/zones/secrets.ts">SecretCreateResponse</a></code>
+- <code><a href="./src/resources/zones/secrets.ts">Secret</a></code>
+- <code><a href="./src/resources/zones/secrets.ts">SecretPasswordFields</a></code>
+- <code><a href="./src/resources/zones/secrets.ts">SecretTokenFields</a></code>
 - <code><a href="./src/resources/zones/secrets.ts">SecretRetrieveResponse</a></code>
-- <code><a href="./src/resources/zones/secrets.ts">SecretUpdateResponse</a></code>
 - <code><a href="./src/resources/zones/secrets.ts">SecretListResponse</a></code>
 
 Methods:
 
-- <code title="post /zones/{zone_id}/secrets">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">create</a>(zoneID, { ...params }) -> SecretCreateResponse</code>
+- <code title="post /zones/{zone_id}/secrets">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">create</a>(zoneID, { ...params }) -> Secret</code>
 - <code title="get /zones/{zone_id}/secrets/{id}">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">retrieve</a>(id, { ...params }) -> SecretRetrieveResponse</code>
-- <code title="patch /zones/{zone_id}/secrets/{id}">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">update</a>(id, { ...params }) -> SecretUpdateResponse</code>
+- <code title="patch /zones/{zone_id}/secrets/{id}">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">update</a>(id, { ...params }) -> Secret</code>
 - <code title="get /zones/{zone_id}/secrets">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">list</a>(zoneID, { ...params }) -> SecretListResponse</code>
 - <code title="delete /zones/{zone_id}/secrets/{id}">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">delete</a>(id, { ...params }) -> void</code>
 
@@ -204,21 +205,21 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationCreateResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationRetrieveResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationUpdateResponse</a></code>
+- <code><a href="./src/resources/organizations/organizations.ts">Organization</a></code>
+- <code><a href="./src/resources/organizations/organizations.ts">PageInfoCursor</a></code>
+- <code><a href="./src/resources/organizations/organizations.ts">RoleScope</a></code>
+- <code><a href="./src/resources/organizations/organizations.ts">TokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationExchangeTokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListIdentitiesResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListRolesResponse</a></code>
 
 Methods:
 
-- <code title="post /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">create</a>({ ...params }) -> OrganizationCreateResponse</code>
-- <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> OrganizationRetrieveResponse</code>
-- <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> OrganizationUpdateResponse</code>
+- <code title="post /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">create</a>({ ...params }) -> Organization</code>
+- <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> Organization</code>
+- <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
-- <code title="post /organizations/{organization_id}/token">client.organizations.<a href="./src/resources/organizations/organizations.ts">exchangeToken</a>(organizationID, { ...params }) -> OrganizationExchangeTokenResponse</code>
+- <code title="post /organizations/{organization_id}/token">client.organizations.<a href="./src/resources/organizations/organizations.ts">exchangeToken</a>(organizationID, { ...params }) -> TokenResponse</code>
 - <code title="get /organizations/{organization_id}/identities">client.organizations.<a href="./src/resources/organizations/organizations.ts">listIdentities</a>(organizationID, { ...params }) -> OrganizationListIdentitiesResponse</code>
 - <code title="get /organizations/{organization_id}/roles">client.organizations.<a href="./src/resources/organizations/organizations.ts">listRoles</a>(organizationID, { ...params }) -> OrganizationListRolesResponse</code>
 
@@ -226,14 +227,15 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/organizations/users.ts">UserRetrieveResponse</a></code>
-- <code><a href="./src/resources/organizations/users.ts">UserUpdateResponse</a></code>
+- <code><a href="./src/resources/organizations/users.ts">OrganizationRole</a></code>
+- <code><a href="./src/resources/organizations/users.ts">OrganizationStatus</a></code>
+- <code><a href="./src/resources/organizations/users.ts">OrganizationUser</a></code>
 - <code><a href="./src/resources/organizations/users.ts">UserListResponse</a></code>
 
 Methods:
 
-- <code title="get /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">retrieve</a>(userID, { ...params }) -> UserRetrieveResponse</code>
-- <code title="patch /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">update</a>(userID, { ...params }) -> UserUpdateResponse</code>
+- <code title="get /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">retrieve</a>(userID, { ...params }) -> OrganizationUser</code>
+- <code title="patch /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">update</a>(userID, { ...params }) -> OrganizationUser</code>
 - <code title="get /organizations/{organization_id}/users">client.organizations.users.<a href="./src/resources/organizations/users.ts">list</a>(organizationID, { ...params }) -> UserListResponse</code>
 - <code title="delete /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">delete</a>(userID, { ...params }) -> void</code>
 
@@ -241,12 +243,13 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/organizations/invitations.ts">InvitationCreateResponse</a></code>
+- <code><a href="./src/resources/organizations/invitations.ts">Invitation</a></code>
+- <code><a href="./src/resources/organizations/invitations.ts">InvitationStatus</a></code>
 - <code><a href="./src/resources/organizations/invitations.ts">InvitationListResponse</a></code>
 
 Methods:
 
-- <code title="post /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">create</a>(organizationID, { ...params }) -> InvitationCreateResponse</code>
+- <code title="post /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">create</a>(organizationID, { ...params }) -> Invitation</code>
 - <code title="get /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">list</a>(organizationID, { ...params }) -> InvitationListResponse</code>
 - <code title="delete /organizations/{organization_id}/invitations/{invitation_id}">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">delete</a>(invitationID, { ...params }) -> void</code>
 
@@ -254,16 +257,14 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/organizations/service-accounts/service-accounts.ts">ServiceAccountCreateResponse</a></code>
-- <code><a href="./src/resources/organizations/service-accounts/service-accounts.ts">ServiceAccountRetrieveResponse</a></code>
-- <code><a href="./src/resources/organizations/service-accounts/service-accounts.ts">ServiceAccountUpdateResponse</a></code>
+- <code><a href="./src/resources/organizations/service-accounts/service-accounts.ts">ServiceAccount</a></code>
 - <code><a href="./src/resources/organizations/service-accounts/service-accounts.ts">ServiceAccountListResponse</a></code>
 
 Methods:
 
-- <code title="post /organizations/{organization_id}/service-accounts">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">create</a>(organizationID, { ...params }) -> ServiceAccountCreateResponse</code>
-- <code title="get /organizations/{organization_id}/service-accounts/{service_account_id}">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">retrieve</a>(serviceAccountID, { ...params }) -> ServiceAccountRetrieveResponse</code>
-- <code title="patch /organizations/{organization_id}/service-accounts/{service_account_id}">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">update</a>(serviceAccountID, { ...params }) -> ServiceAccountUpdateResponse</code>
+- <code title="post /organizations/{organization_id}/service-accounts">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">create</a>(organizationID, { ...params }) -> ServiceAccount</code>
+- <code title="get /organizations/{organization_id}/service-accounts/{service_account_id}">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">retrieve</a>(serviceAccountID, { ...params }) -> ServiceAccount</code>
+- <code title="patch /organizations/{organization_id}/service-accounts/{service_account_id}">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">update</a>(serviceAccountID, { ...params }) -> ServiceAccount</code>
 - <code title="get /organizations/{organization_id}/service-accounts">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">list</a>(organizationID, { ...params }) -> ServiceAccountListResponse</code>
 - <code title="delete /organizations/{organization_id}/service-accounts/{service_account_id}">client.organizations.serviceAccounts.<a href="./src/resources/organizations/service-accounts/service-accounts.ts">delete</a>(serviceAccountID, { ...params }) -> void</code>
 
@@ -271,16 +272,15 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/organizations/service-accounts/credentials.ts">ServiceAccountCredential</a></code>
 - <code><a href="./src/resources/organizations/service-accounts/credentials.ts">CredentialCreateResponse</a></code>
-- <code><a href="./src/resources/organizations/service-accounts/credentials.ts">CredentialRetrieveResponse</a></code>
-- <code><a href="./src/resources/organizations/service-accounts/credentials.ts">CredentialUpdateResponse</a></code>
 - <code><a href="./src/resources/organizations/service-accounts/credentials.ts">CredentialListResponse</a></code>
 
 Methods:
 
 - <code title="post /organizations/{organization_id}/service-accounts/{service_account_id}/credentials">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">create</a>(serviceAccountID, { ...params }) -> CredentialCreateResponse</code>
-- <code title="get /organizations/{organization_id}/service-accounts/{service_account_id}/credentials/{credential_id}">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">retrieve</a>(credentialID, { ...params }) -> CredentialRetrieveResponse</code>
-- <code title="patch /organizations/{organization_id}/service-accounts/{service_account_id}/credentials/{credential_id}">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">update</a>(credentialID, { ...params }) -> CredentialUpdateResponse</code>
+- <code title="get /organizations/{organization_id}/service-accounts/{service_account_id}/credentials/{credential_id}">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">retrieve</a>(credentialID, { ...params }) -> ServiceAccountCredential</code>
+- <code title="patch /organizations/{organization_id}/service-accounts/{service_account_id}/credentials/{credential_id}">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">update</a>(credentialID, { ...params }) -> ServiceAccountCredential</code>
 - <code title="get /organizations/{organization_id}/service-accounts/{service_account_id}/credentials">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">list</a>(serviceAccountID, { ...params }) -> CredentialListResponse</code>
 - <code title="delete /organizations/{organization_id}/service-accounts/{service_account_id}/credentials/{credential_id}">client.organizations.serviceAccounts.credentials.<a href="./src/resources/organizations/service-accounts/credentials.ts">delete</a>(credentialID, { ...params }) -> void</code>
 
@@ -288,26 +288,21 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/organizations/sso-connection.ts">SSOConnectionRetrieveResponse</a></code>
-- <code><a href="./src/resources/organizations/sso-connection.ts">SSOConnectionUpdateResponse</a></code>
-- <code><a href="./src/resources/organizations/sso-connection.ts">SSOConnectionEnableResponse</a></code>
+- <code><a href="./src/resources/organizations/sso-connection.ts">SSOConnection</a></code>
+- <code><a href="./src/resources/organizations/sso-connection.ts">SSOConnectionProtocol</a></code>
 
 Methods:
 
-- <code title="get /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">retrieve</a>(organizationID, { ...params }) -> SSOConnectionRetrieveResponse</code>
-- <code title="patch /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">update</a>(organizationID, { ...params }) -> SSOConnectionUpdateResponse</code>
+- <code title="get /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">retrieve</a>(organizationID, { ...params }) -> SSOConnection</code>
+- <code title="patch /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">update</a>(organizationID, { ...params }) -> SSOConnection</code>
 - <code title="delete /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">disable</a>(organizationID, { ...params }) -> void</code>
-- <code title="post /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">enable</a>(organizationID, { ...params }) -> SSOConnectionEnableResponse</code>
+- <code title="post /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">enable</a>(organizationID, { ...params }) -> SSOConnection</code>
 
 # ServiceAccountToken
 
-Types:
-
-- <code><a href="./src/resources/service-account-token.ts">ServiceAccountTokenCreateResponse</a></code>
-
 Methods:
 
-- <code title="post /service-account-token">client.serviceAccountToken.<a href="./src/resources/service-account-token.ts">create</a>({ ...params }) -> ServiceAccountTokenCreateResponse</code>
+- <code title="post /service-account-token">client.serviceAccountToken.<a href="./src/resources/service-account-token.ts">create</a>({ ...params }) -> TokenResponse</code>
 
 # Invitations
 

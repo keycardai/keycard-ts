@@ -2,9 +2,8 @@
 
 export {
   Credentials,
+  type ServiceAccountCredential,
   type CredentialCreateResponse,
-  type CredentialRetrieveResponse,
-  type CredentialUpdateResponse,
   type CredentialListResponse,
   type CredentialCreateParams,
   type CredentialRetrieveParams,
@@ -14,9 +13,7 @@ export {
 } from './credentials';
 export {
   ServiceAccounts,
-  type ServiceAccountCreateResponse,
-  type ServiceAccountRetrieveResponse,
-  type ServiceAccountUpdateResponse,
+  type ServiceAccount,
   type ServiceAccountListResponse,
   type ServiceAccountCreateParams,
   type ServiceAccountRetrieveParams,
