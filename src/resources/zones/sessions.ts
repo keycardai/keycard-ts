@@ -27,11 +27,9 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Returns a list of authentication sessions in the specified zone. By default,
-   * returns sessions with an initiator (application or user agent). Use parent_id
-   * parameter to filter by specific parent session, or has_initiator=true to show
-   * only sessions with an initiator. Can be filtered by session type, status, user,
-   * and parent.
+   * Returns entry sessions in the specified zone. Entry sessions are app user
+   * sessions with an initiator that are roots or direct children of a root user
+   * session. Can be filtered by session type, status, and user.
    */
   list(
     zoneID: string,
@@ -326,16 +324,6 @@ export interface SessionUpdateParams {
 
 export interface SessionListParams {
   active?: 'true';
-
-  /**
-   * Filter sessions that have an initiator (application_id OR user_agent_id is set).
-   */
-  has_initiator?: 'true';
-
-  /**
-   * Filter by parent session ID. Omit to show only web sessions (no parent).
-   */
-  parent_id?: string;
 
   session_type?: 'user' | 'application';
 

@@ -202,10 +202,9 @@ export class Zones extends APIResource {
   }
 
   /**
-   * Returns aggregated access records per session-resource pair. At least one of
-   * user_id, session_id, or resource_id must be provided. By default when filtering
-   * by user_id, returns sessions with an initiator (application or user agent). Use
-   * has_initiator=true to explicitly filter to sessions with an initiator.
+   * Returns aggregated access records per entry session-resource pair, including
+   * access from descendant sessions. At least one of user_id, session_id, or
+   * resource_id must be provided.
    */
   listSessionResourceAccess(
     zoneID: string,
@@ -652,11 +651,6 @@ export interface ZoneDeleteMcpServerParams {
 }
 
 export interface ZoneListSessionResourceAccessParams {
-  /**
-   * Filter sessions that have an initiator (application_id OR user_agent_id is set).
-   */
-  has_initiator?: 'true';
-
   /**
    * Filter by resource ID
    */

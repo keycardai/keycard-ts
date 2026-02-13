@@ -163,7 +163,6 @@ describe('resource zones', () => {
       client.zones.listSessionResourceAccess(
         'zoneId',
         {
-          has_initiator: 'true',
           resource_id: 'resource_id',
           session_id: 'session_id',
           user_id: 'user_id',
