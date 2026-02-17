@@ -2,11 +2,11 @@
   "name": "keycard-api",
   "version": "0.0.1",
   "description": "The official TypeScript library for the Keycard API API",
-  "author": "Keycard API <>",
+  "author": "Keycard API <support@keycard.ai>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
-  "repository": "github:keycardlabs/keycard-ts",
+  "repository": "github:keycardai/keycard-ts",
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.27.0",
   "files": [

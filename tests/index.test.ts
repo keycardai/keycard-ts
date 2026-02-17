@@ -383,7 +383,7 @@ describe('instantiate client', () => {
         username: 'My Username',
         password: 'My Password',
       });
-      expect(client.baseURL).toEqual('https://api.example.com');
+      expect(client.baseURL).toEqual('https://api.keycard.ai');
     });
 
     test('blank env variable', () => {
@@ -393,7 +393,7 @@ describe('instantiate client', () => {
         username: 'My Username',
         password: 'My Password',
       });
-      expect(client.baseURL).toEqual('https://api.example.com');
+      expect(client.baseURL).toEqual('https://api.keycard.ai');
     });
 
     test('in request options', () => {

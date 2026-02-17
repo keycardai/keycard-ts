@@ -4,14 +4,14 @@
 
 This library provides convenient access to the Keycard API REST API from server-side TypeScript or JavaScript.
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.keycard.ai](https://docs.keycard.ai). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:keycardlabs/keycard-ts.git
+npm install git+ssh://git@github.com:keycardai/keycard-ts.git
 ```
 
 > [!NOTE]
@@ -331,7 +331,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/keycardlabs/keycard-ts/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/keycardai/keycard-ts/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 
