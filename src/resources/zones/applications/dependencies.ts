@@ -165,6 +165,34 @@ export interface DependencyListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: DependencyListResponse.Pagination;
+}
+
+export namespace DependencyListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface DependencyRetrieveParams {
@@ -180,12 +208,27 @@ export interface DependencyListParams {
   zoneId: string;
 
   /**
+   * Query param: Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Query param: Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Query param
    */
   cursor?: string;
 
   /**
    * Query param
+   */
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Query param: Maximum number of items to return
    */
   limit?: number;
 

@@ -97,8 +97,12 @@ describe('resource resources', () => {
       client.zones.resources.list(
         'zoneId',
         {
+          after: 'x',
+          before: 'x',
           credentialProviderId: 'credentialProviderId',
+          'expand[]': 'total_count',
           identifier: 'identifier',
+          limit: 1,
           slug: 'slug',
         },
         { path: '/_stainless_unknown_path' },

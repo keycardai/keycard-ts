@@ -237,6 +237,34 @@ export interface ApplicationCredentialListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ApplicationCredentialListResponse.Pagination;
+}
+
+export namespace ApplicationCredentialListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export type ApplicationCredentialCreateParams =
@@ -423,10 +451,25 @@ export declare namespace ApplicationCredentialUpdateParams {
 }
 
 export interface ApplicationCredentialListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
   applicationId?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
 
   cursor?: string;
 
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Maximum number of items to return
+   */
   limit?: number;
 
   slug?: string;

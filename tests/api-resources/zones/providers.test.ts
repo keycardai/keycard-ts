@@ -127,7 +127,10 @@ describe('resource providers', () => {
       client.zones.providers.list(
         'zoneId',
         {
+          after: 'x',
+          before: 'x',
           cursor: 'cursor',
+          'expand[]': 'total_count',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',

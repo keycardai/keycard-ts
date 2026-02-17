@@ -71,6 +71,34 @@ export class Resources extends APIResource {
 
 export interface ResourceListResponse {
   items: Array<DependenciesAPI.Resource>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ResourceListResponse.Pagination;
+}
+
+export namespace ResourceListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ResourceCreateParams {
@@ -163,14 +191,31 @@ export interface ResourceUpdateParams {
 
 export interface ResourceListParams {
   /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Filter resources by credential provider ID
    */
   credentialProviderId?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
    * Filter resources by identifier
    */
   identifier?: string;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
 
   slug?: string;
 }

@@ -106,7 +106,10 @@ describe('resource applications', () => {
       client.zones.applications.list(
         'zoneId',
         {
+          after: 'x',
+          before: 'x',
           cursor: 'cursor',
+          'expand[]': 'total_count',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
@@ -151,7 +154,10 @@ describe('resource applications', () => {
   test.skip('listCredentials: required and optional params', async () => {
     const response = await client.zones.applications.listCredentials('id', {
       zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
       cursor: 'cursor',
+      'expand[]': 'total_count',
       limit: 1,
     });
   });
@@ -172,7 +178,10 @@ describe('resource applications', () => {
   test.skip('listResources: required and optional params', async () => {
     const response = await client.zones.applications.listResources('id', {
       zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
       cursor: 'cursor',
+      'expand[]': 'total_count',
       limit: 1,
     });
   });

@@ -93,8 +93,11 @@ describe('resource applicationCredentials', () => {
       client.zones.applicationCredentials.list(
         'zoneId',
         {
+          after: 'x',
           applicationId: 'applicationId',
+          before: 'x',
           cursor: 'cursor',
+          'expand[]': 'total_count',
           limit: 1,
           slug: 'slug',
         },

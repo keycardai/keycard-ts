@@ -64,6 +64,10 @@ describe('resource sessions', () => {
         'zoneId',
         {
           active: 'true',
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          limit: 1,
           session_type: 'user',
           status: 'active',
           user_id: 'user_id',

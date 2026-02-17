@@ -49,7 +49,10 @@ describe('resource dependencies', () => {
   test.skip('list: required and optional params', async () => {
     const response = await client.zones.applications.dependencies.list('id', {
       zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
       cursor: 'cursor',
+      'expand[]': 'total_count',
       limit: 1,
       when_accessing: 'when_accessing',
     });

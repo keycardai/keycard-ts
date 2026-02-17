@@ -67,6 +67,10 @@ describe('resource delegatedGrants', () => {
         'zoneId',
         {
           active: 'true',
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          limit: 1,
           resource_id: 'resource_id',
           status: 'active',
           user_id: 'user_id',

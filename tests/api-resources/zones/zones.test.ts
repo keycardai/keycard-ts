@@ -106,7 +106,10 @@ describe('resource zones', () => {
     await expect(
       client.zones.list(
         {
+          after: 'x',
+          before: 'x',
           cursor: 'cursor',
+          'expand[]': 'total_count',
           limit: 1,
           slug: 'slug',
         },
@@ -163,6 +166,10 @@ describe('resource zones', () => {
       client.zones.listSessionResourceAccess(
         'zoneId',
         {
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          limit: 1,
           resource_id: 'resource_id',
           session_id: 'session_id',
           user_id: 'user_id',

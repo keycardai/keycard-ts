@@ -93,9 +93,15 @@ import {
   Sessions,
 } from './sessions';
 import * as UserAgentsAPI from './user-agents';
-import { UserAgent, UserAgentListResponse, UserAgentRetrieveParams, UserAgents } from './user-agents';
+import {
+  UserAgent,
+  UserAgentListParams,
+  UserAgentListResponse,
+  UserAgentRetrieveParams,
+  UserAgents,
+} from './user-agents';
 import * as UsersAPI from './users';
-import { User, UserListResponse, UserRetrieveParams, Users } from './users';
+import { User, UserListParams, UserListResponse, UserRetrieveParams, Users } from './users';
 import * as ApplicationsAPI from './applications/applications';
 import {
   Application,
@@ -430,10 +436,43 @@ export interface ZoneListResponse {
    * Pagination information
    */
   page_info: PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ZoneListResponse.Pagination;
+}
+
+export namespace ZoneListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ZoneListSessionResourceAccessResponse {
   items: Array<ZoneListSessionResourceAccessResponse.Item>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ZoneListSessionResourceAccessResponse.Pagination;
 }
 
 export namespace ZoneListSessionResourceAccessResponse {
@@ -470,6 +509,27 @@ export namespace ZoneListSessionResourceAccessResponse {
      * Total number of access events for this session-resource pair
      */
     total_access_count: number;
+  }
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
   }
 }
 
@@ -636,8 +696,23 @@ export namespace ZoneUpdateParams {
 }
 
 export interface ZoneListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
   cursor?: string;
 
+  'expand[]'?: 'total_count' | 'permissions' | Array<'total_count' | 'permissions'>;
+
+  /**
+   * Maximum number of items to return
+   */
   limit?: number;
 
   slug?: string;
@@ -651,6 +726,23 @@ export interface ZoneDeleteMcpServerParams {
 }
 
 export interface ZoneListSessionResourceAccessParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
+
   /**
    * Filter by resource ID
    */
@@ -782,6 +874,7 @@ export declare namespace Zones {
     type UserAgent as UserAgent,
     type UserAgentListResponse as UserAgentListResponse,
     type UserAgentRetrieveParams as UserAgentRetrieveParams,
+    type UserAgentListParams as UserAgentListParams,
   };
 
   export {
@@ -789,6 +882,7 @@ export declare namespace Zones {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
+    type UserListParams as UserListParams,
   };
 
   export {

@@ -208,6 +208,34 @@ export interface ProviderListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ProviderListResponse.Pagination;
+}
+
+export namespace ProviderListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ProviderCreateParams {
@@ -441,10 +469,25 @@ export namespace ProviderUpdateParams {
 }
 
 export interface ProviderListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
   cursor?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
 
   identifier?: string;
 
+  /**
+   * Maximum number of items to return
+   */
   limit?: number;
 
   slug?: string;
