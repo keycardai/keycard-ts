@@ -150,6 +150,11 @@ export namespace Provider {
      * OAuth 2.0 protocol configuration
      */
     export interface Oauth2 {
+      /**
+       * OIDC issuer URL used for discovery and token validation.
+       */
+      issuer: string;
+
       authorization_endpoint?: string | null;
 
       /**
@@ -311,6 +316,12 @@ export namespace ProviderCreateParams {
 
       code_challenge_methods_supported?: Array<string>;
 
+      /**
+       * OIDC issuer URL for discovery and token validation. When omitted, the provider
+       * identifier is used as the issuer. New clients should always set this explicitly.
+       */
+      issuer?: string;
+
       jwks_uri?: string;
 
       registration_endpoint?: string;
@@ -431,6 +442,11 @@ export namespace ProviderUpdateParams {
       authorization_resource_parameter?: string | null;
 
       code_challenge_methods_supported?: Array<string> | null;
+
+      /**
+       * OIDC issuer URL for discovery and token validation. Cannot be set to null.
+       */
+      issuer?: string;
 
       jwks_uri?: string | null;
 
