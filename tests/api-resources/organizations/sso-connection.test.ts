@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource ssoConnection', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.organizations.ssoConnection.retrieve('x');
     const rawResponse = await responsePromise.asResponse();
@@ -22,7 +22,7 @@ describe('resource ssoConnection', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -34,7 +34,7 @@ describe('resource ssoConnection', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.organizations.ssoConnection.update('x', {});
     const rawResponse = await responsePromise.asResponse();
@@ -46,7 +46,7 @@ describe('resource ssoConnection', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('disable', async () => {
     const responsePromise = client.organizations.ssoConnection.disable('x');
     const rawResponse = await responsePromise.asResponse();
@@ -58,7 +58,7 @@ describe('resource ssoConnection', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('disable: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -70,7 +70,7 @@ describe('resource ssoConnection', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('enable: only required params', async () => {
     const responsePromise = client.organizations.ssoConnection.enable('x', {
       client_id: 'client_id',
@@ -85,7 +85,7 @@ describe('resource ssoConnection', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('enable: required and optional params', async () => {
     const response = await client.organizations.ssoConnection.enable('x', {
       client_id: 'client_id',

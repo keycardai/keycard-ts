@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource credentials', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.organizations.serviceAccounts.credentials.create(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -25,7 +25,7 @@ describe('resource credentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.credentials.create(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -38,7 +38,7 @@ describe('resource credentials', () => {
     );
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.organizations.serviceAccounts.credentials.retrieve(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -53,7 +53,7 @@ describe('resource credentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.credentials.retrieve(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -66,7 +66,7 @@ describe('resource credentials', () => {
     );
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.organizations.serviceAccounts.credentials.update(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -81,7 +81,7 @@ describe('resource credentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.credentials.update(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -95,7 +95,7 @@ describe('resource credentials', () => {
     );
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: only required params', async () => {
     const responsePromise = client.organizations.serviceAccounts.credentials.list(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -110,7 +110,7 @@ describe('resource credentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.credentials.list(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -125,7 +125,7 @@ describe('resource credentials', () => {
     );
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.organizations.serviceAccounts.credentials.delete(
       'ab3def8hij2klm9opq5rst7uvw',
@@ -140,7 +140,7 @@ describe('resource credentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.credentials.delete(
       'ab3def8hij2klm9opq5rst7uvw',

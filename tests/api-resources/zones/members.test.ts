@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource members', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.zones.members.retrieve('organizationUserId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -22,12 +22,12 @@ describe('resource members', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.members.retrieve('organizationUserId', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.zones.members.update('organizationUserId', {
       zoneId: 'zoneId',
@@ -42,7 +42,7 @@ describe('resource members', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.members.update('organizationUserId', {
       zoneId: 'zoneId',
@@ -50,7 +50,7 @@ describe('resource members', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.zones.members.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -62,7 +62,7 @@ describe('resource members', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -80,7 +80,7 @@ describe('resource members', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.zones.members.delete('organizationUserId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -92,12 +92,12 @@ describe('resource members', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.members.delete('organizationUserId', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('add: only required params', async () => {
     const responsePromise = client.zones.members.add('zoneId', {
       organization_user_id: 'organization_user_id',
@@ -112,7 +112,7 @@ describe('resource members', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('add: required and optional params', async () => {
     const response = await client.zones.members.add('zoneId', {
       organization_user_id: 'organization_user_id',

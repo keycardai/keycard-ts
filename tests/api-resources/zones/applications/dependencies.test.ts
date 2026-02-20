@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource dependencies', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.zones.applications.dependencies.retrieve('dependencyId', {
       zoneId: 'zoneId',
@@ -25,7 +25,7 @@ describe('resource dependencies', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.applications.dependencies.retrieve('dependencyId', {
       zoneId: 'zoneId',
@@ -33,7 +33,7 @@ describe('resource dependencies', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: only required params', async () => {
     const responsePromise = client.zones.applications.dependencies.list('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -45,7 +45,7 @@ describe('resource dependencies', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: required and optional params', async () => {
     const response = await client.zones.applications.dependencies.list('id', {
       zoneId: 'zoneId',
@@ -58,7 +58,7 @@ describe('resource dependencies', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('add: only required params', async () => {
     const responsePromise = client.zones.applications.dependencies.add('dependencyId', {
       zoneId: 'zoneId',
@@ -73,7 +73,7 @@ describe('resource dependencies', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('add: required and optional params', async () => {
     const response = await client.zones.applications.dependencies.add('dependencyId', {
       zoneId: 'zoneId',
@@ -82,7 +82,7 @@ describe('resource dependencies', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('remove: only required params', async () => {
     const responsePromise = client.zones.applications.dependencies.remove('dependencyId', {
       zoneId: 'zoneId',
@@ -97,7 +97,7 @@ describe('resource dependencies', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('remove: required and optional params', async () => {
     const response = await client.zones.applications.dependencies.remove('dependencyId', {
       zoneId: 'zoneId',

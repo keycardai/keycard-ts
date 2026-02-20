@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource delegatedGrants', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.zones.delegatedGrants.retrieve('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -22,12 +22,12 @@ describe('resource delegatedGrants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.delegatedGrants.retrieve('id', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.zones.delegatedGrants.update('id', {
       zoneId: 'zoneId',
@@ -42,12 +42,12 @@ describe('resource delegatedGrants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.delegatedGrants.update('id', { zoneId: 'zoneId', status: 'revoked' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.zones.delegatedGrants.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -59,7 +59,7 @@ describe('resource delegatedGrants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -80,7 +80,7 @@ describe('resource delegatedGrants', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.zones.delegatedGrants.delete('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -92,7 +92,7 @@ describe('resource delegatedGrants', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.delegatedGrants.delete('id', { zoneId: 'zoneId' });
   });

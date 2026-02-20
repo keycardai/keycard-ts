@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource applicationCredentials', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.zones.applicationCredentials.create('zoneId', {
       application_id: 'application_id',
@@ -26,7 +26,7 @@ describe('resource applicationCredentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.applicationCredentials.create('zoneId', {
       application_id: 'application_id',
@@ -36,7 +36,7 @@ describe('resource applicationCredentials', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.zones.applicationCredentials.retrieve('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -48,12 +48,12 @@ describe('resource applicationCredentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.applicationCredentials.retrieve('id', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.zones.applicationCredentials.update('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -65,7 +65,7 @@ describe('resource applicationCredentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.applicationCredentials.update('id', {
       zoneId: 'zoneId',
@@ -74,7 +74,7 @@ describe('resource applicationCredentials', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.zones.applicationCredentials.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -86,7 +86,7 @@ describe('resource applicationCredentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -106,7 +106,7 @@ describe('resource applicationCredentials', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.zones.applicationCredentials.delete('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -118,7 +118,7 @@ describe('resource applicationCredentials', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.applicationCredentials.delete('id', { zoneId: 'zoneId' });
   });
