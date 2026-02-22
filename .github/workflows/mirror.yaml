@@ -27,6 +27,11 @@ jobs:
           repositories: |
             keycard-ts
 
+      - name: Verify token access
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+        run: gh api repos/keycardai/keycard-ts --jq '.full_name + " (push=" + (.permissions.push | tostring) + ")"'
+
       - name: Push to mirror
         env:
           MIRROR_TOKEN: ${{ steps.token.outputs.token }}
