@@ -60,7 +60,7 @@ $ yarn link keycard-api
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global keycard-api
+$ pnpm link --global keycard-api
 ```
 
 ## Running tests
