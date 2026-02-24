@@ -169,9 +169,27 @@ export namespace Provider {
 
       registration_endpoint?: string | null;
 
+      /**
+       * The query parameter name for scopes in authorization requests. Defaults to
+       * "scope". Slack v2 uses "user_scope".
+       */
+      scope_parameter?: string | null;
+
+      /**
+       * The separator character for scope values. Defaults to " " (space). Slack v2 uses
+       * ",".
+       */
+      scope_separator?: string | null;
+
       scopes_supported?: Array<string> | null;
 
       token_endpoint?: string | null;
+
+      /**
+       * Dot-separated path to the access token in the token response body. Defaults to
+       * "access_token". Slack v2 uses "authed_user.access_token".
+       */
+      token_response_access_token_pointer?: string | null;
     }
 
     /**
@@ -269,9 +287,27 @@ export namespace ProviderCreateParams {
 
       registration_endpoint?: string;
 
+      /**
+       * The query parameter name for scopes in authorization requests. Defaults to
+       * "scope". Slack v2 uses "user_scope".
+       */
+      scope_parameter?: string;
+
+      /**
+       * The separator character for scope values. Defaults to " " (space). Slack v2 uses
+       * ",".
+       */
+      scope_separator?: string;
+
       scopes_supported?: Array<string>;
 
       token_endpoint?: string;
+
+      /**
+       * Dot-separated path to the access token in the token response body. Defaults to
+       * "access_token". Slack v2 uses "authed_user.access_token".
+       */
+      token_response_access_token_pointer?: string;
     }
 
     /**
@@ -372,9 +408,27 @@ export namespace ProviderUpdateParams {
 
       registration_endpoint?: string | null;
 
+      /**
+       * The query parameter name for scopes in authorization requests. Defaults to
+       * "scope". Set to null to unset.
+       */
+      scope_parameter?: string | null;
+
+      /**
+       * The separator character for scope values. Defaults to " " (space). Set to null
+       * to unset.
+       */
+      scope_separator?: string | null;
+
       scopes_supported?: Array<string> | null;
 
       token_endpoint?: string | null;
+
+      /**
+       * Dot-separated path to the access token in the token response body. Defaults to
+       * "access_token". Set to null to unset.
+       */
+      token_response_access_token_pointer?: string | null;
     }
 
     /**

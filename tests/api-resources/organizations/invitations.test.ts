@@ -12,7 +12,10 @@ const client = new KeycardAPI({
 describe('resource invitations', () => {
   // Prism tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.organizations.invitations.create('x', { email: 'dev@stainless.com' });
+    const responsePromise = client.organizations.invitations.create('x', {
+      email: 'dev@stainless.com',
+      role: 'org_admin',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

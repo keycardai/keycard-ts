@@ -152,10 +152,9 @@ export interface InvitationCreateParams {
   email: string;
 
   /**
-   * Body param: Role to assign when invitation is accepted (defaults to org_admin if
-   * not provided)
+   * Body param: Role to assign when invitation is accepted
    */
-  role?: UsersAPI.OrganizationRole;
+  role: UsersAPI.OrganizationRole;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
