@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { KeycardAPI } from 'keycard-api';
+import { KeycardAPI } from '@keycardai/api';
 
 const { stringifyQuery } = KeycardAPI.prototype as any;
 
