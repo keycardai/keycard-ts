@@ -313,12 +313,6 @@ export interface Zone {
   description?: string | null;
 
   /**
-   * @deprecated Whether directory open signups are enabled for the zone, only
-   * applies when user_identity_provider_id is not set
-   */
-  directory_open_signups_enabled?: boolean;
-
-  /**
    * AWS KMS configuration for zone encryption. When not specified, the default
    * Keycard Cloud encryption key will be used.
    */
@@ -556,12 +550,6 @@ export interface ZoneCreateParams {
   description?: string | null;
 
   /**
-   * @deprecated Whether directory open signups are enabled for the zone, only
-   * applies when user_identity_provider_id is not set. Defaults to false.
-   */
-  directory_open_signups_enabled?: boolean;
-
-  /**
    * AWS KMS configuration for zone encryption. When not specified, the default
    * Keycard Cloud encryption key will be used.
    */
@@ -629,12 +617,6 @@ export interface ZoneUpdateParams {
    * Human-readable description
    */
   description?: string | null;
-
-  /**
-   * @deprecated Whether directory open signups are enabled for the zone, only
-   * applies when user_identity_provider_id is not set
-   */
-  directory_open_signups_enabled?: boolean;
 
   /**
    * AWS KMS configuration for zone encryption update (set to null to remove

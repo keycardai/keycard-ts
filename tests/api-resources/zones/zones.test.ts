@@ -28,7 +28,6 @@ describe('resource zones', () => {
       name: 'x',
       default_mcp_gateway_application: true,
       description: 'description',
-      directory_open_signups_enabled: true,
       encryption_key: { arn: 'x', type: 'aws' },
       login_flow: 'default',
       protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
@@ -77,7 +76,6 @@ describe('resource zones', () => {
         {
           default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
           description: 'description',
-          directory_open_signups_enabled: true,
           encryption_key: { arn: 'x', type: 'aws' },
           login_flow: 'default',
           name: 'x',
