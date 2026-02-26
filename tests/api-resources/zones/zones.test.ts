@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import KeycardAPI from '@keycardai/api';
+import KeycardAPI from 'keycard-api';
 
 const client = new KeycardAPI({
   apiKey: 'My API Key',
@@ -32,6 +32,7 @@ describe('resource zones', () => {
       encryption_key: { arn: 'x', type: 'aws' },
       login_flow: 'default',
       protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+      requires_invitation: true,
     });
   });
 
@@ -81,6 +82,7 @@ describe('resource zones', () => {
           login_flow: 'default',
           name: 'x',
           protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+          requires_invitation: true,
           user_identity_provider_id: 'user_identity_provider_id',
         },
         { path: '/_stainless_unknown_path' },

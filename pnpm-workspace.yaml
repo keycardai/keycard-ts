@@ -2,4 +2,4 @@ onlyBuiltDependencies:
   - '@swc/core'
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - '@keycardai/api'
+  - keycard-api

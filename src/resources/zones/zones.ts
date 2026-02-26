@@ -313,8 +313,8 @@ export interface Zone {
   description?: string | null;
 
   /**
-   * Whether directory open signups are enabled for the zone, only applies when
-   * user_identity_provider_id is not set
+   * @deprecated Whether directory open signups are enabled for the zone, only
+   * applies when user_identity_provider_id is not set
    */
   directory_open_signups_enabled?: boolean;
 
@@ -336,6 +336,12 @@ export interface Zone {
    * values are objects mapping action names to boolean values.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
+
+  /**
+   * Whether the zone requires an invitation for email/password registration, only
+   * applies when user_identity_provider_id is not set
+   */
+  requires_invitation?: boolean;
 
   /**
    * Provider ID configured for user login
@@ -550,8 +556,8 @@ export interface ZoneCreateParams {
   description?: string | null;
 
   /**
-   * Whether directory open signups are enabled for the zone, only applies when
-   * user_identity_provider_id is not set
+   * @deprecated Whether directory open signups are enabled for the zone, only
+   * applies when user_identity_provider_id is not set. Defaults to false.
    */
   directory_open_signups_enabled?: boolean;
 
@@ -571,6 +577,12 @@ export interface ZoneCreateParams {
    * Protocol configuration for zone creation
    */
   protocols?: ZoneCreateParams.Protocols;
+
+  /**
+   * Whether the zone requires an invitation for email/password registration, only
+   * applies when user_identity_provider_id is not set. Defaults to true.
+   */
+  requires_invitation?: boolean;
 }
 
 export namespace ZoneCreateParams {
@@ -619,8 +631,8 @@ export interface ZoneUpdateParams {
   description?: string | null;
 
   /**
-   * Whether directory open signups are enabled for the zone, only applies when
-   * user_identity_provider_id is not set
+   * @deprecated Whether directory open signups are enabled for the zone, only
+   * applies when user_identity_provider_id is not set
    */
   directory_open_signups_enabled?: boolean;
 
@@ -646,6 +658,12 @@ export interface ZoneUpdateParams {
    * Protocol configuration update for a zone (partial update)
    */
   protocols?: ZoneUpdateParams.Protocols | null;
+
+  /**
+   * Whether the zone requires an invitation for email/password registration, only
+   * applies when user_identity_provider_id is not set
+   */
+  requires_invitation?: boolean;
 
   /**
    * Provider ID to configure for user login (set to null to unset)

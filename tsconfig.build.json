@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "@keycardai/api/*": ["./dist/src/*"],
-      "@keycardai/api": ["./dist/src/index.ts"]
+      "keycard-api/*": ["./dist/src/*"],
+      "keycard-api": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

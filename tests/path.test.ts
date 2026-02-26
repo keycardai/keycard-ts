@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from '@keycardai/api/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from 'keycard-api/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 
