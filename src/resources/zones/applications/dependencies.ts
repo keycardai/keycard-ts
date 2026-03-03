@@ -79,6 +79,13 @@ export interface Resource {
   id: string;
 
   /**
+   * The expected type of client for this credential. Native clients must use
+   * localhost URLs for redirect_uris or URIs with custom schemes. Web clients must
+   * use https URLs and must not use localhost as the hostname.
+   */
+  application_type: 'native' | 'web';
+
+  /**
    * Entity creation timestamp
    */
   created_at: string;

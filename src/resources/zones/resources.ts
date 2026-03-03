@@ -118,6 +118,13 @@ export interface ResourceCreateParams {
   application_id?: string;
 
   /**
+   * The expected type of client for this credential. Native clients must use
+   * localhost URLs for redirect_uris or URIs with custom schemes. Web clients must
+   * use https URLs and must not use localhost as the hostname.
+   */
+  application_type?: 'native' | 'web';
+
+  /**
    * ID of the credential provider to associate with the resource
    */
   credential_provider_id?: string;
@@ -156,6 +163,13 @@ export interface ResourceUpdateParams {
    * unset)
    */
   application_id?: string | null;
+
+  /**
+   * Body param: The expected type of client for this credential. Native clients must
+   * use localhost URLs for redirect_uris or URIs with custom schemes. Web clients
+   * must use https URLs and must not use localhost as the hostname.
+   */
+  application_type?: 'native' | 'web';
 
   /**
    * Body param: ID of the credential provider to associate with the resource (set to

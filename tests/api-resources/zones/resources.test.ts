@@ -28,6 +28,7 @@ describe('resource resources', () => {
       identifier: 'x',
       name: 'x',
       application_id: 'application_id',
+      application_type: 'native',
       credential_provider_id: 'credential_provider_id',
       description: 'description',
       metadata: { docs_url: 'https://example.com' },
@@ -69,6 +70,7 @@ describe('resource resources', () => {
     const response = await client.zones.resources.update('id', {
       zoneId: 'zoneId',
       application_id: 'application_id',
+      application_type: 'native',
       credential_provider_id: 'credential_provider_id',
       description: 'description',
       identifier: 'x',

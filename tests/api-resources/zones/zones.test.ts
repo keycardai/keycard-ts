@@ -171,6 +171,7 @@ describe('resource zones', () => {
           'expand[]': 'total_count',
           limit: 1,
           resource_id: 'resource_id',
+          rollup_children: true,
           session_id: 'session_id',
           user_id: 'user_id',
         },

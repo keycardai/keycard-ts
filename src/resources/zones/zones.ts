@@ -208,9 +208,10 @@ export class Zones extends APIResource {
   }
 
   /**
-   * Returns aggregated access records per entry session-resource pair, including
-   * access from descendant sessions. At least one of user_id, session_id, or
-   * resource_id must be provided.
+   * Returns aggregated access records per session-resource pair. By default
+   * (rollup_children=true), includes access from descendant sessions. Set
+   * rollup_children=false to return only direct session access. At least one of
+   * user_id, session_id, or resource_id must be provided.
    */
   listSessionResourceAccess(
     zoneID: string,
@@ -747,6 +748,13 @@ export interface ZoneListSessionResourceAccessParams {
    * Filter by resource ID
    */
   resource_id?: string;
+
+  /**
+   * Include resource access from descendant sessions. When true (default),
+   * aggregates access from the session and all its descendants. When false, returns
+   * only direct access for the session.
+   */
+  rollup_children?: boolean;
 
   /**
    * Filter by session ID
