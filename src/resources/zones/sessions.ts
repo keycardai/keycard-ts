@@ -27,9 +27,10 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Returns entry sessions in the specified zone. Entry sessions are app user
-   * sessions with an initiator that are roots or direct children of a root user
-   * session. Can be filtered by session type, status, and user.
+   * Returns sessions in the specified zone. By default, returns entry sessions (app
+   * user sessions with an initiator that are roots or direct children of a root user
+   * session). Use include_nested=true to include nested sessions. Can be filtered by
+   * session type, status, and user.
    */
   list(
     zoneID: string,
@@ -364,6 +365,13 @@ export interface SessionListParams {
   before?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Include nested sessions. When false (default), only returns entry sessions
+   * (direct children of root user sessions). When true, returns all sessions with an
+   * initiator, including nested sessions.
+   */
+  include_nested?: 'true';
 
   /**
    * Maximum number of items to return

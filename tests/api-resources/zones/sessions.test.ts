@@ -67,6 +67,7 @@ describe('resource sessions', () => {
           after: 'x',
           before: 'x',
           'expand[]': 'total_count',
+          include_nested: 'true',
           limit: 1,
           session_type: 'user',
           status: 'active',
