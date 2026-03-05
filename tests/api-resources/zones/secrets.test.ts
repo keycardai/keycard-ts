@@ -34,7 +34,7 @@ describe('resource secrets', () => {
       name: 'name',
       description: 'description',
       metadata: {},
-      body_zone_id: 'x',
+      zone_id: 'x',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
