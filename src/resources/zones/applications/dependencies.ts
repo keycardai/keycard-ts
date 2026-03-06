@@ -106,6 +106,11 @@ export interface Resource {
   organization_id: string;
 
   /**
+   * Who owns this resource. Platform-owned resources cannot be modified via API.
+   */
+  owner_type: 'platform' | 'customer';
+
+  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;

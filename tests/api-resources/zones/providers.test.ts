@@ -34,6 +34,7 @@ describe('resource providers', () => {
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
+          authorization_parameters: { foo: 'string' },
           authorization_resource_enabled: true,
           authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],
@@ -93,6 +94,7 @@ describe('resource providers', () => {
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
+          authorization_parameters: { foo: 'string' },
           authorization_resource_enabled: true,
           authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],

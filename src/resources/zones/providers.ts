@@ -87,6 +87,11 @@ export interface Provider {
   organization_id: string;
 
   /**
+   * Who owns this provider. Platform-owned providers cannot be modified via API.
+   */
+  owner_type: 'platform' | 'customer';
+
+  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
@@ -156,6 +161,12 @@ export namespace Provider {
       issuer: string;
 
       authorization_endpoint?: string | null;
+
+      /**
+       * Custom query parameters appended to authorization redirect URLs. Use for
+       * non-standard providers (e.g. Google prompt=consent, access_type=offline).
+       */
+      authorization_parameters?: { [key: string]: string } | null;
 
       /**
        * Whether to include the resource parameter in authorization requests.
@@ -304,6 +315,12 @@ export namespace ProviderCreateParams {
       authorization_endpoint?: string;
 
       /**
+       * Custom query parameters appended to authorization redirect URLs. Use for
+       * non-standard providers (e.g. Google prompt=consent, access_type=offline).
+       */
+      authorization_parameters?: { [key: string]: string };
+
+      /**
        * Whether to include the resource parameter in authorization requests.
        */
       authorization_resource_enabled?: boolean;
@@ -428,6 +445,12 @@ export namespace ProviderUpdateParams {
      */
     export interface Oauth2 {
       authorization_endpoint?: string | null;
+
+      /**
+       * Custom query parameters appended to authorization redirect URLs. Set to null to
+       * unset.
+       */
+      authorization_parameters?: { [key: string]: string } | null;
 
       /**
        * Whether to include the resource parameter in authorization requests. Set to null
