@@ -19,8 +19,12 @@ export class UserAgents extends APIResource {
    * client software (browsers, desktop apps, CLI tools) registered via OAuth 2.0
    * Dynamic Client Registration.
    */
-  list(zoneID: string, options?: RequestOptions): APIPromise<UserAgentListResponse> {
-    return this._client.get(path`/zones/${zoneID}/user-agents`, { ...options, __security: {} });
+  list(
+    zoneID: string,
+    query: UserAgentListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UserAgentListResponse> {
+    return this._client.get(path`/zones/${zoneID}/user-agents`, { query, ...options, __security: {} });
   }
 }
 
@@ -72,6 +76,34 @@ export interface UserAgent {
 
 export interface UserAgentListResponse {
   items: Array<UserAgent>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: UserAgentListResponse.Pagination;
+}
+
+export namespace UserAgentListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface UserAgentRetrieveParams {
@@ -81,10 +113,30 @@ export interface UserAgentRetrieveParams {
   zoneId: string;
 }
 
+export interface UserAgentListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
+}
+
 export declare namespace UserAgents {
   export {
     type UserAgent as UserAgent,
     type UserAgentListResponse as UserAgentListResponse,
     type UserAgentRetrieveParams as UserAgentRetrieveParams,
+    type UserAgentListParams as UserAgentListParams,
   };
 }

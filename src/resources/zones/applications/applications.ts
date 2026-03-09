@@ -142,6 +142,12 @@ export interface Application {
   organization_id: string;
 
   /**
+   * Who owns this application. Platform-owned applications cannot be modified via
+   * API.
+   */
+  owner_type: 'platform' | 'customer';
+
+  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
@@ -239,6 +245,34 @@ export interface ApplicationListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ApplicationListResponse.Pagination;
+}
+
+export namespace ApplicationListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ApplicationListCredentialsResponse {
@@ -248,6 +282,34 @@ export interface ApplicationListCredentialsResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ApplicationListCredentialsResponse.Pagination;
+}
+
+export namespace ApplicationListCredentialsResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ApplicationListResourcesResponse {
@@ -257,6 +319,34 @@ export interface ApplicationListResourcesResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ApplicationListResourcesResponse.Pagination;
+}
+
+export namespace ApplicationListResourcesResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ApplicationCreateParams {
@@ -406,10 +496,25 @@ export namespace ApplicationUpdateParams {
 }
 
 export interface ApplicationListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
   cursor?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
 
   identifier?: string;
 
+  /**
+   * Maximum number of items to return
+   */
   limit?: number;
 
   slug?: string;
@@ -438,12 +543,27 @@ export interface ApplicationListCredentialsParams {
   zoneId: string;
 
   /**
+   * Query param: Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Query param: Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Query param
    */
   cursor?: string;
 
   /**
    * Query param
+   */
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Query param: Maximum number of items to return
    */
   limit?: number;
 }
@@ -455,12 +575,27 @@ export interface ApplicationListResourcesParams {
   zoneId: string;
 
   /**
+   * Query param: Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Query param: Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Query param
    */
   cursor?: string;
 
   /**
    * Query param
+   */
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Query param: Maximum number of items to return
    */
   limit?: number;
 }

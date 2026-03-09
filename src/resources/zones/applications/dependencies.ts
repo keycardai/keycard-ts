@@ -79,6 +79,13 @@ export interface Resource {
   id: string;
 
   /**
+   * The expected type of client for this credential. Native clients must use
+   * localhost URLs for redirect_uris or URIs with custom schemes. Web clients must
+   * use https URLs and must not use localhost as the hostname.
+   */
+  application_type: 'native' | 'web';
+
+  /**
    * Entity creation timestamp
    */
   created_at: string;
@@ -97,6 +104,11 @@ export interface Resource {
    * Organization that owns this resource
    */
   organization_id: string;
+
+  /**
+   * Who owns this resource. Platform-owned resources cannot be modified via API.
+   */
+  owner_type: 'platform' | 'customer';
 
   /**
    * URL-safe identifier, unique within the zone
@@ -165,6 +177,34 @@ export interface DependencyListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: DependencyListResponse.Pagination;
+}
+
+export namespace DependencyListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface DependencyRetrieveParams {
@@ -180,12 +220,27 @@ export interface DependencyListParams {
   zoneId: string;
 
   /**
+   * Query param: Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Query param: Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Query param
    */
   cursor?: string;
 
   /**
    * Query param
+   */
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Query param: Maximum number of items to return
    */
   limit?: number;
 

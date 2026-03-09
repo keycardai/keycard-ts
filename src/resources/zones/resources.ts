@@ -71,6 +71,34 @@ export class Resources extends APIResource {
 
 export interface ResourceListResponse {
   items: Array<DependenciesAPI.Resource>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ResourceListResponse.Pagination;
+}
+
+export namespace ResourceListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ResourceCreateParams {
@@ -88,6 +116,13 @@ export interface ResourceCreateParams {
    * ID of the application that provides this resource
    */
   application_id?: string;
+
+  /**
+   * The expected type of client for this credential. Native clients must use
+   * localhost URLs for redirect_uris or URIs with custom schemes. Web clients must
+   * use https URLs and must not use localhost as the hostname.
+   */
+  application_type?: 'native' | 'web';
 
   /**
    * ID of the credential provider to associate with the resource
@@ -130,6 +165,13 @@ export interface ResourceUpdateParams {
   application_id?: string | null;
 
   /**
+   * Body param: The expected type of client for this credential. Native clients must
+   * use localhost URLs for redirect_uris or URIs with custom schemes. Web clients
+   * must use https URLs and must not use localhost as the hostname.
+   */
+  application_type?: 'native' | 'web';
+
+  /**
    * Body param: ID of the credential provider to associate with the resource (set to
    * null to unset)
    */
@@ -163,14 +205,31 @@ export interface ResourceUpdateParams {
 
 export interface ResourceListParams {
   /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  /**
    * Filter resources by credential provider ID
    */
   credentialProviderId?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
    * Filter resources by identifier
    */
   identifier?: string;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
 
   slug?: string;
 }

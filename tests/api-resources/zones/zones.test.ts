@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource zones', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.zones.create({ name: 'x' });
     const rawResponse = await responsePromise.asResponse();
@@ -22,20 +22,20 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.create({
       name: 'x',
       default_mcp_gateway_application: true,
       description: 'description',
-      directory_open_signups_enabled: true,
       encryption_key: { arn: 'x', type: 'aws' },
       login_flow: 'default',
       protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+      requires_invitation: true,
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.zones.retrieve('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -47,7 +47,7 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -55,7 +55,7 @@ describe('resource zones', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.zones.update('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -67,7 +67,7 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -76,11 +76,11 @@ describe('resource zones', () => {
         {
           default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
           description: 'description',
-          directory_open_signups_enabled: true,
           encryption_key: { arn: 'x', type: 'aws' },
           login_flow: 'default',
           name: 'x',
           protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+          requires_invitation: true,
           user_identity_provider_id: 'user_identity_provider_id',
         },
         { path: '/_stainless_unknown_path' },
@@ -88,7 +88,7 @@ describe('resource zones', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.zones.list();
     const rawResponse = await responsePromise.asResponse();
@@ -100,13 +100,16 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.zones.list(
         {
+          after: 'x',
+          before: 'x',
           cursor: 'cursor',
+          'expand[]': 'total_count',
           limit: 1,
           slug: 'slug',
         },
@@ -115,7 +118,7 @@ describe('resource zones', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.zones.delete('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -127,7 +130,7 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('deleteMcpServer: only required params', async () => {
     const responsePromise = client.zones.deleteMcpServer('downstreamId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -139,12 +142,12 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('deleteMcpServer: required and optional params', async () => {
     const response = await client.zones.deleteMcpServer('downstreamId', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listSessionResourceAccess', async () => {
     const responsePromise = client.zones.listSessionResourceAccess('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -156,14 +159,19 @@ describe('resource zones', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listSessionResourceAccess: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.zones.listSessionResourceAccess(
         'zoneId',
         {
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          limit: 1,
           resource_id: 'resource_id',
+          rollup_children: true,
           session_id: 'session_id',
           user_id: 'user_id',
         },

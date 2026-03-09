@@ -153,7 +153,7 @@ Types:
 Methods:
 
 - <code title="get /zones/{zoneId}/user-agents/{id}">client.zones.userAgents.<a href="./src/resources/zones/user-agents.ts">retrieve</a>(id, { ...params }) -> UserAgent</code>
-- <code title="get /zones/{zoneId}/user-agents">client.zones.userAgents.<a href="./src/resources/zones/user-agents.ts">list</a>(zoneID) -> UserAgentListResponse</code>
+- <code title="get /zones/{zoneId}/user-agents">client.zones.userAgents.<a href="./src/resources/zones/user-agents.ts">list</a>(zoneID, { ...params }) -> UserAgentListResponse</code>
 
 ## Users
 
@@ -165,7 +165,7 @@ Types:
 Methods:
 
 - <code title="get /zones/{zoneId}/users/{id}">client.zones.users.<a href="./src/resources/zones/users.ts">retrieve</a>(id, { ...params }) -> User</code>
-- <code title="get /zones/{zoneId}/users">client.zones.users.<a href="./src/resources/zones/users.ts">list</a>(zoneID) -> UserListResponse</code>
+- <code title="get /zones/{zoneId}/users">client.zones.users.<a href="./src/resources/zones/users.ts">list</a>(zoneID, { ...params }) -> UserListResponse</code>
 
 ## Members
 

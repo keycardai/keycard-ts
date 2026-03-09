@@ -87,6 +87,11 @@ export interface Provider {
   organization_id: string;
 
   /**
+   * Who owns this provider. Platform-owned providers cannot be modified via API.
+   */
+  owner_type: 'platform' | 'customer';
+
+  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
@@ -150,7 +155,18 @@ export namespace Provider {
      * OAuth 2.0 protocol configuration
      */
     export interface Oauth2 {
+      /**
+       * OIDC issuer URL used for discovery and token validation.
+       */
+      issuer: string;
+
       authorization_endpoint?: string | null;
+
+      /**
+       * Custom query parameters appended to authorization redirect URLs. Use for
+       * non-standard providers (e.g. Google prompt=consent, access_type=offline).
+       */
+      authorization_parameters?: { [key: string]: string } | null;
 
       /**
        * Whether to include the resource parameter in authorization requests.
@@ -208,6 +224,34 @@ export interface ProviderListResponse {
    * Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: ProviderListResponse.Pagination;
+}
+
+export namespace ProviderListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ProviderCreateParams {
@@ -271,6 +315,12 @@ export namespace ProviderCreateParams {
       authorization_endpoint?: string;
 
       /**
+       * Custom query parameters appended to authorization redirect URLs. Use for
+       * non-standard providers (e.g. Google prompt=consent, access_type=offline).
+       */
+      authorization_parameters?: { [key: string]: string };
+
+      /**
        * Whether to include the resource parameter in authorization requests.
        */
       authorization_resource_enabled?: boolean;
@@ -282,6 +332,12 @@ export namespace ProviderCreateParams {
       authorization_resource_parameter?: string;
 
       code_challenge_methods_supported?: Array<string>;
+
+      /**
+       * OIDC issuer URL for discovery and token validation. When omitted, the provider
+       * identifier is used as the issuer. New clients should always set this explicitly.
+       */
+      issuer?: string;
 
       jwks_uri?: string;
 
@@ -391,6 +447,12 @@ export namespace ProviderUpdateParams {
       authorization_endpoint?: string | null;
 
       /**
+       * Custom query parameters appended to authorization redirect URLs. Set to null to
+       * unset.
+       */
+      authorization_parameters?: { [key: string]: string } | null;
+
+      /**
        * Whether to include the resource parameter in authorization requests. Set to null
        * to unset.
        */
@@ -403,6 +465,11 @@ export namespace ProviderUpdateParams {
       authorization_resource_parameter?: string | null;
 
       code_challenge_methods_supported?: Array<string> | null;
+
+      /**
+       * OIDC issuer URL for discovery and token validation. Cannot be set to null.
+       */
+      issuer?: string;
 
       jwks_uri?: string | null;
 
@@ -441,10 +508,25 @@ export namespace ProviderUpdateParams {
 }
 
 export interface ProviderListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
   cursor?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
 
   identifier?: string;
 
+  /**
+   * Maximum number of items to return
+   */
   limit?: number;
 
   slug?: string;

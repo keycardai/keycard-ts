@@ -17,8 +17,12 @@ export class Users extends APIResource {
   /**
    * Returns a list of users in the specified zone. Can be filtered by email address.
    */
-  list(zoneID: string, options?: RequestOptions): APIPromise<UserListResponse> {
-    return this._client.get(path`/zones/${zoneID}/users`, { ...options, __security: {} });
+  list(
+    zoneID: string,
+    query: UserListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UserListResponse> {
+    return this._client.get(path`/zones/${zoneID}/users`, { query, ...options, __security: {} });
   }
 }
 
@@ -85,6 +89,34 @@ export interface User {
 
 export interface UserListResponse {
   items: Array<User>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: UserListResponse.Pagination;
+}
+
+export namespace UserListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface UserRetrieveParams {
@@ -94,10 +126,30 @@ export interface UserRetrieveParams {
   zoneId: string;
 }
 
+export interface UserListParams {
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
+}
+
 export declare namespace Users {
   export {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
+    type UserListParams as UserListParams,
   };
 }

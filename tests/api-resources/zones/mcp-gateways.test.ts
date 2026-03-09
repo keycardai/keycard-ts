@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource mcpGateways', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createMcpServer: only required params', async () => {
     const responsePromise = client.zones.mcpGateways.createMcpServer('applicationId', {
       zoneId: 'zoneId',
@@ -27,7 +27,7 @@ describe('resource mcpGateways', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createMcpServer: required and optional params', async () => {
     const response = await client.zones.mcpGateways.createMcpServer('applicationId', {
       zoneId: 'zoneId',

@@ -27,9 +27,10 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Returns entry sessions in the specified zone. Entry sessions are app user
-   * sessions with an initiator that are roots or direct children of a root user
-   * session. Can be filtered by session type, status, and user.
+   * Returns sessions in the specified zone. By default, returns entry sessions (app
+   * user sessions with an initiator that are roots or direct children of a root user
+   * session). Use include_nested=true to include nested sessions. Can be filtered by
+   * session type, status, and user.
    */
   list(
     zoneID: string,
@@ -301,6 +302,34 @@ export namespace Session {
 
 export interface SessionListResponse {
   items: Array<Session>;
+
+  /**
+   * Cursor-based pagination metadata
+   */
+  pagination: SessionListResponse.Pagination;
+}
+
+export namespace SessionListResponse {
+  /**
+   * Cursor-based pagination metadata
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items matching the query. Only included when
+     * expand[]=total_count is requested.
+     */
+    total_count?: number;
+  }
 }
 
 export interface SessionRetrieveParams {
@@ -324,6 +353,30 @@ export interface SessionUpdateParams {
 
 export interface SessionListParams {
   active?: 'true';
+
+  /**
+   * Cursor for forward pagination
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination
+   */
+  before?: string;
+
+  'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Include nested sessions. When false (default), only returns entry sessions
+   * (direct children of root user sessions). When true, returns all sessions with an
+   * initiator, including nested sessions.
+   */
+  include_nested?: 'true';
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
 
   session_type?: 'user' | 'application';
 

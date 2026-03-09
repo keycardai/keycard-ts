@@ -105,8 +105,15 @@ export {
   type UserAgent,
   type UserAgentListResponse,
   type UserAgentRetrieveParams,
+  type UserAgentListParams,
 } from './user-agents';
-export { Users, type User, type UserListResponse, type UserRetrieveParams } from './users';
+export {
+  Users,
+  type User,
+  type UserListResponse,
+  type UserRetrieveParams,
+  type UserListParams,
+} from './users';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,

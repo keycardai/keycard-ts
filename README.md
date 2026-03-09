@@ -4,18 +4,15 @@
 
 This library provides convenient access to the Keycard API REST API from server-side TypeScript or JavaScript.
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.keycard.ai](https://docs.keycard.ai). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:keycardlabs/keycard-ts.git
+npm install keycard-api
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install keycard-api`
 
 ## Usage
 

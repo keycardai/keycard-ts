@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource serviceAccountToken', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.serviceAccountToken.create({
       client_id: 'client_id',
@@ -26,7 +26,7 @@ describe('resource serviceAccountToken', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.serviceAccountToken.create({
       client_id: 'client_id',

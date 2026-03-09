@@ -210,7 +210,7 @@ export interface SecretCreateParams {
    * is ignored during processing. The zone ID is derived from the path parameter
    * (/zones/{zone_id}/secrets) and takes precedence.
    */
-  body_zone_id?: string;
+  zone_id?: string;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and

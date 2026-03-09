@@ -10,7 +10,7 @@ const client = new KeycardAPI({
 });
 
 describe('resource sessions', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
     const responsePromise = client.zones.sessions.retrieve('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -22,12 +22,12 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.sessions.retrieve('id', { zoneId: 'zoneId' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.zones.sessions.update('id', { zoneId: 'zoneId', status: 'revoked' });
     const rawResponse = await responsePromise.asResponse();
@@ -39,12 +39,12 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.sessions.update('id', { zoneId: 'zoneId', status: 'revoked' });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.zones.sessions.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
@@ -56,7 +56,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -64,6 +64,11 @@ describe('resource sessions', () => {
         'zoneId',
         {
           active: 'true',
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          include_nested: 'true',
+          limit: 1,
           session_type: 'user',
           status: 'active',
           user_id: 'user_id',
@@ -73,7 +78,7 @@ describe('resource sessions', () => {
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.zones.sessions.delete('id', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
@@ -85,7 +90,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.sessions.delete('id', { zoneId: 'zoneId' });
   });
