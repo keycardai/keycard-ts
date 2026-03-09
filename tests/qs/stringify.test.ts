@@ -1,7 +1,7 @@
 import iconv from 'iconv-lite';
-import { stringify } from 'keycard-api/internal/qs';
-import { encode } from 'keycard-api/internal/qs/utils';
-import { StringifyOptions } from 'keycard-api/internal/qs/types';
+import { stringify } from 'keycard-ts/internal/qs';
+import { encode } from 'keycard-ts/internal/qs/utils';
+import { StringifyOptions } from 'keycard-ts/internal/qs/types';
 import { empty_test_cases } from './empty-keys-cases';
 import assert from 'assert';
 
