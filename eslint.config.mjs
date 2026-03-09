@@ -25,7 +25,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              regex: '^keycard-api(/.*)?',
+              regex: '^keycard-ts(/.*)?',
               message: 'Use a relative import, not a package import.',
             },
           ],

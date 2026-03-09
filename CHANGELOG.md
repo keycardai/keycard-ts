@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-03-09)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/keycardlabs/keycard-ts/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* configure SDK packages ([57344fc](https://github.com/keycardlabs/keycard-ts/commit/57344fc927bde3f1a6564bb92baeaae62a498476))
+
 ## 0.1.0 (2026-03-07)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/keycardlabs/keycard-ts/compare/v0.0.1...v0.1.0)
