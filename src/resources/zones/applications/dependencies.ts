@@ -21,7 +21,7 @@ export class Dependencies extends APIResource {
     const { zoneId, id } = params;
     return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -37,7 +37,7 @@ export class Dependencies extends APIResource {
     return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies`, {
       query,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -50,7 +50,7 @@ export class Dependencies extends APIResource {
       query: { when_accessing },
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -62,7 +62,7 @@ export class Dependencies extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

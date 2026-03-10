@@ -21,7 +21,7 @@ export class ApplicationCredentials extends APIResource {
     return this._client.post(path`/zones/${zoneID}/application-credentials`, {
       body,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -36,7 +36,7 @@ export class ApplicationCredentials extends APIResource {
     const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/application-credentials/${id}`, {
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -52,7 +52,7 @@ export class ApplicationCredentials extends APIResource {
     return this._client.patch(path`/zones/${zoneId}/application-credentials/${id}`, {
       body,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -67,7 +67,7 @@ export class ApplicationCredentials extends APIResource {
     return this._client.get(path`/zones/${zoneID}/application-credentials`, {
       query,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -79,7 +79,7 @@ export class ApplicationCredentials extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/application-credentials/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

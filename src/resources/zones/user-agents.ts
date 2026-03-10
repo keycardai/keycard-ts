@@ -11,7 +11,10 @@ export class UserAgents extends APIResource {
    */
   retrieve(id: string, params: UserAgentRetrieveParams, options?: RequestOptions): APIPromise<UserAgent> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/user-agents/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/user-agents/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -24,7 +27,11 @@ export class UserAgents extends APIResource {
     query: UserAgentListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<UserAgentListResponse> {
-    return this._client.get(path`/zones/${zoneID}/user-agents`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/user-agents`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 }
 

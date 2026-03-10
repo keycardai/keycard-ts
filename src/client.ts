@@ -259,13 +259,6 @@ export class KeycardAPI {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    if (this.username && this.password && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
     if (this.apiKey && values.get('authorization')) {
       return;
     }
@@ -273,22 +266,36 @@ export class KeycardAPI {
       return;
     }
 
+    if (this.username && this.password && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
     throw new Error(
-      'Could not resolve authentication method. Expected either username, password or apiKey to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
+      'Could not resolve authentication method. Expected either apiKey, username or password to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
     );
   }
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { orgManagementBasicAuth?: boolean; vaultAPIBearerAuth?: boolean },
+    schemes: { bearerAuth?: boolean; basicAuth?: boolean },
   ): Promise<NullableHeaders | undefined> {
     return buildHeaders([
-      schemes.orgManagementBasicAuth ? await this.orgManagementBasicAuth(opts) : null,
-      schemes.vaultAPIBearerAuth ? await this.vaultAPIBearerAuth(opts) : null,
+      schemes.bearerAuth ? await this.bearerAuth(opts) : null,
+      schemes.basicAuth ? await this.basicAuth(opts) : null,
     ]);
   }
 
-  protected async orgManagementBasicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+  protected async bearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (this.apiKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+  }
+
+  protected async basicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     if (!this.username) {
       return undefined;
     }
@@ -300,13 +307,6 @@ export class KeycardAPI {
     const credentials = `${this.username}:${this.password}`;
     const Authorization = `Basic ${toBase64(credentials)}`;
     return buildHeaders([{ Authorization }]);
-  }
-
-  protected async vaultAPIBearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (this.apiKey == null) {
-      return undefined;
-    }
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -732,10 +732,7 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(
-        options,
-        options.__security ?? { orgManagementBasicAuth: true, vaultAPIBearerAuth: true },
-      ),
+      await this.authHeaders(options, options.__security ?? { bearerAuth: true, basicAuth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,

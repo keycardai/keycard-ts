@@ -18,7 +18,11 @@ export class Resources extends APIResource {
     body: ResourceCreateParams,
     options?: RequestOptions,
   ): APIPromise<DependenciesAPI.Resource> {
-    return this._client.post(path`/zones/${zoneID}/resources`, { body, ...options, __security: {} });
+    return this._client.post(path`/zones/${zoneID}/resources`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -30,7 +34,10 @@ export class Resources extends APIResource {
     options?: RequestOptions,
   ): APIPromise<DependenciesAPI.Resource> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/resources/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/resources/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -42,7 +49,11 @@ export class Resources extends APIResource {
     options?: RequestOptions,
   ): APIPromise<DependenciesAPI.Resource> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/resources/${id}`, { body, ...options, __security: {} });
+    return this._client.patch(path`/zones/${zoneId}/resources/${id}`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -53,7 +64,11 @@ export class Resources extends APIResource {
     query: ResourceListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ResourceListResponse> {
-    return this._client.get(path`/zones/${zoneID}/resources`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/resources`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -64,7 +79,7 @@ export class Resources extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/resources/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }
