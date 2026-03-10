@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 (2026-03-10)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/keycardai/keycard-ts/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* jelmer/stainless keycardai configuration ([22ecb83](https://github.com/keycardai/keycard-ts/commit/22ecb833f684818a9a85a306b12ce0ccdfa56c70))
+
+
+### Chores
+
+* sync repo ([940643a](https://github.com/keycardai/keycard-ts/commit/940643a8445a3a0a8366d6d9aada48e05eb1b43f))
+
 ## 0.2.0 (2026-03-09)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/keycardlabs/keycard-ts/compare/v0.1.0...v0.2.0)
