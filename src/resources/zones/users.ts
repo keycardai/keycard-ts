@@ -51,19 +51,9 @@ export interface User {
   email_verified: boolean;
 
   /**
-   * Issuer identifier of the identity provider
-   */
-  issuer: string;
-
-  /**
    * Organization that owns this user
    */
   organization_id: string;
-
-  /**
-   * Subject identifier from the identity provider
-   */
-  subject: string;
 
   /**
    * Entity update timestamp
@@ -81,10 +71,20 @@ export interface User {
   authenticated_at?: string;
 
   /**
+   * Issuer identifier of the identity provider
+   */
+  issuer?: string;
+
+  /**
    * Reference to the identity provider. This field is undefined when the source
    * identity provider is deleted but the user is not deleted.
    */
   provider_id?: string;
+
+  /**
+   * Subject identifier from the identity provider
+   */
+  subject?: string;
 }
 
 export interface UserListResponse {
