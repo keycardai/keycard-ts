@@ -18,11 +18,7 @@ export class ApplicationCredentials extends APIResource {
     body: ApplicationCredentialCreateParams,
     options?: RequestOptions,
   ): APIPromise<ApplicationCredentialCreateResponse> {
-    return this._client.post(path`/zones/${zoneID}/application-credentials`, {
-      body,
-      ...options,
-      __security: { bearerAuth: true },
-    });
+    return this._client.post(path`/zones/${zoneID}/application-credentials`, { body, ...options });
   }
 
   /**
@@ -34,10 +30,7 @@ export class ApplicationCredentials extends APIResource {
     options?: RequestOptions,
   ): APIPromise<Credential> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/application-credentials/${id}`, {
-      ...options,
-      __security: { bearerAuth: true },
-    });
+    return this._client.get(path`/zones/${zoneId}/application-credentials/${id}`, options);
   }
 
   /**
@@ -49,11 +42,7 @@ export class ApplicationCredentials extends APIResource {
     options?: RequestOptions,
   ): APIPromise<Credential> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/application-credentials/${id}`, {
-      body,
-      ...options,
-      __security: { bearerAuth: true },
-    });
+    return this._client.patch(path`/zones/${zoneId}/application-credentials/${id}`, { body, ...options });
   }
 
   /**
@@ -64,11 +53,7 @@ export class ApplicationCredentials extends APIResource {
     query: ApplicationCredentialListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ApplicationCredentialListResponse> {
-    return this._client.get(path`/zones/${zoneID}/application-credentials`, {
-      query,
-      ...options,
-      __security: { bearerAuth: true },
-    });
+    return this._client.get(path`/zones/${zoneID}/application-credentials`, { query, ...options });
   }
 
   /**
@@ -79,7 +64,6 @@ export class ApplicationCredentials extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/application-credentials/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: { bearerAuth: true },
     });
   }
 }
