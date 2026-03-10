@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 (2026-03-10)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/keycardai/keycard-ts/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* Correct TS package name ([1ed62b0](https://github.com/keycardai/keycard-ts/commit/1ed62b09476d3b90cf265dffb972b5517133effd))
+
 ## 0.4.0 (2026-03-10)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/keycardai/keycard-ts/compare/v0.3.0...v0.4.0)
