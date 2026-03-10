@@ -15,7 +15,7 @@ export class DelegatedGrants extends APIResource {
    */
   retrieve(id: string, params: DelegatedGrantRetrieveParams, options?: RequestOptions): APIPromise<Grant> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/delegated-grants/${id}`, options);
+    return this._client.get(path`/zones/${zoneId}/delegated-grants/${id}`, { ...options, __security: {} });
   }
 
   /**
@@ -23,7 +23,11 @@ export class DelegatedGrants extends APIResource {
    */
   update(id: string, params: DelegatedGrantUpdateParams, options?: RequestOptions): APIPromise<Grant> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/delegated-grants/${id}`, { body, ...options });
+    return this._client.patch(path`/zones/${zoneId}/delegated-grants/${id}`, {
+      body,
+      ...options,
+      __security: {},
+    });
   }
 
   /**
@@ -35,7 +39,7 @@ export class DelegatedGrants extends APIResource {
     query: DelegatedGrantListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<DelegatedGrantListResponse> {
-    return this._client.get(path`/zones/${zoneID}/delegated-grants`, { query, ...options });
+    return this._client.get(path`/zones/${zoneID}/delegated-grants`, { query, ...options, __security: {} });
   }
 
   /**
@@ -47,6 +51,7 @@ export class DelegatedGrants extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/delegated-grants/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      __security: {},
     });
   }
 }
