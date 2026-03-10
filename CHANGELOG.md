@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 (2026-03-10)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/keycardai/keycard-ts/compare/v0.5.0...v0.5.1)
+
+### Chores
+
+* update SDK settings ([aa1913e](https://github.com/keycardai/keycard-ts/commit/aa1913ed0280b3b6a63a077968c07a2594ca1af7))
+
 ## 0.5.0 (2026-03-10)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/keycardai/keycard-ts/compare/v0.4.0...v0.5.0)
