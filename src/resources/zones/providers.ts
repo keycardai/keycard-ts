@@ -13,7 +13,11 @@ export class Providers extends APIResource {
    * actors to authenticate
    */
   create(zoneID: string, body: ProviderCreateParams, options?: RequestOptions): APIPromise<Provider> {
-    return this._client.post(path`/zones/${zoneID}/providers`, { body, ...options, __security: {} });
+    return this._client.post(path`/zones/${zoneID}/providers`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -21,7 +25,10 @@ export class Providers extends APIResource {
    */
   retrieve(id: string, params: ProviderRetrieveParams, options?: RequestOptions): APIPromise<Provider> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/providers/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/providers/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -29,7 +36,11 @@ export class Providers extends APIResource {
    */
   update(id: string, params: ProviderUpdateParams, options?: RequestOptions): APIPromise<Provider> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/providers/${id}`, { body, ...options, __security: {} });
+    return this._client.patch(path`/zones/${zoneId}/providers/${id}`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -40,7 +51,11 @@ export class Providers extends APIResource {
     query: ProviderListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ProviderListResponse> {
-    return this._client.get(path`/zones/${zoneID}/providers`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/providers`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -51,7 +66,7 @@ export class Providers extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/providers/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

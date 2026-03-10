@@ -24,7 +24,7 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -40,7 +40,7 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -60,7 +60,7 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -78,7 +78,7 @@ export class Users extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

@@ -20,7 +20,7 @@ export class McpGateways extends APIResource {
     return this._client.post(path`/zones/${zoneId}/mcp-gateways/${applicationID}/mcp-servers`, {
       body,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

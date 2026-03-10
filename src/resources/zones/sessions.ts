@@ -15,7 +15,10 @@ export class Sessions extends APIResource {
    */
   retrieve(id: string, params: SessionRetrieveParams, options?: RequestOptions): APIPromise<Session> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/sessions/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/sessions/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -23,7 +26,11 @@ export class Sessions extends APIResource {
    */
   update(id: string, params: SessionUpdateParams, options?: RequestOptions): APIPromise<Session> {
     const { zoneId, ...body } = params;
-    return this._client.patch(path`/zones/${zoneId}/sessions/${id}`, { body, ...options, __security: {} });
+    return this._client.patch(path`/zones/${zoneId}/sessions/${id}`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -37,7 +44,11 @@ export class Sessions extends APIResource {
     query: SessionListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<SessionListResponse> {
-    return this._client.get(path`/zones/${zoneID}/sessions`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/sessions`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -48,7 +59,7 @@ export class Sessions extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/sessions/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

@@ -70,7 +70,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -90,7 +90,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -110,7 +110,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -129,7 +129,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -148,7 +148,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -168,7 +168,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -196,7 +196,7 @@ export class Organizations extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

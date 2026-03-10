@@ -38,7 +38,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -58,7 +58,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -78,7 +78,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -98,7 +98,7 @@ export class ServiceAccounts extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -120,7 +120,7 @@ export class ServiceAccounts extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

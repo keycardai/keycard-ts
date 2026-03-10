@@ -15,7 +15,10 @@ export class DelegatedGrants extends APIResource {
    */
   retrieve(id: string, params: DelegatedGrantRetrieveParams, options?: RequestOptions): APIPromise<Grant> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/delegated-grants/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/delegated-grants/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -26,7 +29,7 @@ export class DelegatedGrants extends APIResource {
     return this._client.patch(path`/zones/${zoneId}/delegated-grants/${id}`, {
       body,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -39,7 +42,11 @@ export class DelegatedGrants extends APIResource {
     query: DelegatedGrantListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<DelegatedGrantListResponse> {
-    return this._client.get(path`/zones/${zoneID}/delegated-grants`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/delegated-grants`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -51,7 +58,7 @@ export class DelegatedGrants extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/delegated-grants/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

@@ -26,7 +26,11 @@ export class Applications extends APIResource {
    * Resources
    */
   create(zoneID: string, body: ApplicationCreateParams, options?: RequestOptions): APIPromise<Application> {
-    return this._client.post(path`/zones/${zoneID}/applications`, { body, ...options, __security: {} });
+    return this._client.post(path`/zones/${zoneID}/applications`, {
+      body,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -34,7 +38,10 @@ export class Applications extends APIResource {
    */
   retrieve(id: string, params: ApplicationRetrieveParams, options?: RequestOptions): APIPromise<Application> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/applications/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/applications/${id}`, {
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -45,7 +52,7 @@ export class Applications extends APIResource {
     return this._client.patch(path`/zones/${zoneId}/applications/${id}`, {
       body,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -57,7 +64,11 @@ export class Applications extends APIResource {
     query: ApplicationListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ApplicationListResponse> {
-    return this._client.get(path`/zones/${zoneID}/applications`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/applications`, {
+      query,
+      ...options,
+      __security: { bearerAuth: true },
+    });
   }
 
   /**
@@ -68,7 +79,7 @@ export class Applications extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/applications/${id}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -84,7 +95,7 @@ export class Applications extends APIResource {
     return this._client.get(path`/zones/${zoneId}/applications/${id}/application-credentials`, {
       query,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 
@@ -100,7 +111,7 @@ export class Applications extends APIResource {
     return this._client.get(path`/zones/${zoneId}/applications/${id}/resources`, {
       query,
       ...options,
-      __security: {},
+      __security: { bearerAuth: true },
     });
   }
 }

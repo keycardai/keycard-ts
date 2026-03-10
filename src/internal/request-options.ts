@@ -75,7 +75,7 @@ export type RequestOptions = {
    */
   defaultBaseURL?: string | undefined;
 
-  __security?: { orgManagementBasicAuth?: boolean; vaultAPIBearerAuth?: boolean };
+  __security?: { bearerAuth?: boolean; basicAuth?: boolean };
 
   __binaryResponse?: boolean | undefined;
 };
