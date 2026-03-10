@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "keycard-ts/*": ["./src/*"],
-      "keycard-ts": ["./src/index.ts"]
+      "@kecyardai/api/*": ["./src/*"],
+      "@kecyardai/api": ["./src/index.ts"]
     },
     "noEmit": true,
 

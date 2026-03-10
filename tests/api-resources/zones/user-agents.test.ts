@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import KeycardAPI from 'keycard-ts';
+import KeycardAPI from '@kecyardai/api';
 
 const client = new KeycardAPI({
   apiKey: 'My API Key',
