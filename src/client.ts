@@ -59,7 +59,6 @@ import {
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -75,16 +74,6 @@ export interface ClientOptions {
    * JWT Bearer Token Authentication
    */
   apiKey?: string | null | undefined;
-
-  /**
-   * HTTP Basic authentication with client_id and client_secret
-   */
-  username?: string | null | undefined;
-
-  /**
-   * HTTP Basic authentication with client_id and client_secret
-   */
-  password?: string | null | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -160,8 +149,6 @@ export interface ClientOptions {
  */
 export class KeycardAPI {
   apiKey: string | null;
-  username: string | null;
-  password: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -179,8 +166,6 @@ export class KeycardAPI {
    * API Client for interfacing with the Keycard API API.
    *
    * @param {string | null | undefined} [opts.apiKey=process.env['KEYCARD_API_API_KEY'] ?? null]
-   * @param {string | null | undefined} [opts.username=process.env['KEYCARD_API_USERNAME'] ?? null]
-   * @param {string | null | undefined} [opts.password=process.env['KEYCARD_API_PASSWORD'] ?? null]
    * @param {string} [opts.baseURL=process.env['KEYCARD_API_BASE_URL'] ?? https://api.keycard.ai] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -192,14 +177,10 @@ export class KeycardAPI {
   constructor({
     baseURL = readEnv('KEYCARD_API_BASE_URL'),
     apiKey = readEnv('KEYCARD_API_API_KEY') ?? null,
-    username = readEnv('KEYCARD_API_USERNAME') ?? null,
-    password = readEnv('KEYCARD_API_PASSWORD') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
       apiKey,
-      username,
-      password,
       ...opts,
       baseURL: baseURL || `https://api.keycard.ai`,
     };
@@ -222,8 +203,6 @@ export class KeycardAPI {
     this._options = options;
 
     this.apiKey = apiKey;
-    this.username = username;
-    this.password = password;
   }
 
   /**
@@ -240,8 +219,6 @@ export class KeycardAPI {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
-      username: this.username,
-      password: this.password,
       ...options,
     });
     return client;
@@ -266,26 +243,16 @@ export class KeycardAPI {
       return;
     }
 
-    if (this.username && this.password && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
     throw new Error(
-      'Could not resolve authentication method. Expected either apiKey, username or password to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
+      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
     );
   }
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { bearerAuth?: boolean; basicAuth?: boolean },
+    schemes: { bearerAuth?: boolean },
   ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([
-      schemes.bearerAuth ? await this.bearerAuth(opts) : null,
-      schemes.basicAuth ? await this.basicAuth(opts) : null,
-    ]);
+    return buildHeaders([schemes.bearerAuth ? await this.bearerAuth(opts) : null]);
   }
 
   protected async bearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
@@ -293,20 +260,6 @@ export class KeycardAPI {
       return undefined;
     }
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
-  }
-
-  protected async basicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (!this.username) {
-      return undefined;
-    }
-
-    if (!this.password) {
-      return undefined;
-    }
-
-    const credentials = `${this.username}:${this.password}`;
-    const Authorization = `Basic ${toBase64(credentials)}`;
-    return buildHeaders([{ Authorization }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -732,7 +685,7 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options, options.__security ?? { bearerAuth: true, basicAuth: true }),
+      await this.authHeaders(options, options.__security ?? { bearerAuth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,

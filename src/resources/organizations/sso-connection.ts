@@ -23,7 +23,6 @@ export class SSOConnectionResource extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: { bearerAuth: true },
     });
   }
 
@@ -43,7 +42,6 @@ export class SSOConnectionResource extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: { bearerAuth: true },
     });
   }
 
@@ -65,7 +63,6 @@ export class SSOConnectionResource extends APIResource {
         },
         options?.headers,
       ]),
-      __security: { bearerAuth: true },
     });
   }
 
@@ -85,7 +82,6 @@ export class SSOConnectionResource extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: { bearerAuth: true },
     });
   }
 }
