@@ -1,5 +1,5 @@
 {
-  "name": "@kecyardai/api",
+  "name": "@keycardai/api",
   "version": "0.4.0",
   "description": "The official TypeScript library for the Keycard API API",
   "author": "Keycard API <support@keycard.ai>",

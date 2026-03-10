@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@kecyardai/api/core/api-promise';
+import { APIPromise } from '@keycardai/api/core/api-promise';
 
 import util from 'node:util';
-import KeycardAPI from '@kecyardai/api';
-import { APIUserAbortError } from '@kecyardai/api';
+import KeycardAPI from '@keycardai/api';
+import { APIUserAbortError } from '@keycardai/api';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {
