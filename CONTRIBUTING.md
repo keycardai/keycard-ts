@@ -55,12 +55,12 @@ $ cd keycard-ts
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @kecyardai/api
+$ yarn link @keycardai/api
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link --global @kecyardai/api
+$ pnpm link --global @keycardai/api
 ```
 
 ## Running tests
