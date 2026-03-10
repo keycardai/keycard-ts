@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2026-03-09)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/keycardlabs/keycard-ts/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* **internal:** update dependencies to address dependabot vulnerabilities ([83c7551](https://github.com/keycardlabs/keycard-ts/commit/83c7551593fba00418d52d1e05310aea40737a15))
+
 ## 0.2.0 (2026-03-09)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/keycardlabs/keycard-ts/compare/v0.1.0...v0.2.0)
