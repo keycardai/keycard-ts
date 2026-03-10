@@ -144,7 +144,7 @@ export class Zones extends APIResource {
    * environment for IAM resources.
    */
   create(body: ZoneCreateParams, options?: RequestOptions): APIPromise<Zone> {
-    return this._client.post('/zones', { body, ...options });
+    return this._client.post('/zones', { body, ...options, __security: {} });
   }
 
   /**
@@ -155,7 +155,7 @@ export class Zones extends APIResource {
     query: ZoneRetrieveParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.get(path`/zones/${zoneID}`, { query, ...options });
+    return this._client.get(path`/zones/${zoneID}`, { query, ...options, __security: {} });
   }
 
   /**
@@ -166,7 +166,7 @@ export class Zones extends APIResource {
     body: ZoneUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.patch(path`/zones/${zoneID}`, { body, ...options });
+    return this._client.patch(path`/zones/${zoneID}`, { body, ...options, __security: {} });
   }
 
   /**
@@ -176,7 +176,7 @@ export class Zones extends APIResource {
     query: ZoneListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListResponse> {
-    return this._client.get('/zones', { query, ...options });
+    return this._client.get('/zones', { query, ...options, __security: {} });
   }
 
   /**
@@ -186,6 +186,7 @@ export class Zones extends APIResource {
     return this._client.delete(path`/zones/${zoneID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      __security: {},
     });
   }
 
@@ -202,6 +203,7 @@ export class Zones extends APIResource {
     return this._client.delete(path`/zones/${zoneId}/mcp-servers/${downstreamID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      __security: {},
     });
   }
 
@@ -216,7 +218,11 @@ export class Zones extends APIResource {
     query: ZoneListSessionResourceAccessParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListSessionResourceAccessResponse> {
-    return this._client.get(path`/zones/${zoneID}/session-resource-access`, { query, ...options });
+    return this._client.get(path`/zones/${zoneID}/session-resource-access`, {
+      query,
+      ...options,
+      __security: {},
+    });
   }
 }
 

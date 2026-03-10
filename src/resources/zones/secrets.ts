@@ -16,6 +16,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -31,6 +32,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -43,6 +45,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -59,6 +62,7 @@ export class Secrets extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 
@@ -73,6 +77,7 @@ export class Secrets extends APIResource {
         },
         options?.headers,
       ]),
+      __security: {},
     });
   }
 }

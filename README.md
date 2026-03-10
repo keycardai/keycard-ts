@@ -22,9 +22,7 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import KeycardAPI from '@keycardai/api';
 
-const client = new KeycardAPI({
-  apiKey: process.env['KEYCARD_API_API_KEY'], // This is the default and can be omitted
-});
+const client = new KeycardAPI();
 
 const zones = await client.zones.list();
 
@@ -39,9 +37,7 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import KeycardAPI from '@keycardai/api';
 
-const client = new KeycardAPI({
-  apiKey: process.env['KEYCARD_API_API_KEY'], // This is the default and can be omitted
-});
+const client = new KeycardAPI();
 
 const zones: KeycardAPI.ZoneListResponse = await client.zones.list();
 ```
