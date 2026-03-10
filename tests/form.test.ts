@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'keycard-ts/internal/uploads';
-import { toFile } from 'keycard-ts/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@kecyardai/api/internal/uploads';
+import { toFile } from '@kecyardai/api/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

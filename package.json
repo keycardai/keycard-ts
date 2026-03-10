@@ -1,6 +1,6 @@
 {
-  "name": "keycard-ts",
-  "version": "0.3.0",
+  "name": "@kecyardai/api",
+  "version": "0.4.0",
   "description": "The official TypeScript library for the Keycard API API",
   "author": "Keycard API <support@keycard.ai>",
   "types": "dist/index.d.ts",

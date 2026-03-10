@@ -200,7 +200,22 @@ export namespace Session {
      */
     application_id: string;
 
+    /**
+     * Issuer URL from IdP
+     */
+    issuer: string;
+
+    /**
+     * Provider ID
+     */
+    provider_id: string;
+
     session_type: 'application';
+
+    /**
+     * Subject claim from IdP
+     */
+    subject: string;
 
     /**
      * Session ID
@@ -236,11 +251,6 @@ export namespace Session {
     expires_at?: string;
 
     /**
-     * Issuer URL from IdP
-     */
-    issuer?: string;
-
-    /**
      * Session metadata
      */
     metadata?: IamApplicationSessionType.Metadata;
@@ -251,30 +261,12 @@ export namespace Session {
     organization_id?: string;
 
     /**
-     * Parent session ID for hierarchical sessions (user sessions only). When null,
-     * this is a web session - a top-level session initiated directly by a user. When
-     * set, this is a child session derived from the parent, used for token refresh or
-     * delegation. Application sessions cannot have parents.
-     */
-    parent_id?: string;
-
-    /**
-     * Provider ID
-     */
-    provider_id?: string;
-
-    /**
      * Session claims data (ID token claims for users, application claims for
      * applications)
      */
     session_data?: { [key: string]: unknown };
 
     status?: 'active' | 'expired' | 'revoked';
-
-    /**
-     * Subject claim from IdP
-     */
-    subject?: string;
 
     /**
      * Entity update timestamp
