@@ -11,11 +11,7 @@ const client = new KeycardAPI({
 describe('resource serviceAccountToken', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.serviceAccountToken.create({
-      client_id: 'client_id',
-      client_secret: 'client_secret',
-      grant_type: 'client_credentials',
-    });
+    const responsePromise = client.serviceAccountToken.create({ grant_type: 'client_credentials' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -28,9 +24,9 @@ describe('resource serviceAccountToken', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.serviceAccountToken.create({
+      grant_type: 'client_credentials',
       client_id: 'client_id',
       client_secret: 'client_secret',
-      grant_type: 'client_credentials',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });

@@ -8,7 +8,12 @@ import { RequestOptions } from '../internal/request-options';
 
 export class ServiceAccountToken extends APIResource {
   /**
-   * Exchange service account credentials for organization-scoped M2M token
+   * Exchange service account credentials for an organization-scoped M2M token.
+   *
+   * Credentials may be provided via HTTP Basic Authentication (RFC 6749 Section
+   * 2.3.1, preferred) or as form body parameters. The server MUST NOT accept
+   * credentials in both locations simultaneously and will reject such requests with
+   * a 400 error.
    */
   create(
     params: ServiceAccountTokenCreateParams,
@@ -32,19 +37,21 @@ export class ServiceAccountToken extends APIResource {
 
 export interface ServiceAccountTokenCreateParams {
   /**
-   * Body param: Service account client ID
-   */
-  client_id: string;
-
-  /**
-   * Body param: Service account client secret
-   */
-  client_secret: string;
-
-  /**
    * Body param: OAuth 2.0 grant type (must be "client_credentials")
    */
   grant_type: 'client_credentials';
+
+  /**
+   * Body param: Service account client ID. Required if not using HTTP Basic
+   * Authentication.
+   */
+  client_id?: string | null;
+
+  /**
+   * Body param: Service account client secret. Required if not using HTTP Basic
+   * Authentication.
+   */
+  client_secret?: string | null;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
