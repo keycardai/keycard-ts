@@ -6,6 +6,20 @@ import util from 'node:util';
 import KeycardAPI from '@keycardai/api';
 import { APIUserAbortError } from '@keycardai/api';
 const defaultFetch = fetch;
+const mockTokenFetch: typeof defaultFetch = async (url, init) => {
+  const urlStr = String(url);
+  if (urlStr.includes('/service-account-token')) {
+    return new Response(
+      JSON.stringify({
+        access_token: 'mock-test-token',
+        token_type: 'Bearer',
+        expires_in: 3600,
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    );
+  }
+  return defaultFetch(url, init);
+};
 
 describe('instantiate client', () => {
   const env = process.env;
@@ -25,6 +39,7 @@ describe('instantiate client', () => {
       defaultHeaders: { 'X-My-Default-Header': '2' },
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
+      fetch: mockTokenFetch,
     });
 
     test('they are used in the request', async () => {
@@ -93,6 +108,7 @@ describe('instantiate client', () => {
         logLevel: 'debug',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       await forceAPIResponseForClient(client);
@@ -100,7 +116,11 @@ describe('instantiate client', () => {
     });
 
     test('default logLevel is warn', async () => {
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
+      });
       expect(client.logLevel).toBe('warn');
     });
 
@@ -118,6 +138,7 @@ describe('instantiate client', () => {
         logLevel: 'info',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       await forceAPIResponseForClient(client);
@@ -138,6 +159,7 @@ describe('instantiate client', () => {
         logger: logger,
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.logLevel).toBe('debug');
 
@@ -159,6 +181,7 @@ describe('instantiate client', () => {
         logger: logger,
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.logLevel).toBe('warn');
       expect(warnMock).toHaveBeenCalledWith(
@@ -181,6 +204,7 @@ describe('instantiate client', () => {
         logLevel: 'off',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       await forceAPIResponseForClient(client);
@@ -202,6 +226,7 @@ describe('instantiate client', () => {
         logLevel: 'debug',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.logLevel).toBe('debug');
       expect(warnMock).not.toHaveBeenCalled();
@@ -215,6 +240,7 @@ describe('instantiate client', () => {
         defaultQuery: { apiVersion: 'foo' },
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo');
     });
@@ -225,6 +251,7 @@ describe('instantiate client', () => {
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo&hello=world');
     });
@@ -235,6 +262,7 @@ describe('instantiate client', () => {
         defaultQuery: { hello: 'world' },
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
       expect(client.buildURL('/foo', { hello: undefined })).toEqual('http://localhost:5000/foo');
     });
@@ -410,6 +438,7 @@ describe('instantiate client', () => {
         maxRetries: 3,
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       const newClient = client.withOptions({
@@ -437,6 +466,7 @@ describe('instantiate client', () => {
         defaultQuery: { 'test-param': 'test-value' },
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       const newClient = client.withOptions({
@@ -456,6 +486,7 @@ describe('instantiate client', () => {
         timeout: 1000,
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
+        fetch: mockTokenFetch,
       });
 
       // Modify the client properties directly after creation
@@ -502,7 +533,11 @@ describe('instantiate client', () => {
 });
 
 describe('request building', () => {
-  const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+  const client = new KeycardAPI({
+    clientID: 'My Client ID',
+    clientSecret: 'My Client Secret',
+    fetch: mockTokenFetch,
+  });
 
   describe('custom headers', () => {
     test('handles undefined', async () => {
@@ -521,7 +556,11 @@ describe('request building', () => {
 });
 
 describe('default encoder', () => {
-  const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+  const client = new KeycardAPI({
+    clientID: 'My Client ID',
+    clientSecret: 'My Client Secret',
+    fetch: mockTokenFetch,
+  });
 
   class Serializable {
     toJSON() {
