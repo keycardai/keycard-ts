@@ -11,7 +11,7 @@ export class Users extends APIResource {
    */
   retrieve(id: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<User> {
     const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/users/${id}`, { ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneId}/users/${id}`, options);
   }
 
   /**
@@ -22,7 +22,7 @@ export class Users extends APIResource {
     query: UserListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<UserListResponse> {
-    return this._client.get(path`/zones/${zoneID}/users`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}/users`, { query, ...options });
   }
 }
 
