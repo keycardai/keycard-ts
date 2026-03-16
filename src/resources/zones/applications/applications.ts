@@ -166,11 +166,6 @@ export interface Application {
    * Protocol-specific configuration
    */
   protocols?: Application.Protocols | null;
-
-  /**
-   * Traits of the application
-   */
-  traits?: Array<ApplicationTrait> | null;
 }
 
 export namespace Application {
@@ -369,11 +364,6 @@ export interface ApplicationCreateParams {
    * Protocol-specific configuration for application creation
    */
   protocols?: ApplicationCreateParams.Protocols;
-
-  /**
-   * Traits of the application
-   */
-  traits?: Array<ApplicationTrait>;
 }
 
 export namespace ApplicationCreateParams {
@@ -448,11 +438,6 @@ export interface ApplicationUpdateParams {
    * Body param: Protocol-specific configuration for application update
    */
   protocols?: ApplicationUpdateParams.Protocols | null;
-
-  /**
-   * Body param: Traits of the application
-   */
-  traits?: Array<ApplicationTrait> | null;
 }
 
 export namespace ApplicationUpdateParams {

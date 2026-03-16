@@ -130,23 +130,6 @@ describe('resource zones', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('deleteMcpServer: only required params', async () => {
-    const responsePromise = client.zones.deleteMcpServer('downstreamId', { zoneId: 'zoneId' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('deleteMcpServer: required and optional params', async () => {
-    const response = await client.zones.deleteMcpServer('downstreamId', { zoneId: 'zoneId' });
-  });
-
-  // Mock server tests are disabled
   test.skip('listSessionResourceAccess', async () => {
     const responsePromise = client.zones.listSessionResourceAccess('zoneId');
     const rawResponse = await responsePromise.asResponse();

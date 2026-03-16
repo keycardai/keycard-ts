@@ -43,11 +43,7 @@ export {
   type DelegatedGrantListParams,
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
-export {
-  McpGateways,
-  type McpGatewayCreateMcpServerResponse,
-  type McpGatewayCreateMcpServerParams,
-} from './mcp-gateways';
+export { McpGateways } from './mcp-gateways';
 export {
   Members,
   type ZoneMember,
@@ -125,6 +121,5 @@ export {
   type ZoneRetrieveParams,
   type ZoneUpdateParams,
   type ZoneListParams,
-  type ZoneDeleteMcpServerParams,
   type ZoneListSessionResourceAccessParams,
 } from './zones';

@@ -15,7 +15,6 @@ Methods:
 - <code title="patch /zones/{zoneId}">client.zones.<a href="./src/resources/zones/zones.ts">update</a>(zoneID, { ...params }) -> Zone</code>
 - <code title="get /zones">client.zones.<a href="./src/resources/zones/zones.ts">list</a>({ ...params }) -> ZoneListResponse</code>
 - <code title="delete /zones/{zoneId}">client.zones.<a href="./src/resources/zones/zones.ts">delete</a>(zoneID) -> void</code>
-- <code title="delete /zones/{zoneId}/mcp-servers/{downstreamId}">client.zones.<a href="./src/resources/zones/zones.ts">deleteMcpServer</a>(downstreamID, { ...params }) -> void</code>
 - <code title="get /zones/{zoneId}/session-resource-access">client.zones.<a href="./src/resources/zones/zones.ts">listSessionResourceAccess</a>(zoneID, { ...params }) -> ZoneListSessionResourceAccessResponse</code>
 
 ## Applications
@@ -91,14 +90,6 @@ Methods:
 - <code title="delete /zones/{zoneId}/delegated-grants/{id}">client.zones.delegatedGrants.<a href="./src/resources/zones/delegated-grants.ts">delete</a>(id, { ...params }) -> void</code>
 
 ## McpGateways
-
-Types:
-
-- <code><a href="./src/resources/zones/mcp-gateways.ts">McpGatewayCreateMcpServerResponse</a></code>
-
-Methods:
-
-- <code title="post /zones/{zoneId}/mcp-gateways/{applicationId}/mcp-servers">client.zones.mcpGateways.<a href="./src/resources/zones/mcp-gateways.ts">createMcpServer</a>(applicationID, { ...params }) -> McpGatewayCreateMcpServerResponse</code>
 
 ## Providers
 

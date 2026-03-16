@@ -30,11 +30,7 @@ import {
   Grant,
 } from './delegated-grants';
 import * as McpGatewaysAPI from './mcp-gateways';
-import {
-  McpGatewayCreateMcpServerParams,
-  McpGatewayCreateMcpServerResponse,
-  McpGateways,
-} from './mcp-gateways';
+import { McpGateways } from './mcp-gateways';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -184,22 +180,6 @@ export class Zones extends APIResource {
    */
   delete(zoneID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.delete(path`/zones/${zoneID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
-  }
-
-  /**
-   * Removes downstream resource, dependency, and optionally upstream
-   * resource/provider
-   */
-  deleteMcpServer(
-    downstreamID: string,
-    params: ZoneDeleteMcpServerParams,
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { zoneId } = params;
-    return this._client.delete(path`/zones/${zoneId}/mcp-servers/${downstreamID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -713,13 +693,6 @@ export interface ZoneListParams {
   slug?: string;
 }
 
-export interface ZoneDeleteMcpServerParams {
-  /**
-   * Zone ID
-   */
-  zoneId: string;
-}
-
 export interface ZoneListSessionResourceAccessParams {
   /**
    * Cursor for forward pagination
@@ -784,7 +757,6 @@ export declare namespace Zones {
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneDeleteMcpServerParams as ZoneDeleteMcpServerParams,
     type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
@@ -834,11 +806,7 @@ export declare namespace Zones {
     type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams,
   };
 
-  export {
-    McpGateways as McpGateways,
-    type McpGatewayCreateMcpServerResponse as McpGatewayCreateMcpServerResponse,
-    type McpGatewayCreateMcpServerParams as McpGatewayCreateMcpServerParams,
-  };
+  export { McpGateways as McpGateways };
 
   export {
     Providers as Providers,

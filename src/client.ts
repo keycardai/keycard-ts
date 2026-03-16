@@ -47,7 +47,6 @@ import {
   PageInfoPagination,
   Zone,
   ZoneCreateParams,
-  ZoneDeleteMcpServerParams,
   ZoneListParams,
   ZoneListResponse,
   ZoneListSessionResourceAccessParams,
@@ -874,7 +873,6 @@ export declare namespace KeycardAPI {
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneDeleteMcpServerParams as ZoneDeleteMcpServerParams,
     type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
