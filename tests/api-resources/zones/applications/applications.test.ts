@@ -35,7 +35,6 @@ describe('resource applications', () => {
           redirect_uris: ['https://example.com'],
         },
       },
-      traits: ['gateway'],
     });
   });
 
@@ -82,7 +81,6 @@ describe('resource applications', () => {
           redirect_uris: ['https://example.com'],
         },
       },
-      traits: ['gateway'],
     });
   });
 

@@ -36,6 +36,5 @@ export {
   type ZoneRetrieveParams,
   type ZoneUpdateParams,
   type ZoneListParams,
-  type ZoneDeleteMcpServerParams,
   type ZoneListSessionResourceAccessParams,
 } from './zones/zones';
