@@ -37,7 +37,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -55,7 +54,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -81,7 +79,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -104,7 +101,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -122,7 +118,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
