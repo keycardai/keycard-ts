@@ -24,7 +24,6 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -40,7 +39,6 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -60,7 +58,6 @@ export class Users extends APIResource {
         { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -78,7 +75,6 @@ export class Users extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
