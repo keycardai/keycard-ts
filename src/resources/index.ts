@@ -24,7 +24,6 @@ export {
   type OrganizationListIdentitiesParams,
   type OrganizationListRolesParams,
 } from './organizations/organizations';
-export { ServiceAccountToken, type ServiceAccountTokenCreateParams } from './service-account-token';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,
@@ -36,6 +35,5 @@ export {
   type ZoneRetrieveParams,
   type ZoneUpdateParams,
   type ZoneListParams,
-  type ZoneDeleteMcpServerParams,
   type ZoneListSessionResourceAccessParams,
 } from './zones/zones';

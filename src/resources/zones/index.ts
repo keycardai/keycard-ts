@@ -44,11 +44,6 @@ export {
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
 export {
-  McpGateways,
-  type McpGatewayCreateMcpServerResponse,
-  type McpGatewayCreateMcpServerParams,
-} from './mcp-gateways';
-export {
   Members,
   type ZoneMember,
   type ZoneRole,
@@ -59,6 +54,42 @@ export {
   type MemberDeleteParams,
   type MemberAddParams,
 } from './members';
+export {
+  Policies,
+  type Policy,
+  type PolicyDraft,
+  type PolicyListResponse,
+  type PolicyCreateParams,
+  type PolicyRetrieveParams,
+  type PolicyUpdateParams,
+  type PolicyListParams,
+  type PolicyArchiveParams,
+} from './policies/index';
+export {
+  PolicySchemas,
+  type SchemaVersion,
+  type SchemaVersionWithZoneInfo,
+  type PolicySchemaListResponse,
+  type PolicySchemaRetrieveParams,
+  type PolicySchemaListParams,
+  type PolicySchemaSetDefaultParams,
+} from './policy-schemas';
+export {
+  PolicySets,
+  type Attestation,
+  type AttestationStatement,
+  type PolicySet,
+  type PolicySetDraft,
+  type PolicySetManifest,
+  type PolicySetManifestEntry,
+  type PolicySetWithBinding,
+  type PolicySetListResponse,
+  type PolicySetCreateParams,
+  type PolicySetRetrieveParams,
+  type PolicySetUpdateParams,
+  type PolicySetListParams,
+  type PolicySetArchiveParams,
+} from './policy-sets/index';
 export {
   Providers,
   type Provider,
@@ -125,6 +156,5 @@ export {
   type ZoneRetrieveParams,
   type ZoneUpdateParams,
   type ZoneListParams,
-  type ZoneDeleteMcpServerParams,
   type ZoneListSessionResourceAccessParams,
 } from './zones';

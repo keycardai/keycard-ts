@@ -24,7 +24,6 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
-import { ServiceAccountToken, ServiceAccountTokenCreateParams } from './resources/service-account-token';
 import {
   Organization,
   OrganizationCreateParams,
@@ -47,7 +46,6 @@ import {
   PageInfoPagination,
   Zone,
   ZoneCreateParams,
-  ZoneDeleteMcpServerParams,
   ZoneListParams,
   ZoneListResponse,
   ZoneListSessionResourceAccessParams,
@@ -77,14 +75,14 @@ export interface ClientOptions {
   apiKey?: string | null | undefined;
 
   /**
-   * HTTP Basic authentication with client_id and client_secret
+   * OAuth2 client ID for service account authentication
    */
-  username?: string | null | undefined;
+  clientID?: string | null | undefined;
 
   /**
-   * HTTP Basic authentication with client_id and client_secret
+   * OAuth2 client secret for service account authentication
    */
-  password?: string | null | undefined;
+  clientSecret?: string | null | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -160,8 +158,8 @@ export interface ClientOptions {
  */
 export class KeycardAPI {
   apiKey: string | null;
-  username: string | null;
-  password: string | null;
+  clientID: string | null;
+  clientSecret: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -179,8 +177,8 @@ export class KeycardAPI {
    * API Client for interfacing with the Keycard API API.
    *
    * @param {string | null | undefined} [opts.apiKey=process.env['KEYCARD_API_API_KEY'] ?? null]
-   * @param {string | null | undefined} [opts.username=process.env['KEYCARD_API_USERNAME'] ?? null]
-   * @param {string | null | undefined} [opts.password=process.env['KEYCARD_API_PASSWORD'] ?? null]
+   * @param {string | null | undefined} [opts.clientID=process.env['KEYCARD_API_CLIENT_ID'] ?? null]
+   * @param {string | null | undefined} [opts.clientSecret=process.env['KEYCARD_API_CLIENT_SECRET'] ?? null]
    * @param {string} [opts.baseURL=process.env['KEYCARD_API_BASE_URL'] ?? https://api.keycard.ai] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -192,14 +190,14 @@ export class KeycardAPI {
   constructor({
     baseURL = readEnv('KEYCARD_API_BASE_URL'),
     apiKey = readEnv('KEYCARD_API_API_KEY') ?? null,
-    username = readEnv('KEYCARD_API_USERNAME') ?? null,
-    password = readEnv('KEYCARD_API_PASSWORD') ?? null,
+    clientID = readEnv('KEYCARD_API_CLIENT_ID') ?? null,
+    clientSecret = readEnv('KEYCARD_API_CLIENT_SECRET') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
       apiKey,
-      username,
-      password,
+      clientID,
+      clientSecret,
       ...opts,
       baseURL: baseURL || `https://api.keycard.ai`,
     };
@@ -222,8 +220,8 @@ export class KeycardAPI {
     this._options = options;
 
     this.apiKey = apiKey;
-    this.username = username;
-    this.password = password;
+    this.clientID = clientID;
+    this.clientSecret = clientSecret;
   }
 
   /**
@@ -240,10 +238,11 @@ export class KeycardAPI {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
-      username: this.username,
-      password: this.password,
+      clientID: this.clientID,
+      clientSecret: this.clientSecret,
       ...options,
     });
+    client.oAuth2AuthState = this.oAuth2AuthState;
     return client;
   }
 
@@ -259,54 +258,82 @@ export class KeycardAPI {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    if (this.username && this.password && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
-    if (this.apiKey && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
-    throw new Error(
-      'Could not resolve authentication method. Expected either username, password or apiKey to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
-    );
+    return;
   }
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { orgManagementBasicAuth?: boolean; vaultAPIBearerAuth?: boolean },
+    schemes: { oAuth2Auth?: boolean },
   ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([
-      schemes.orgManagementBasicAuth ? await this.orgManagementBasicAuth(opts) : null,
-      schemes.vaultAPIBearerAuth ? await this.vaultAPIBearerAuth(opts) : null,
-    ]);
+    return buildHeaders([schemes.oAuth2Auth ? await this.oAuth2Auth(opts) : null]);
   }
 
-  protected async orgManagementBasicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (!this.username) {
+  private oAuth2AuthState:
+    | {
+        promise: Promise<{
+          access_token: string;
+          token_type: string;
+          expires_in: number;
+          expires_at: Date;
+          refresh_token?: string;
+        }>;
+        clientID: string;
+        clientSecret: string;
+      }
+    | undefined;
+  protected async oAuth2Auth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (!this.clientID || !this.clientSecret) {
       return undefined;
     }
 
-    if (!this.password) {
-      return undefined;
+    // Invalidate the cache if the token is expired
+    if (this.oAuth2AuthState && +(await this.oAuth2AuthState.promise).expires_at < Date.now()) {
+      this.oAuth2AuthState = undefined;
     }
 
-    const credentials = `${this.username}:${this.password}`;
-    const Authorization = `Basic ${toBase64(credentials)}`;
-    return buildHeaders([{ Authorization }]);
-  }
-
-  protected async vaultAPIBearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (this.apiKey == null) {
-      return undefined;
+    // Invalidate the cache if the relevant state has been changed
+    if (
+      this.oAuth2AuthState &&
+      this.oAuth2AuthState.clientID !== this.clientID &&
+      this.oAuth2AuthState.clientSecret !== this.clientSecret
+    ) {
+      this.oAuth2AuthState = undefined;
     }
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+
+    if (!this.oAuth2AuthState) {
+      this.oAuth2AuthState = {
+        promise: this.fetch(this.buildURL('https://api.keycard.ai/service-account-token', {}), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
+          },
+          body: 'grant_type=client_credentials',
+        }).then(async (res) => {
+          if (!res.ok) {
+            const errText = await res.text().catch(() => '');
+            const errJSON = errText ? safeJSON(errText) : undefined;
+            const errMessage = errJSON ? undefined : errText;
+            throw this.makeStatusError(res.status, errJSON, errMessage, res.headers);
+          }
+          const json = (await res.json()) as {
+            access_token: string;
+            token_type: string;
+            expires_in: number;
+            refresh_token?: string;
+          };
+          const now = new Date();
+          now.setSeconds(now.getSeconds() + json.expires_in);
+          return { ...json, expires_at: now };
+        }),
+        clientID: this.clientID,
+        clientSecret: this.clientSecret,
+      };
+    }
+
+    const token = await this.oAuth2AuthState.promise;
+
+    return buildHeaders([{ Authorization: `Bearer ${token.access_token}` }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -610,6 +637,13 @@ export class KeycardAPI {
     if (shouldRetryHeader === 'true') return true;
     if (shouldRetryHeader === 'false') return false;
 
+    // Retry if the token has expired
+    const oAuth2Auth = await this.oAuth2AuthState?.promise;
+    if (response.status === 401 && oAuth2Auth && +oAuth2Auth.expires_at - Date.now() < 10 * 1000) {
+      this.oAuth2AuthState = undefined;
+      return true;
+    }
+
     // Retry on request timeouts.
     if (response.status === 408) return true;
 
@@ -732,10 +766,7 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(
-        options,
-        options.__security ?? { orgManagementBasicAuth: true, vaultAPIBearerAuth: true },
-      ),
+      await this.authHeaders(options, options.__security ?? { oAuth2Auth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -818,13 +849,11 @@ export class KeycardAPI {
 
   zones: API.Zones = new API.Zones(this);
   organizations: API.Organizations = new API.Organizations(this);
-  serviceAccountToken: API.ServiceAccountToken = new API.ServiceAccountToken(this);
   invitations: API.Invitations = new API.Invitations(this);
 }
 
 KeycardAPI.Zones = Zones;
 KeycardAPI.Organizations = Organizations;
-KeycardAPI.ServiceAccountToken = ServiceAccountToken;
 KeycardAPI.Invitations = Invitations;
 
 export declare namespace KeycardAPI {
@@ -841,7 +870,6 @@ export declare namespace KeycardAPI {
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneDeleteMcpServerParams as ZoneDeleteMcpServerParams,
     type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
@@ -861,11 +889,6 @@ export declare namespace KeycardAPI {
     type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
-  };
-
-  export {
-    ServiceAccountToken as ServiceAccountToken,
-    type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams,
   };
 
   export {

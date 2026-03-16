@@ -29,12 +29,6 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
-import * as McpGatewaysAPI from './mcp-gateways';
-import {
-  McpGatewayCreateMcpServerParams,
-  McpGatewayCreateMcpServerResponse,
-  McpGateways,
-} from './mcp-gateways';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -47,6 +41,16 @@ import {
   ZoneMember,
   ZoneRole,
 } from './members';
+import * as PolicySchemasAPI from './policy-schemas';
+import {
+  PolicySchemaListParams,
+  PolicySchemaListResponse,
+  PolicySchemaRetrieveParams,
+  PolicySchemaSetDefaultParams,
+  PolicySchemas,
+  SchemaVersion,
+  SchemaVersionWithZoneInfo,
+} from './policy-schemas';
 import * as ProvidersAPI from './providers';
 import {
   Provider,
@@ -120,6 +124,35 @@ import {
   Metadata,
   MetadataUpdate,
 } from './applications/applications';
+import * as PoliciesAPI from './policies/policies';
+import {
+  Policies,
+  Policy,
+  PolicyArchiveParams,
+  PolicyCreateParams,
+  PolicyDraft,
+  PolicyListParams,
+  PolicyListResponse,
+  PolicyRetrieveParams,
+  PolicyUpdateParams,
+} from './policies/policies';
+import * as PolicySetsAPI from './policy-sets/policy-sets';
+import {
+  Attestation,
+  AttestationStatement,
+  PolicySet,
+  PolicySetArchiveParams,
+  PolicySetCreateParams,
+  PolicySetDraft,
+  PolicySetListParams,
+  PolicySetListResponse,
+  PolicySetManifest,
+  PolicySetManifestEntry,
+  PolicySetRetrieveParams,
+  PolicySetUpdateParams,
+  PolicySetWithBinding,
+  PolicySets,
+} from './policy-sets/policy-sets';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -130,7 +163,6 @@ export class Zones extends APIResource {
   applicationCredentials: ApplicationCredentialsAPI.ApplicationCredentials =
     new ApplicationCredentialsAPI.ApplicationCredentials(this._client);
   delegatedGrants: DelegatedGrantsAPI.DelegatedGrants = new DelegatedGrantsAPI.DelegatedGrants(this._client);
-  mcpGateways: McpGatewaysAPI.McpGateways = new McpGatewaysAPI.McpGateways(this._client);
   providers: ProvidersAPI.Providers = new ProvidersAPI.Providers(this._client);
   resources: ResourcesAPI.Resources = new ResourcesAPI.Resources(this._client);
   sessions: SessionsAPI.Sessions = new SessionsAPI.Sessions(this._client);
@@ -138,13 +170,16 @@ export class Zones extends APIResource {
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
+  policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
+  policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
+  policySets: PolicySetsAPI.PolicySets = new PolicySetsAPI.PolicySets(this._client);
 
   /**
    * Creates a new zone for the authenticated organization. A zone is an isolated
    * environment for IAM resources.
    */
   create(body: ZoneCreateParams, options?: RequestOptions): APIPromise<Zone> {
-    return this._client.post('/zones', { body, ...options, __security: {} });
+    return this._client.post('/zones', { body, ...options });
   }
 
   /**
@@ -155,7 +190,7 @@ export class Zones extends APIResource {
     query: ZoneRetrieveParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.get(path`/zones/${zoneID}`, { query, ...options, __security: {} });
+    return this._client.get(path`/zones/${zoneID}`, { query, ...options });
   }
 
   /**
@@ -166,7 +201,7 @@ export class Zones extends APIResource {
     body: ZoneUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Zone> {
-    return this._client.patch(path`/zones/${zoneID}`, { body, ...options, __security: {} });
+    return this._client.patch(path`/zones/${zoneID}`, { body, ...options });
   }
 
   /**
@@ -176,7 +211,7 @@ export class Zones extends APIResource {
     query: ZoneListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListResponse> {
-    return this._client.get('/zones', { query, ...options, __security: {} });
+    return this._client.get('/zones', { query, ...options });
   }
 
   /**
@@ -186,24 +221,6 @@ export class Zones extends APIResource {
     return this._client.delete(path`/zones/${zoneID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
-    });
-  }
-
-  /**
-   * Removes downstream resource, dependency, and optionally upstream
-   * resource/provider
-   */
-  deleteMcpServer(
-    downstreamID: string,
-    params: ZoneDeleteMcpServerParams,
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { zoneId } = params;
-    return this._client.delete(path`/zones/${zoneId}/mcp-servers/${downstreamID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: {},
     });
   }
 
@@ -218,11 +235,7 @@ export class Zones extends APIResource {
     query: ZoneListSessionResourceAccessParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ZoneListSessionResourceAccessResponse> {
-    return this._client.get(path`/zones/${zoneID}/session-resource-access`, {
-      query,
-      ...options,
-      __security: {},
-    });
+    return this._client.get(path`/zones/${zoneID}/session-resource-access`, { query, ...options });
   }
 }
 
@@ -719,13 +732,6 @@ export interface ZoneListParams {
   slug?: string;
 }
 
-export interface ZoneDeleteMcpServerParams {
-  /**
-   * Zone ID
-   */
-  zoneId: string;
-}
-
 export interface ZoneListSessionResourceAccessParams {
   /**
    * Cursor for forward pagination
@@ -770,7 +776,6 @@ export interface ZoneListSessionResourceAccessParams {
 Zones.Applications = Applications;
 Zones.ApplicationCredentials = ApplicationCredentials;
 Zones.DelegatedGrants = DelegatedGrants;
-Zones.McpGateways = McpGateways;
 Zones.Providers = Providers;
 Zones.Resources = Resources;
 Zones.Sessions = Sessions;
@@ -778,6 +783,9 @@ Zones.UserAgents = UserAgents;
 Zones.Users = Users;
 Zones.Members = Members;
 Zones.Secrets = Secrets;
+Zones.PolicySchemas = PolicySchemas;
+Zones.Policies = Policies;
+Zones.PolicySets = PolicySets;
 
 export declare namespace Zones {
   export {
@@ -790,7 +798,6 @@ export declare namespace Zones {
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneDeleteMcpServerParams as ZoneDeleteMcpServerParams,
     type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
@@ -838,12 +845,6 @@ export declare namespace Zones {
     type DelegatedGrantUpdateParams as DelegatedGrantUpdateParams,
     type DelegatedGrantListParams as DelegatedGrantListParams,
     type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams,
-  };
-
-  export {
-    McpGateways as McpGateways,
-    type McpGatewayCreateMcpServerResponse as McpGatewayCreateMcpServerResponse,
-    type McpGatewayCreateMcpServerParams as McpGatewayCreateMcpServerParams,
   };
 
   export {
@@ -917,5 +918,44 @@ export declare namespace Zones {
     type SecretUpdateParams as SecretUpdateParams,
     type SecretListParams as SecretListParams,
     type SecretDeleteParams as SecretDeleteParams,
+  };
+
+  export {
+    PolicySchemas as PolicySchemas,
+    type SchemaVersion as SchemaVersion,
+    type SchemaVersionWithZoneInfo as SchemaVersionWithZoneInfo,
+    type PolicySchemaListResponse as PolicySchemaListResponse,
+    type PolicySchemaRetrieveParams as PolicySchemaRetrieveParams,
+    type PolicySchemaListParams as PolicySchemaListParams,
+    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams,
+  };
+
+  export {
+    Policies as Policies,
+    type Policy as Policy,
+    type PolicyDraft as PolicyDraft,
+    type PolicyListResponse as PolicyListResponse,
+    type PolicyCreateParams as PolicyCreateParams,
+    type PolicyRetrieveParams as PolicyRetrieveParams,
+    type PolicyUpdateParams as PolicyUpdateParams,
+    type PolicyListParams as PolicyListParams,
+    type PolicyArchiveParams as PolicyArchiveParams,
+  };
+
+  export {
+    PolicySets as PolicySets,
+    type Attestation as Attestation,
+    type AttestationStatement as AttestationStatement,
+    type PolicySet as PolicySet,
+    type PolicySetDraft as PolicySetDraft,
+    type PolicySetManifest as PolicySetManifest,
+    type PolicySetManifestEntry as PolicySetManifestEntry,
+    type PolicySetWithBinding as PolicySetWithBinding,
+    type PolicySetListResponse as PolicySetListResponse,
+    type PolicySetCreateParams as PolicySetCreateParams,
+    type PolicySetRetrieveParams as PolicySetRetrieveParams,
+    type PolicySetUpdateParams as PolicySetUpdateParams,
+    type PolicySetListParams as PolicySetListParams,
+    type PolicySetArchiveParams as PolicySetArchiveParams,
   };
 }

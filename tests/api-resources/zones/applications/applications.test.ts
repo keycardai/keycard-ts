@@ -3,9 +3,8 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
-  apiKey: 'My API Key',
-  username: 'My Username',
-  password: 'My Password',
+  clientID: 'My Client ID',
+  clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
@@ -36,7 +35,6 @@ describe('resource applications', () => {
           redirect_uris: ['https://example.com'],
         },
       },
-      traits: ['gateway'],
     });
   });
 
@@ -83,7 +81,6 @@ describe('resource applications', () => {
           redirect_uris: ['https://example.com'],
         },
       },
-      traits: ['gateway'],
     });
   });
 
