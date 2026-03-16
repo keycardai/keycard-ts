@@ -43,6 +43,16 @@ import {
   ZoneMember,
   ZoneRole,
 } from './members';
+import * as PolicySchemasAPI from './policy-schemas';
+import {
+  PolicySchemaListParams,
+  PolicySchemaListResponse,
+  PolicySchemaRetrieveParams,
+  PolicySchemaSetDefaultParams,
+  PolicySchemas,
+  SchemaVersion,
+  SchemaVersionWithZoneInfo,
+} from './policy-schemas';
 import * as ProvidersAPI from './providers';
 import {
   Provider,
@@ -116,6 +126,35 @@ import {
   Metadata,
   MetadataUpdate,
 } from './applications/applications';
+import * as PoliciesAPI from './policies/policies';
+import {
+  Policies,
+  Policy,
+  PolicyArchiveParams,
+  PolicyCreateParams,
+  PolicyDraft,
+  PolicyListParams,
+  PolicyListResponse,
+  PolicyRetrieveParams,
+  PolicyUpdateParams,
+} from './policies/policies';
+import * as PolicySetsAPI from './policy-sets/policy-sets';
+import {
+  Attestation,
+  AttestationStatement,
+  PolicySet,
+  PolicySetArchiveParams,
+  PolicySetCreateParams,
+  PolicySetDraft,
+  PolicySetListParams,
+  PolicySetListResponse,
+  PolicySetManifest,
+  PolicySetManifestEntry,
+  PolicySetRetrieveParams,
+  PolicySetUpdateParams,
+  PolicySetWithBinding,
+  PolicySets,
+} from './policy-sets/policy-sets';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -134,6 +173,9 @@ export class Zones extends APIResource {
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
+  policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
+  policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
+  policySets: PolicySetsAPI.PolicySets = new PolicySetsAPI.PolicySets(this._client);
 
   /**
    * Creates a new zone for the authenticated organization. A zone is an isolated
@@ -745,6 +787,9 @@ Zones.UserAgents = UserAgents;
 Zones.Users = Users;
 Zones.Members = Members;
 Zones.Secrets = Secrets;
+Zones.PolicySchemas = PolicySchemas;
+Zones.Policies = Policies;
+Zones.PolicySets = PolicySets;
 
 export declare namespace Zones {
   export {
@@ -879,5 +924,44 @@ export declare namespace Zones {
     type SecretUpdateParams as SecretUpdateParams,
     type SecretListParams as SecretListParams,
     type SecretDeleteParams as SecretDeleteParams,
+  };
+
+  export {
+    PolicySchemas as PolicySchemas,
+    type SchemaVersion as SchemaVersion,
+    type SchemaVersionWithZoneInfo as SchemaVersionWithZoneInfo,
+    type PolicySchemaListResponse as PolicySchemaListResponse,
+    type PolicySchemaRetrieveParams as PolicySchemaRetrieveParams,
+    type PolicySchemaListParams as PolicySchemaListParams,
+    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams,
+  };
+
+  export {
+    Policies as Policies,
+    type Policy as Policy,
+    type PolicyDraft as PolicyDraft,
+    type PolicyListResponse as PolicyListResponse,
+    type PolicyCreateParams as PolicyCreateParams,
+    type PolicyRetrieveParams as PolicyRetrieveParams,
+    type PolicyUpdateParams as PolicyUpdateParams,
+    type PolicyListParams as PolicyListParams,
+    type PolicyArchiveParams as PolicyArchiveParams,
+  };
+
+  export {
+    PolicySets as PolicySets,
+    type Attestation as Attestation,
+    type AttestationStatement as AttestationStatement,
+    type PolicySet as PolicySet,
+    type PolicySetDraft as PolicySetDraft,
+    type PolicySetManifest as PolicySetManifest,
+    type PolicySetManifestEntry as PolicySetManifestEntry,
+    type PolicySetWithBinding as PolicySetWithBinding,
+    type PolicySetListResponse as PolicySetListResponse,
+    type PolicySetCreateParams as PolicySetCreateParams,
+    type PolicySetRetrieveParams as PolicySetRetrieveParams,
+    type PolicySetUpdateParams as PolicySetUpdateParams,
+    type PolicySetListParams as PolicySetListParams,
+    type PolicySetArchiveParams as PolicySetArchiveParams,
   };
 }
