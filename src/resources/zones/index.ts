@@ -43,7 +43,6 @@ export {
   type DelegatedGrantListParams,
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
-export { McpGateways } from './mcp-gateways';
 export {
   Members,
   type ZoneMember,

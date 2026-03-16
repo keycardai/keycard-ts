@@ -29,8 +29,6 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
-import * as McpGatewaysAPI from './mcp-gateways';
-import { McpGateways } from './mcp-gateways';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -165,7 +163,6 @@ export class Zones extends APIResource {
   applicationCredentials: ApplicationCredentialsAPI.ApplicationCredentials =
     new ApplicationCredentialsAPI.ApplicationCredentials(this._client);
   delegatedGrants: DelegatedGrantsAPI.DelegatedGrants = new DelegatedGrantsAPI.DelegatedGrants(this._client);
-  mcpGateways: McpGatewaysAPI.McpGateways = new McpGatewaysAPI.McpGateways(this._client);
   providers: ProvidersAPI.Providers = new ProvidersAPI.Providers(this._client);
   resources: ResourcesAPI.Resources = new ResourcesAPI.Resources(this._client);
   sessions: SessionsAPI.Sessions = new SessionsAPI.Sessions(this._client);
@@ -779,7 +776,6 @@ export interface ZoneListSessionResourceAccessParams {
 Zones.Applications = Applications;
 Zones.ApplicationCredentials = ApplicationCredentials;
 Zones.DelegatedGrants = DelegatedGrants;
-Zones.McpGateways = McpGateways;
 Zones.Providers = Providers;
 Zones.Resources = Resources;
 Zones.Sessions = Sessions;
@@ -850,8 +846,6 @@ export declare namespace Zones {
     type DelegatedGrantListParams as DelegatedGrantListParams,
     type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams,
   };
-
-  export { McpGateways as McpGateways };
 
   export {
     Providers as Providers,

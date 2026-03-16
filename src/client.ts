@@ -24,7 +24,6 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
-import { ServiceAccountToken, ServiceAccountTokenCreateParams } from './resources/service-account-token';
 import {
   Organization,
   OrganizationCreateParams,
@@ -850,13 +849,11 @@ export class KeycardAPI {
 
   zones: API.Zones = new API.Zones(this);
   organizations: API.Organizations = new API.Organizations(this);
-  serviceAccountToken: API.ServiceAccountToken = new API.ServiceAccountToken(this);
   invitations: API.Invitations = new API.Invitations(this);
 }
 
 KeycardAPI.Zones = Zones;
 KeycardAPI.Organizations = Organizations;
-KeycardAPI.ServiceAccountToken = ServiceAccountToken;
 KeycardAPI.Invitations = Invitations;
 
 export declare namespace KeycardAPI {
@@ -892,11 +889,6 @@ export declare namespace KeycardAPI {
     type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
-  };
-
-  export {
-    ServiceAccountToken as ServiceAccountToken,
-    type ServiceAccountTokenCreateParams as ServiceAccountTokenCreateParams,
   };
 
   export {

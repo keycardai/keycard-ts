@@ -89,8 +89,6 @@ Methods:
 - <code title="get /zones/{zoneId}/delegated-grants">client.zones.delegatedGrants.<a href="./src/resources/zones/delegated-grants.ts">list</a>(zoneID, { ...params }) -> DelegatedGrantListResponse</code>
 - <code title="delete /zones/{zoneId}/delegated-grants/{id}">client.zones.delegatedGrants.<a href="./src/resources/zones/delegated-grants.ts">delete</a>(id, { ...params }) -> void</code>
 
-## McpGateways
-
 ## Providers
 
 Types:
@@ -370,12 +368,6 @@ Methods:
 - <code title="patch /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">update</a>(organizationID, { ...params }) -> SSOConnection</code>
 - <code title="delete /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">disable</a>(organizationID, { ...params }) -> void</code>
 - <code title="post /organizations/{organization_id}/sso-connection">client.organizations.ssoConnection.<a href="./src/resources/organizations/sso-connection.ts">enable</a>(organizationID, { ...params }) -> SSOConnection</code>
-
-# ServiceAccountToken
-
-Methods:
-
-- <code title="post /service-account-token">client.serviceAccountToken.<a href="./src/resources/service-account-token.ts">create</a>({ ...params }) -> TokenResponse</code>
 
 # Invitations
 
