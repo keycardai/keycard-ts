@@ -192,6 +192,88 @@ Methods:
 - <code title="get /zones/{zone_id}/secrets">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">list</a>(zoneID, { ...params }) -> SecretListResponse</code>
 - <code title="delete /zones/{zone_id}/secrets/{id}">client.zones.secrets.<a href="./src/resources/zones/secrets.ts">delete</a>(id, { ...params }) -> void</code>
 
+## PolicySchemas
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-schemas.ts">SchemaVersion</a></code>
+- <code><a href="./src/resources/zones/policy-schemas.ts">SchemaVersionWithZoneInfo</a></code>
+- <code><a href="./src/resources/zones/policy-schemas.ts">PolicySchemaListResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policy-schemas/{version}">client.zones.policySchemas.<a href="./src/resources/zones/policy-schemas.ts">retrieve</a>(version, { ...params }) -> SchemaVersionWithZoneInfo</code>
+- <code title="get /zones/{zone_id}/policy-schemas">client.zones.policySchemas.<a href="./src/resources/zones/policy-schemas.ts">list</a>(zoneID, { ...params }) -> PolicySchemaListResponse</code>
+- <code title="patch /zones/{zone_id}/policy-schemas/{version}">client.zones.policySchemas.<a href="./src/resources/zones/policy-schemas.ts">setDefault</a>(version, { ...params }) -> SchemaVersionWithZoneInfo</code>
+
+## Policies
+
+Types:
+
+- <code><a href="./src/resources/zones/policies/policies.ts">Policy</a></code>
+- <code><a href="./src/resources/zones/policies/policies.ts">PolicyDraft</a></code>
+- <code><a href="./src/resources/zones/policies/policies.ts">PolicyListResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policies">client.zones.policies.<a href="./src/resources/zones/policies/policies.ts">create</a>(zoneID, { ...params }) -> Policy</code>
+- <code title="get /zones/{zone_id}/policies/{policy_id}">client.zones.policies.<a href="./src/resources/zones/policies/policies.ts">retrieve</a>(policyID, { ...params }) -> Policy</code>
+- <code title="patch /zones/{zone_id}/policies/{policy_id}">client.zones.policies.<a href="./src/resources/zones/policies/policies.ts">update</a>(policyID, { ...params }) -> Policy</code>
+- <code title="get /zones/{zone_id}/policies">client.zones.policies.<a href="./src/resources/zones/policies/policies.ts">list</a>(zoneID, { ...params }) -> PolicyListResponse</code>
+- <code title="delete /zones/{zone_id}/policies/{policy_id}">client.zones.policies.<a href="./src/resources/zones/policies/policies.ts">archive</a>(policyID, { ...params }) -> Policy</code>
+
+### Versions
+
+Types:
+
+- <code><a href="./src/resources/zones/policies/versions.ts">PolicyVersion</a></code>
+- <code><a href="./src/resources/zones/policies/versions.ts">VersionListResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">create</a>(policyID, { ...params }) -> PolicyVersion</code>
+- <code title="get /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">retrieve</a>(versionID, { ...params }) -> PolicyVersion</code>
+- <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
+- <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
+
+## PolicySets
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">Attestation</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">AttestationStatement</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySet</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetDraft</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetManifest</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetManifestEntry</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetWithBinding</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetListResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-sets">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">create</a>(zoneID, { ...params }) -> PolicySetWithBinding</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">retrieve</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
+- <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">update</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
+- <code title="get /zones/{zone_id}/policy-sets">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">list</a>(zoneID, { ...params }) -> PolicySetListResponse</code>
+- <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">archive</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
+
+### Versions
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/versions.ts">PolicySetVersion</a></code>
+- <code><a href="./src/resources/zones/policy-sets/versions.ts">VersionListResponse</a></code>
+- <code><a href="./src/resources/zones/policy-sets/versions.ts">VersionListPoliciesResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-sets/{policy_set_id}/versions">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">create</a>(policySetID, { ...params }) -> PolicySetVersion</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">retrieve</a>(versionID, { ...params }) -> PolicySetVersion</code>
+- <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">update</a>(versionID, { ...params }) -> PolicySetVersion</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">list</a>(policySetID, { ...params }) -> VersionListResponse</code>
+- <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">archive</a>(versionID, { ...params }) -> PolicySetVersion</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}/policies">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">listPolicies</a>(versionID, { ...params }) -> VersionListPoliciesResponse</code>
+
 # Organizations
 
 Types:

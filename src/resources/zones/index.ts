@@ -56,6 +56,42 @@ export {
   type MemberAddParams,
 } from './members';
 export {
+  Policies,
+  type Policy,
+  type PolicyDraft,
+  type PolicyListResponse,
+  type PolicyCreateParams,
+  type PolicyRetrieveParams,
+  type PolicyUpdateParams,
+  type PolicyListParams,
+  type PolicyArchiveParams,
+} from './policies/index';
+export {
+  PolicySchemas,
+  type SchemaVersion,
+  type SchemaVersionWithZoneInfo,
+  type PolicySchemaListResponse,
+  type PolicySchemaRetrieveParams,
+  type PolicySchemaListParams,
+  type PolicySchemaSetDefaultParams,
+} from './policy-schemas';
+export {
+  PolicySets,
+  type Attestation,
+  type AttestationStatement,
+  type PolicySet,
+  type PolicySetDraft,
+  type PolicySetManifest,
+  type PolicySetManifestEntry,
+  type PolicySetWithBinding,
+  type PolicySetListResponse,
+  type PolicySetCreateParams,
+  type PolicySetRetrieveParams,
+  type PolicySetUpdateParams,
+  type PolicySetListParams,
+  type PolicySetArchiveParams,
+} from './policy-sets/index';
+export {
   Providers,
   type Provider,
   type ProviderListResponse,
