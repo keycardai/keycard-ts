@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.6.0 (2026-03-16)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/keycardai/keycard-ts/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* add OAuth2 as alternative auth on management API endpoints ([c2c973b](https://github.com/keycardai/keycard-ts/commit/c2c973b1aee8ea129ecf657cf80665809931865c))
+* add OAuth2 client credentials security scheme from common spec ([28caaba](https://github.com/keycardai/keycard-ts/commit/28caaba8ed5acb25aed81273a3913f432994f221))
+* add OAuth2 client_credentials auth to SDK config ([6d93dfb](https://github.com/keycardai/keycard-ts/commit/6d93dfb7dfb2eefe1bddf0e644b6e36c479fa1bb))
+* consolidate prefixed security schemes into canonical names ([9a52ec6](https://github.com/keycardai/keycard-ts/commit/9a52ec61a4068c5536f8ff7ad6947ec2d6b7bac6))
+* Include `array_format: brackets` settings ([7a0d42f](https://github.com/keycardai/keycard-ts/commit/7a0d42faee627735525ef3e2ca8f40a7cabc77e3))
+* remove unused security schemes from joined spec ([99b0a72](https://github.com/keycardai/keycard-ts/commit/99b0a72a6e062dde86ddea1d03b85b1334ad30c3))
+* support HTTP Basic Auth for service account token endpoint (RFC 6749 2.3.1) ([8d67678](https://github.com/keycardai/keycard-ts/commit/8d6767836bfe99808d2f2c450995a93eb7973dc8))
+* update pkg-oapi-common and add OAuth2 security scheme ([8449686](https://github.com/keycardai/keycard-ts/commit/8449686490cde9285e555bcdd2309f1ae24423c1))
+
+
+### Bug Fixes
+
+* **tests:** correct setup of OAuth 2 Client Credentials tests ([1b9a2b8](https://github.com/keycardai/keycard-ts/commit/1b9a2b879bed3d905cdfe9d63c118b5abb62cf58))
+
+
+### Chores
+
+* hide unstable mcp features from api documentation ([f22bdfc](https://github.com/keycardai/keycard-ts/commit/f22bdfc3282ff99da9154e4ff21ca4a2b96ff7ea))
+
+
+### Documentation
+
+* remove MCP endpoints ([30f3426](https://github.com/keycardai/keycard-ts/commit/30f34267c8cbd16febaef1cccc8108c2740d0fa4))
+
 ## 0.5.1 (2026-03-10)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/keycardai/keycard-ts/compare/v0.5.0...v0.5.1)
