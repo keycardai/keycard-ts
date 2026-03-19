@@ -74,6 +74,7 @@ describe('resource zones', () => {
         'zoneId',
         {
           default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
+          default_resource_id: 'default_resource_id',
           description: 'description',
           encryption_key: { arn: 'x', type: 'aws' },
           login_flow: 'default',

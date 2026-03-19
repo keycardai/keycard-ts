@@ -308,6 +308,11 @@ export interface Zone {
   default_mcp_gateway_application_id?: string;
 
   /**
+   * Resource ID configured as the default resource for the zone
+   */
+  default_resource_id?: string;
+
+  /**
    * Human-readable description
    */
   description?: string | null;
@@ -545,6 +550,12 @@ export interface ZoneUpdateParams {
    * to unset)
    */
   default_mcp_gateway_application_id?: string | null;
+
+  /**
+   * Resource ID to configure as the default resource for the zone (set to null to
+   * unset)
+   */
+  default_resource_id?: string | null;
 
   /**
    * Human-readable description
