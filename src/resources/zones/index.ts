@@ -151,10 +151,8 @@ export {
   type PageInfoPagination,
   type Zone,
   type ZoneListResponse,
-  type ZoneListSessionResourceAccessResponse,
   type ZoneCreateParams,
   type ZoneRetrieveParams,
   type ZoneUpdateParams,
   type ZoneListParams,
-  type ZoneListSessionResourceAccessParams,
 } from './zones';

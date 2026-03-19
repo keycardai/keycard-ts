@@ -195,6 +195,10 @@ export interface PolicySetVersion {
 
   policy_set_id: string;
 
+  /**
+   * Schema version pinned to this policy set version. Determines the Cedar schema
+   * used for evaluation when activated.
+   */
   schema_version: string;
 
   version: number;
@@ -287,7 +291,7 @@ export interface VersionCreateParams {
   manifest: PolicySetsAPI.PolicySetManifest;
 
   /**
-   * Body param
+   * Body param: Schema version to pin to this policy set version.
    */
   schema_version: string;
 

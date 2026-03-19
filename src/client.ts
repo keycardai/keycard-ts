@@ -48,8 +48,6 @@ import {
   ZoneCreateParams,
   ZoneListParams,
   ZoneListResponse,
-  ZoneListSessionResourceAccessParams,
-  ZoneListSessionResourceAccessResponse,
   ZoneRetrieveParams,
   ZoneUpdateParams,
   Zones,
@@ -865,12 +863,10 @@ export declare namespace KeycardAPI {
     type PageInfoPagination as PageInfoPagination,
     type Zone as Zone,
     type ZoneListResponse as ZoneListResponse,
-    type ZoneListSessionResourceAccessResponse as ZoneListSessionResourceAccessResponse,
     type ZoneCreateParams as ZoneCreateParams,
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
   export {

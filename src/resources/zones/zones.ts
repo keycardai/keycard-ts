@@ -223,20 +223,6 @@ export class Zones extends APIResource {
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
   }
-
-  /**
-   * Returns aggregated access records per session-resource pair. By default
-   * (rollup_children=true), includes access from descendant sessions. Set
-   * rollup_children=false to return only direct session access. At least one of
-   * user_id, session_id, or resource_id must be provided.
-   */
-  listSessionResourceAccess(
-    zoneID: string,
-    query: ZoneListSessionResourceAccessParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ZoneListSessionResourceAccessResponse> {
-    return this._client.get(path`/zones/${zoneID}/session-resource-access`, { query, ...options });
-  }
 }
 
 /**
@@ -480,73 +466,6 @@ export namespace ZoneListResponse {
   }
 }
 
-export interface ZoneListSessionResourceAccessResponse {
-  items: Array<ZoneListSessionResourceAccessResponse.Item>;
-
-  /**
-   * Cursor-based pagination metadata
-   */
-  pagination: ZoneListSessionResourceAccessResponse.Pagination;
-}
-
-export namespace ZoneListSessionResourceAccessResponse {
-  /**
-   * Aggregated record of session-resource access events
-   */
-  export interface Item {
-    /**
-     * When access first occurred
-     */
-    first_accessed_at: string;
-
-    /**
-     * When access most recently occurred
-     */
-    last_accessed_at: string;
-
-    /**
-     * Organization ID
-     */
-    organization_id: string;
-
-    /**
-     * Resource ID
-     */
-    resource_id: string;
-
-    /**
-     * Session ID
-     */
-    session_id: string;
-
-    /**
-     * Total number of access events for this session-resource pair
-     */
-    total_access_count: number;
-  }
-
-  /**
-   * Cursor-based pagination metadata
-   */
-  export interface Pagination {
-    /**
-     * An opaque cursor used for paginating through a list of results
-     */
-    after_cursor: string | null;
-
-    /**
-     * An opaque cursor used for paginating through a list of results
-     */
-    before_cursor: string | null;
-
-    /**
-     * Total number of items matching the query. Only included when
-     * expand[]=total_count is requested.
-     */
-    total_count?: number;
-  }
-}
-
 export interface ZoneCreateParams {
   /**
    * Human-readable name
@@ -732,47 +651,6 @@ export interface ZoneListParams {
   slug?: string;
 }
 
-export interface ZoneListSessionResourceAccessParams {
-  /**
-   * Cursor for forward pagination
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination
-   */
-  before?: string;
-
-  'expand[]'?: 'total_count' | Array<'total_count'>;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
-
-  /**
-   * Filter by resource ID
-   */
-  resource_id?: string;
-
-  /**
-   * Include resource access from descendant sessions. When true (default),
-   * aggregates access from the session and all its descendants. When false, returns
-   * only direct access for the session.
-   */
-  rollup_children?: boolean;
-
-  /**
-   * Filter by session ID
-   */
-  session_id?: string;
-
-  /**
-   * Filter by user ID
-   */
-  user_id?: string;
-}
-
 Zones.Applications = Applications;
 Zones.ApplicationCredentials = ApplicationCredentials;
 Zones.DelegatedGrants = DelegatedGrants;
@@ -793,12 +671,10 @@ export declare namespace Zones {
     type PageInfoPagination as PageInfoPagination,
     type Zone as Zone,
     type ZoneListResponse as ZoneListResponse,
-    type ZoneListSessionResourceAccessResponse as ZoneListSessionResourceAccessResponse,
     type ZoneCreateParams as ZoneCreateParams,
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
     type ZoneListParams as ZoneListParams,
-    type ZoneListSessionResourceAccessParams as ZoneListSessionResourceAccessParams,
   };
 
   export {
