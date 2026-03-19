@@ -234,8 +234,22 @@ export interface PolicySet {
 
   name: string;
 
+  /**
+   * Who manages this policy set:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policies).
+   * - `"customer"` — managed by the tenant (custom policies).
+   */
   owner_type: 'platform' | 'customer';
 
+  /**
+   * The scope at which this policy set applies:
+   *
+   * - `"zone"` — applies to all requests in the zone.
+   * - `"resource"` — scoped to a specific resource.
+   * - `"user"` — scoped to a specific user.
+   * - `"session"` — scoped to a specific session.
+   */
   scope_type: 'zone' | 'resource' | 'user' | 'session';
 
   updated_at: string;
@@ -339,7 +353,12 @@ export interface PolicySetCreateParams {
   name: string;
 
   /**
-   * Body param
+   * Body param: The scope at which this policy set applies:
+   *
+   * - `"zone"` — applies to all requests in the zone.
+   * - `"resource"` — scoped to a specific resource.
+   * - `"user"` — scoped to a specific user.
+   * - `"session"` — scoped to a specific session.
    */
   scope_type?: 'zone' | 'resource' | 'user' | 'session';
 

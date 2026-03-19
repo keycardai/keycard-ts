@@ -131,6 +131,12 @@ export interface Policy {
 
   name: string;
 
+  /**
+   * Who manages this policy:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policies).
+   * - `"customer"` — managed by the tenant (custom policies).
+   */
   owner_type: 'platform' | 'customer';
 
   updated_at: string;

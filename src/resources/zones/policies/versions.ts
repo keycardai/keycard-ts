@@ -124,6 +124,9 @@ export interface PolicyVersion {
 
   policy_id: string;
 
+  /**
+   * Schema version this policy was validated against when created.
+   */
   schema_version: string;
 
   /**
@@ -185,7 +188,8 @@ export interface VersionCreateParams {
   zone_id: string;
 
   /**
-   * Body param
+   * Body param: Schema version to validate this policy against. Must not be
+   * archived.
    */
   schema_version: string;
 

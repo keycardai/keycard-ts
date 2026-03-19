@@ -6,7 +6,6 @@ Types:
 - <code><a href="./src/resources/zones/zones.ts">PageInfoPagination</a></code>
 - <code><a href="./src/resources/zones/zones.ts">Zone</a></code>
 - <code><a href="./src/resources/zones/zones.ts">ZoneListResponse</a></code>
-- <code><a href="./src/resources/zones/zones.ts">ZoneListSessionResourceAccessResponse</a></code>
 
 Methods:
 
@@ -15,7 +14,6 @@ Methods:
 - <code title="patch /zones/{zoneId}">client.zones.<a href="./src/resources/zones/zones.ts">update</a>(zoneID, { ...params }) -> Zone</code>
 - <code title="get /zones">client.zones.<a href="./src/resources/zones/zones.ts">list</a>({ ...params }) -> ZoneListResponse</code>
 - <code title="delete /zones/{zoneId}">client.zones.<a href="./src/resources/zones/zones.ts">delete</a>(zoneID) -> void</code>
-- <code title="get /zones/{zoneId}/session-resource-access">client.zones.<a href="./src/resources/zones/zones.ts">listSessionResourceAccess</a>(zoneID, { ...params }) -> ZoneListSessionResourceAccessResponse</code>
 
 ## Applications
 
