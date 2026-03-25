@@ -190,10 +190,10 @@ export interface AttestationStatement {
   attested_by: string;
 
   /**
-   * Snapshot of the policy set manifest at attestation time. Each entry pins a
-   * policy version by ID and content SHA.
+   * Key ID of the signing key used to produce the attestation signature. Matches the
+   * "kid" in the JWS protected header.
    */
-  manifest: Array<PolicySetManifestEntry>;
+  key_id: string;
 
   /**
    * SHA-256 of the policy set version manifest. Verifiers MUST check this matches
@@ -206,11 +206,11 @@ export interface AttestationStatement {
   policy_set_version: number;
 
   /**
-   * Event that produced this attestation. "committed" is the initial attestation at
+   * Event that produced this attestation. "created" is the initial attestation at
    * version creation; "re_signed" is a re-attestation after key rotation (same
    * content, new signature).
    */
-  status: 'committed' | 're_signed';
+  status: 'created' | 're_signed';
 
   /**
    * Statement type discriminator
