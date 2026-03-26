@@ -46,7 +46,7 @@ describe('resource providers', () => {
           token_endpoint: 'https://example.com',
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
-        openid: { userinfo_endpoint: 'https://example.com' },
+        openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
       },
     });
   });
@@ -106,7 +106,7 @@ describe('resource providers', () => {
           token_endpoint: 'https://example.com',
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
-        openid: { userinfo_endpoint: 'https://example.com' },
+        openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
       },
     });
   });

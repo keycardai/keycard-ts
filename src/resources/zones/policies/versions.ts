@@ -122,14 +122,6 @@ export interface PolicyVersion {
 
   created_by: string;
 
-  /**
-   * Who manages this policy version:
-   *
-   * - `"platform"` — managed by the Keycard platform (system policy versions).
-   * - `"customer"` — managed by the tenant (custom policy versions).
-   */
-  owner_type: 'platform' | 'customer';
-
   policy_id: string;
 
   /**
