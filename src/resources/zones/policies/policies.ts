@@ -172,6 +172,12 @@ export interface PolicyDraft {
   updated_at: string;
 
   updated_by: string;
+
+  /**
+   * ID of the policy version this draft was hydrated from. Null when the draft was
+   * created without an existing version.
+   */
+  base_version_id?: string | null;
 }
 
 export interface PolicyListResponse {

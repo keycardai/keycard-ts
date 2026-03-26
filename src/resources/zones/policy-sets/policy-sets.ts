@@ -280,6 +280,16 @@ export interface PolicySetDraft {
   updated_at: string;
 
   updated_by: string;
+
+  /**
+   * ID of the policy set version this draft was hydrated from. Null when the draft
+   * was created without an existing version.
+   */
+  base_version_id?: string | null;
+
+  description?: string | null;
+
+  name?: string | null;
 }
 
 export interface PolicySetManifest {
