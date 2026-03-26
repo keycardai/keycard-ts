@@ -211,6 +211,12 @@ export namespace Provider {
      * OpenID Connect protocol configuration
      */
     export interface Openid {
+      /**
+       * Name of a top-level string claim in this provider's ID Token to use as the user
+       * identifier on user creation. When not set, the user's Keycard ID is used.
+       */
+      user_identifier_claim?: string | null;
+
       userinfo_endpoint?: string | null;
     }
   }
@@ -369,6 +375,12 @@ export namespace ProviderCreateParams {
      * OpenID Connect protocol configuration for provider creation
      */
     export interface Openid {
+      /**
+       * Name of a top-level string claim in this provider's ID Token to use as the user
+       * identifier on user creation. When not set, the user's Keycard ID is used.
+       */
+      user_identifier_claim?: string;
+
       userinfo_endpoint?: string;
     }
   }
@@ -501,6 +513,13 @@ export namespace ProviderUpdateParams {
      * OpenID Connect protocol configuration. Set to null to remove all OpenID config.
      */
     export interface Openid {
+      /**
+       * Name of a top-level string claim in this provider's ID Token to use as the user
+       * identifier on user creation. Set to null to revert to default. Changing this
+       * value does not affect existing users.
+       */
+      user_identifier_claim?: string | null;
+
       userinfo_endpoint?: string | null;
     }
   }
