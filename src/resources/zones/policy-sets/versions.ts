@@ -193,6 +193,14 @@ export interface PolicySetVersion {
    */
   manifest_sha: string;
 
+  /**
+   * Who manages this policy set version:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policy set versions).
+   * - `"customer"` — managed by the tenant (custom policy set versions).
+   */
+  owner_type: 'platform' | 'customer';
+
   policy_set_id: string;
 
   /**
