@@ -144,6 +144,7 @@ describe('resource organizations', () => {
           before: 'x',
           expand: ['permissions'],
           limit: 1,
+          'query[email]': 'x',
           role: 'org_admin',
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
