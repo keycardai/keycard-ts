@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.7.0 (2026-04-01)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/keycardai/keycard-ts/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* add email search to list organization identities endpoint ([6cfdbe6](https://github.com/keycardai/keycard-ts/commit/6cfdbe68c087501ee80246f11fa826b8f388deb8))
+* add owner_type and enforce protection for platform-owned versions (ACC-29) ([15072d6](https://github.com/keycardai/keycard-ts/commit/15072d6973c4b05015f5b1ab65adaf49878122ee))
+* add PRM discovery to MCP gateway endpoint ([b7607db](https://github.com/keycardai/keycard-ts/commit/b7607dbacfdfd99e96f58364e8e12ed327617628))
+* draft policy sets ([0afd777](https://github.com/keycardai/keycard-ts/commit/0afd777a3808a0f9b45a6def931aeff98fd33645))
+* provide more context for policy schema ([50bb2cf](https://github.com/keycardai/keycard-ts/commit/50bb2cf3f386da8030d76acd620e7e0c5a262db5))
+* Support for user identifier and provider user identifier claim ([6d679b9](https://github.com/keycardai/keycard-ts/commit/6d679b9a98838d15f1a7d5b79053436f0e24e32e))
+* support raw cedar ([c01c0d6](https://github.com/keycardai/keycard-ts/commit/c01c0d60e870965d83a6584d3d759a3ad07fe7b0))
+* use common bearerAuth and OAuth2 security schemes ([7420a7e](https://github.com/keycardai/keycard-ts/commit/7420a7e103f81562ee97afb05433925690262fdd))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([3a7dc8d](https://github.com/keycardai/keycard-ts/commit/3a7dc8d9241cc533582b126cfbbcf9bd5f27fffc))
+* configure new SDK language ([8071a68](https://github.com/keycardai/keycard-ts/commit/8071a688f6130ccd6e471ec9406b1b5e92303443))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([2d1a742](https://github.com/keycardai/keycard-ts/commit/2d1a742617b1f55e576b82eb8ce0f65471fca6c6))
+* **internal:** tweak CI branches ([b385a90](https://github.com/keycardai/keycard-ts/commit/b385a90b711b399770f347c0b245a26410e10d2d))
+* **internal:** update gitignore ([e3bd6d4](https://github.com/keycardai/keycard-ts/commit/e3bd6d4aa5367ffad3222d8c4934e7a362d42748))
+
 ## 0.6.0 (2026-03-16)
 
 Full Changelog: [v0.5.1...v0.6.0](https://github.com/keycardai/keycard-ts/compare/v0.5.1...v0.6.0)
