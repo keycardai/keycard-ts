@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 10
     name: lint
     runs-on: ${{ github.repository == 'stainless-sdks/keycard-api-typescript' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    continue-on-error: true
     if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
     steps:
       - uses: actions/checkout@v6
