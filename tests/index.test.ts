@@ -20,10 +20,12 @@ const mockTokenFetch: typeof defaultFetch = async (url, init) => {
   }
   return defaultFetch(url, init);
 };
-const wrapWithTokenFetch = (fn: typeof defaultFetch): typeof defaultFetch => async (url, init) => {
-  if (String(url).includes('/service-account-token')) return mockTokenFetch(url, init);
-  return fn(url, init!);
-};
+const wrapWithTokenFetch =
+  (fn: typeof defaultFetch): typeof defaultFetch =>
+  async (url, init) => {
+    if (String(url).includes('/service-account-token')) return mockTokenFetch(url, init);
+    return fn(url, init!);
+  };
 
 describe('instantiate client', () => {
   const env = process.env;
