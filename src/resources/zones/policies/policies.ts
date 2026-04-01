@@ -158,11 +158,6 @@ export interface Policy {
 }
 
 export interface PolicyDraft {
-  /**
-   * Cedar policy in JSON representation
-   */
-  cedar_json: unknown;
-
   created_at: string;
 
   policy_id: string;
@@ -178,6 +173,16 @@ export interface PolicyDraft {
    * created without an existing version.
    */
   base_version_id?: string | null;
+
+  /**
+   * Cedar policy in JSON representation. Populated when format=json (default).
+   */
+  cedar_json?: unknown | null;
+
+  /**
+   * Cedar policy in human-readable syntax. Populated when format=cedar.
+   */
+  cedar_raw?: string | null;
 }
 
 export interface PolicyListResponse {
