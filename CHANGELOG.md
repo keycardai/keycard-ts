@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.1 (2026-04-02)
+
+Full Changelog: [v0.7.0...v0.7.1](https://github.com/keycardai/keycard-ts/compare/v0.7.0...v0.7.1)
+
+### Chores
+
+* update SDK settings ([f865298](https://github.com/keycardai/keycard-ts/commit/f865298278cfae6034831ee5df36ea4f4c6a68ec))
+* update SDK settings ([3689395](https://github.com/keycardai/keycard-ts/commit/3689395e288c8a1fc7c7c7a8bbf22cacef8cc631))
+* update SDK settings ([9592071](https://github.com/keycardai/keycard-ts/commit/95920717b0837de7d558c10ed9900d0f2ba2a18d))
+
 ## 0.7.0 (2026-04-01)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/keycardai/keycard-ts/compare/v0.6.0...v0.7.0)
