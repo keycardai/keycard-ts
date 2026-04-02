@@ -51,6 +51,13 @@ export interface User {
   email_verified: boolean;
 
   /**
+   * Zone-scoped user identifier. Defaults to the user's Keycard ID. When the
+   * provider has user_identifier_claim configured, the value is set from that claim
+   * at user creation time.
+   */
+  identifier: string;
+
+  /**
    * Organization that owns this user
    */
   organization_id: string;

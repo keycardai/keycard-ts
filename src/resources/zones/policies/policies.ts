@@ -37,7 +37,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -55,7 +54,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -81,7 +79,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -104,7 +101,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -122,7 +118,6 @@ export class Policies extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
@@ -136,6 +131,12 @@ export interface Policy {
 
   name: string;
 
+  /**
+   * Who manages this policy:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policies).
+   * - `"customer"` — managed by the tenant (custom policies).
+   */
   owner_type: 'platform' | 'customer';
 
   updated_at: string;
@@ -157,11 +158,6 @@ export interface Policy {
 }
 
 export interface PolicyDraft {
-  /**
-   * Cedar policy in JSON representation
-   */
-  cedar_json: unknown;
-
   created_at: string;
 
   policy_id: string;
@@ -171,6 +167,22 @@ export interface PolicyDraft {
   updated_at: string;
 
   updated_by: string;
+
+  /**
+   * ID of the policy version this draft was hydrated from. Null when the draft was
+   * created without an existing version.
+   */
+  base_version_id?: string | null;
+
+  /**
+   * Cedar policy in JSON representation. Populated when format=json (default).
+   */
+  cedar_json?: unknown | null;
+
+  /**
+   * Cedar policy in human-readable syntax. Populated when format=cedar.
+   */
+  cedar_raw?: string | null;
 }
 
 export interface PolicyListResponse {

@@ -36,7 +36,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -63,7 +62,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -92,7 +90,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -120,7 +117,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -147,7 +143,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -179,7 +174,6 @@ export class Versions extends APIResource {
           },
           options?.headers,
         ]),
-        __security: {},
       },
     );
   }
@@ -199,8 +193,20 @@ export interface PolicySetVersion {
    */
   manifest_sha: string;
 
+  /**
+   * Who manages this policy set version:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policy set versions).
+   * - `"customer"` — managed by the tenant (custom policy set versions).
+   */
+  owner_type: 'platform' | 'customer';
+
   policy_set_id: string;
 
+  /**
+   * Schema version pinned to this policy set version. Determines the Cedar schema
+   * used for evaluation when activated.
+   */
   schema_version: string;
 
   version: number;
@@ -215,14 +221,11 @@ export interface PolicySetVersion {
   archived_by?: string | null;
 
   /**
-   * JWS Flattened JSON Serialization (RFC 7515 §7.2.2) of a policy set attestation.
-   * The protected header carries the signing algorithm and key identifier; the
-   * payload is a base64url-encoded AttestationStatement canonicalized per RFC 8785
-   * (JCS). Verify using the zone JWKS endpoint (RFC 7517). Currently signed with
-   * RS256; future zone key types (e.g. EdDSA) will be indicated by the "alg" header
-   * — no envelope changes required.
+   * Decoded content of an Attestation JWS payload. Describes the exact policy set
+   * version composition at attestation time. This schema defines what consumers see
+   * after base64url-decoding the Attestation.payload field.
    */
-  attestation?: PolicySetsAPI.Attestation | null;
+  attestation?: PolicySetsAPI.AttestationStatement | null;
 }
 
 export interface VersionListResponse {
@@ -293,7 +296,7 @@ export interface VersionCreateParams {
   manifest: PolicySetsAPI.PolicySetManifest;
 
   /**
-   * Body param
+   * Body param: Schema version to pin to this policy set version.
    */
   schema_version: string;
 

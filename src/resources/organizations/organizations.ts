@@ -525,6 +525,11 @@ export interface OrganizationListIdentitiesParams {
   limit?: number;
 
   /**
+   * Query param: Search identities by email substring (case-insensitive)
+   */
+  'query[email]'?: string;
+
+  /**
    * Query param: Filter identities by role
    */
   role?: UsersAPI.OrganizationRole;

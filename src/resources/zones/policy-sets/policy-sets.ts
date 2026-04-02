@@ -45,7 +45,6 @@ export class PolicySets extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -67,7 +66,6 @@ export class PolicySets extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -98,7 +96,6 @@ export class PolicySets extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -121,7 +118,6 @@ export class PolicySets extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -149,7 +145,6 @@ export class PolicySets extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
@@ -195,10 +190,10 @@ export interface AttestationStatement {
   attested_by: string;
 
   /**
-   * Snapshot of the policy set manifest at attestation time. Each entry pins a
-   * policy version by ID and content SHA.
+   * Key ID of the signing key used to produce the attestation signature. Matches the
+   * "kid" in the JWS protected header.
    */
-  manifest: Array<PolicySetManifestEntry>;
+  key_id: string;
 
   /**
    * SHA-256 of the policy set version manifest. Verifiers MUST check this matches
@@ -211,11 +206,11 @@ export interface AttestationStatement {
   policy_set_version: number;
 
   /**
-   * Event that produced this attestation. "committed" is the initial attestation at
+   * Event that produced this attestation. "created" is the initial attestation at
    * version creation; "re_signed" is a re-attestation after key rotation (same
    * content, new signature).
    */
-  status: 'committed' | 're_signed';
+  status: 'created' | 're_signed';
 
   /**
    * Statement type discriminator
@@ -239,8 +234,22 @@ export interface PolicySet {
 
   name: string;
 
+  /**
+   * Who manages this policy set:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policies).
+   * - `"customer"` — managed by the tenant (custom policies).
+   */
   owner_type: 'platform' | 'customer';
 
+  /**
+   * The scope at which this policy set applies:
+   *
+   * - `"zone"` — applies to all requests in the zone.
+   * - `"resource"` — scoped to a specific resource.
+   * - `"user"` — scoped to a specific user.
+   * - `"session"` — scoped to a specific session.
+   */
   scope_type: 'zone' | 'resource' | 'user' | 'session';
 
   updated_at: string;
@@ -271,6 +280,16 @@ export interface PolicySetDraft {
   updated_at: string;
 
   updated_by: string;
+
+  /**
+   * ID of the policy set version this draft was hydrated from. Null when the draft
+   * was created without an existing version.
+   */
+  base_version_id?: string | null;
+
+  description?: string | null;
+
+  name?: string | null;
 }
 
 export interface PolicySetManifest {
@@ -344,7 +363,12 @@ export interface PolicySetCreateParams {
   name: string;
 
   /**
-   * Body param
+   * Body param: The scope at which this policy set applies:
+   *
+   * - `"zone"` — applies to all requests in the zone.
+   * - `"resource"` — scoped to a specific resource.
+   * - `"user"` — scoped to a specific user.
+   * - `"session"` — scoped to a specific session.
    */
   scope_type?: 'zone' | 'resource' | 'user' | 'session';
 

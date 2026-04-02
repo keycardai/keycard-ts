@@ -74,6 +74,7 @@ describe('resource zones', () => {
         'zoneId',
         {
           default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
+          default_resource_id: 'default_resource_id',
           description: 'description',
           encryption_key: { arn: 'x', type: 'aws' },
           login_flow: 'default',
@@ -127,38 +128,5 @@ describe('resource zones', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listSessionResourceAccess', async () => {
-    const responsePromise = client.zones.listSessionResourceAccess('zoneId');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listSessionResourceAccess: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.zones.listSessionResourceAccess(
-        'zoneId',
-        {
-          after: 'x',
-          before: 'x',
-          'expand[]': 'total_count',
-          limit: 1,
-          resource_id: 'resource_id',
-          rollup_children: true,
-          session_id: 'session_id',
-          user_id: 'user_id',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 });

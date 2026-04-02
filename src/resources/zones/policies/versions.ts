@@ -30,7 +30,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -59,7 +58,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -87,7 +85,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 
@@ -114,7 +111,6 @@ export class Versions extends APIResource {
         },
         options?.headers,
       ]),
-      __security: {},
     });
   }
 }
@@ -126,8 +122,19 @@ export interface PolicyVersion {
 
   created_by: string;
 
+  /**
+   * Who manages this policy version:
+   *
+   * - `"platform"` — managed by the Keycard platform (system policy versions).
+   * - `"customer"` — managed by the tenant (custom policy versions).
+   */
+  owner_type: 'platform' | 'customer';
+
   policy_id: string;
 
+  /**
+   * Schema version this policy was validated against when created.
+   */
   schema_version: string;
 
   /**
@@ -189,7 +196,8 @@ export interface VersionCreateParams {
   zone_id: string;
 
   /**
-   * Body param
+   * Body param: Schema version to validate this policy against. Must not be
+   * archived.
    */
   schema_version: string;
 

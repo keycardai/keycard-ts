@@ -20,6 +20,12 @@ const mockTokenFetch: typeof defaultFetch = async (url, init) => {
   }
   return defaultFetch(url, init);
 };
+const wrapWithTokenFetch =
+  (fn: typeof defaultFetch): typeof defaultFetch =>
+  async (url, init) => {
+    if (String(url).includes('/service-account-token')) return mockTokenFetch(url, init);
+    return fn(url, init!);
+  };
 
 describe('instantiate client', () => {
   const env = process.env;
@@ -273,13 +279,13 @@ describe('instantiate client', () => {
       baseURL: 'http://localhost:5000/',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
-      fetch: (url) => {
+      fetch: wrapWithTokenFetch((url) => {
         return Promise.resolve(
           new Response(JSON.stringify({ url, custom: true }), {
             headers: { 'Content-Type': 'application/json' },
           }),
         );
-      },
+      }),
     });
 
     const response = await client.get('/foo');
@@ -301,7 +307,7 @@ describe('instantiate client', () => {
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
-      fetch: (...args) => {
+      fetch: wrapWithTokenFetch((...args) => {
         return new Promise((resolve, reject) =>
           setTimeout(
             () =>
@@ -311,7 +317,7 @@ describe('instantiate client', () => {
             300,
           ),
         );
-      },
+      }),
     });
 
     const controller = new AbortController();
@@ -325,10 +331,10 @@ describe('instantiate client', () => {
 
   test('normalized method', async () => {
     let capturedRequest: RequestInit | undefined;
-    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
+    const testFetch = wrapWithTokenFetch(async (url, init = {}) => {
       capturedRequest = init;
       return new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } });
-    };
+    });
 
     const client = new KeycardAPI({
       baseURL: 'http://localhost:5000/',
@@ -631,19 +637,36 @@ describe('default encoder', () => {
 });
 
 describe('retries', () => {
+  const makeRetryCountFetch = () => {
+    let count = 0;
+    let capturedRequest: RequestInit | undefined;
+    const testFetch = wrapWithTokenFetch(async (url, init = {}) => {
+      count++;
+      if (count <= 2) {
+        return new Response(undefined, {
+          status: 429,
+          headers: {
+            'Retry-After': '0.1',
+          },
+        });
+      }
+      capturedRequest = init;
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    });
+    return { testFetch, getCount: () => count, getCapturedRequest: () => capturedRequest };
+  };
+
   test('retry on timeout', async () => {
     let count = 0;
-    const testFetch = async (
-      url: string | URL | Request,
-      { signal }: RequestInit = {},
-    ): Promise<Response> => {
+    const testFetch = wrapWithTokenFetch(async (url, init = {}) => {
+      const { signal } = init;
       if (count++ === 0) {
         return new Promise(
           (resolve, reject) => signal?.addEventListener('abort', () => reject(new Error('timed out'))),
         );
       }
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    });
 
     const client = new KeycardAPI({
       clientID: 'My Client ID',
@@ -664,21 +687,7 @@ describe('retries', () => {
   });
 
   test('retry count header', async () => {
-    let count = 0;
-    let capturedRequest: RequestInit | undefined;
-    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
-      count++;
-      if (count <= 2) {
-        return new Response(undefined, {
-          status: 429,
-          headers: {
-            'Retry-After': '0.1',
-          },
-        });
-      }
-      capturedRequest = init;
-      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    const { testFetch, getCount, getCapturedRequest } = makeRetryCountFetch();
 
     const client = new KeycardAPI({
       clientID: 'My Client ID',
@@ -689,26 +698,12 @@ describe('retries', () => {
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
-    expect((capturedRequest!.headers as Headers).get('x-stainless-retry-count')).toEqual('2');
-    expect(count).toEqual(3);
+    expect((getCapturedRequest()!.headers as Headers).get('x-stainless-retry-count')).toEqual('2');
+    expect(getCount()).toEqual(3);
   });
 
   test('omit retry count header', async () => {
-    let count = 0;
-    let capturedRequest: RequestInit | undefined;
-    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
-      count++;
-      if (count <= 2) {
-        return new Response(undefined, {
-          status: 429,
-          headers: {
-            'Retry-After': '0.1',
-          },
-        });
-      }
-      capturedRequest = init;
-      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
@@ -724,25 +719,11 @@ describe('retries', () => {
       }),
     ).toEqual({ a: 1 });
 
-    expect((capturedRequest!.headers as Headers).has('x-stainless-retry-count')).toBe(false);
+    expect((getCapturedRequest()!.headers as Headers).has('x-stainless-retry-count')).toBe(false);
   });
 
   test('omit retry count header by default', async () => {
-    let count = 0;
-    let capturedRequest: RequestInit | undefined;
-    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
-      count++;
-      if (count <= 2) {
-        return new Response(undefined, {
-          status: 429,
-          headers: {
-            'Retry-After': '0.1',
-          },
-        });
-      }
-      capturedRequest = init;
-      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
@@ -758,25 +739,11 @@ describe('retries', () => {
       }),
     ).toEqual({ a: 1 });
 
-    expect(capturedRequest!.headers as Headers).not.toHaveProperty('x-stainless-retry-count');
+    expect(getCapturedRequest()!.headers as Headers).not.toHaveProperty('x-stainless-retry-count');
   });
 
   test('overwrite retry count header', async () => {
-    let count = 0;
-    let capturedRequest: RequestInit | undefined;
-    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
-      count++;
-      if (count <= 2) {
-        return new Response(undefined, {
-          status: 429,
-          headers: {
-            'Retry-After': '0.1',
-          },
-        });
-      }
-      capturedRequest = init;
-      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
@@ -792,15 +759,12 @@ describe('retries', () => {
       }),
     ).toEqual({ a: 1 });
 
-    expect((capturedRequest!.headers as Headers).get('x-stainless-retry-count')).toEqual('42');
+    expect((getCapturedRequest()!.headers as Headers).get('x-stainless-retry-count')).toEqual('42');
   });
 
   test('retry on 429 with retry-after', async () => {
     let count = 0;
-    const testFetch = async (
-      url: string | URL | Request,
-      { signal }: RequestInit = {},
-    ): Promise<Response> => {
+    const testFetch = wrapWithTokenFetch(async (url, init = {}) => {
       if (count++ === 0) {
         return new Response(undefined, {
           status: 429,
@@ -810,7 +774,7 @@ describe('retries', () => {
         });
       }
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    });
 
     const client = new KeycardAPI({
       clientID: 'My Client ID',
@@ -831,10 +795,7 @@ describe('retries', () => {
 
   test('retry on 429 with retry-after-ms', async () => {
     let count = 0;
-    const testFetch = async (
-      url: string | URL | Request,
-      { signal }: RequestInit = {},
-    ): Promise<Response> => {
+    const testFetch = wrapWithTokenFetch(async (url, init = {}) => {
       if (count++ === 0) {
         return new Response(undefined, {
           status: 429,
@@ -844,7 +805,7 @@ describe('retries', () => {
         });
       }
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
-    };
+    });
 
     const client = new KeycardAPI({
       clientID: 'My Client ID',
