@@ -316,6 +316,11 @@ export interface OrganizationListIdentitiesResponse {
   page_info: PageInfoCursor;
 
   /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
+  pagination: OrganizationListIdentitiesResponse.Pagination;
+
+  /**
    * Permissions granted to the authenticated principal for this resource. Only
    * populated when the 'expand[]=permissions' query parameter is provided. Keys are
    * resource types (e.g., "organizations"), values are objects mapping permission
@@ -377,6 +382,27 @@ export namespace OrganizationListIdentitiesResponse {
      * names to boolean values indicating if the permission is granted.
      */
     permissions?: { [key: string]: { [key: string]: boolean } };
+  }
+
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string;
+
+    /**
+     * Total number of items across all pages. Only present when the request includes
+     * ?expand=total_count.
+     */
+    total_count?: number;
   }
 }
 
@@ -440,10 +466,13 @@ export interface OrganizationCreateParams {
 
 export interface OrganizationRetrieveParams {
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -477,10 +506,13 @@ export interface OrganizationListParams {
   before?: string;
 
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Query param: Maximum number of organizations to return
@@ -514,10 +546,13 @@ export interface OrganizationListIdentitiesParams {
   before?: string;
 
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Query param: Maximum number of identities to return
@@ -543,10 +578,13 @@ export interface OrganizationListIdentitiesParams {
 
 export interface OrganizationListRolesParams {
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Query param: Filter roles by scope (organization or zone level)

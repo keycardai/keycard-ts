@@ -158,10 +158,13 @@ export interface UserRetrieveParams {
   organization_id: string;
 
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -205,10 +208,13 @@ export interface UserListParams {
   before?: string;
 
   /**
-   * Query param: Fields to expand in the response. Currently supports "permissions"
-   * to include the permissions field with the caller's permissions for the resource.
+   * Query param: Fields to expand in the response. Supports "permissions" to include
+   * the permissions field with the caller's permissions for the resource. For list
+   * organization identities only, "total_count" populates pagination.total_count
+   * with the number of identities matching the same filters as the list (excluding
+   * cursor and limit). Other operations ignore expand values they do not use.
    */
-  expand?: Array<'permissions'>;
+  expand?: Array<'permissions' | 'total_count'>;
 
   /**
    * Query param: Maximum number of users to return
