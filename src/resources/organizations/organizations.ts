@@ -391,12 +391,12 @@ export namespace OrganizationListIdentitiesResponse {
     /**
      * An opaque cursor used for paginating through a list of results
      */
-    after_cursor: string;
+    after_cursor: string | null;
 
     /**
      * An opaque cursor used for paginating through a list of results
      */
-    before_cursor: string;
+    before_cursor: string | null;
 
     /**
      * Total number of items across all pages. Only present when the request includes
