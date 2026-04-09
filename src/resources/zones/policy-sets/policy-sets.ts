@@ -376,6 +376,16 @@ export interface PolicySetWithBinding extends PolicySet {
   mode?: 'active' | 'shadow' | null;
 
   scope_target_id?: string | null;
+
+  /**
+   * Human-readable version number of the shadow version
+   */
+  shadow_version?: number | null;
+
+  /**
+   * Public ID of the shadow (observed) version, if any
+   */
+  shadow_version_id?: string | null;
 }
 
 export interface PolicySetListResponse {
