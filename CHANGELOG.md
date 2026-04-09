@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.0 (2026-04-09)
+
+Full Changelog: [v0.7.1...v0.8.0](https://github.com/keycardai/keycard-ts/compare/v0.7.1...v0.8.0)
+
+### Features
+
+* add openapi-yaml command ([d9b8b14](https://github.com/keycardai/keycard-ts/commit/d9b8b14815c7f56572e117784003f572b0dd621c))
+* Draft Lenient Schema Validation with Warnings (ACC-66) ([9defbd8](https://github.com/keycardai/keycard-ts/commit/9defbd85cec830374f2362bf9bcfcf2ae32448b9))
+* improved identities pagination ([126f94e](https://github.com/keycardai/keycard-ts/commit/126f94e5759c63f586074fd866de7783d8cc2f83))
+* normalize and validate user input (ACC-107) ([42691f7](https://github.com/keycardai/keycard-ts/commit/42691f707fe12b2fd33720eac3c158ea420a3c30))
+* shadow testing (ACC-14) ([b0f8563](https://github.com/keycardai/keycard-ts/commit/b0f85636c7a6635da8229c592504a213ee7dca43))
+
+
+### Chores
+
+* **internal:** codegen related update ([1112c61](https://github.com/keycardai/keycard-ts/commit/1112c6132cf7a60bd6e4270c15d3fec97cca2f9a))
+
 ## 0.7.1 (2026-04-02)
 
 Full Changelog: [v0.7.0...v0.7.1](https://github.com/keycardai/keycard-ts/compare/v0.7.0...v0.7.1)
