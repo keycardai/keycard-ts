@@ -102,12 +102,14 @@ export namespace ResourceListResponse {
 
 export interface ResourceCreateParams {
   /**
-   * User specified identifier, unique within the zone
+   * User specified identifier, unique within the zone. Must not contain HTML tags
+   * (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier: string;
 
   /**
-   * Human-readable name
+   * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
+   * control characters.
    */
   name: string;
 
@@ -129,7 +131,8 @@ export interface ResourceCreateParams {
   credential_provider_id?: string;
 
   /**
-   * Human-readable description
+   * Human-readable description. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   description?: string | null;
 
@@ -177,12 +180,14 @@ export interface ResourceUpdateParams {
   credential_provider_id?: string | null;
 
   /**
-   * Body param: Human-readable description
+   * Body param: Human-readable description. Must not contain HTML tags (e.g.
+   * `<script>`, `<div>`) or control characters.
    */
   description?: string | null;
 
   /**
-   * Body param: User specified identifier, unique within the zone
+   * Body param: User specified identifier, unique within the zone. Must not contain
+   * HTML tags (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier?: string;
 
@@ -192,7 +197,8 @@ export interface ResourceUpdateParams {
   metadata?: ApplicationsAPI.MetadataUpdate | null;
 
   /**
-   * Body param: Human-readable name
+   * Body param: Human-readable name. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   name?: string;
 

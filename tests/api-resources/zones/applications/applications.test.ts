@@ -26,6 +26,7 @@ describe('resource applications', () => {
     const response = await client.zones.applications.create('zoneId', {
       identifier: 'x',
       name: 'x',
+      consent: 'implicit',
       dependencies: [{ id: 'id', type: 'type' }],
       description: 'description',
       metadata: { docs_url: 'https://example.com' },
@@ -71,6 +72,7 @@ describe('resource applications', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.applications.update('id', {
       zoneId: 'zoneId',
+      consent: 'implicit',
       description: 'description',
       identifier: 'x',
       metadata: { docs_url: 'https://example.com' },
