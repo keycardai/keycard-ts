@@ -261,12 +261,14 @@ export namespace ProviderListResponse {
 
 export interface ProviderCreateParams {
   /**
-   * User specified identifier, unique within the zone
+   * User specified identifier, unique within the zone. Must not contain HTML tags
+   * (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier: string;
 
   /**
-   * Human-readable name
+   * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
+   * control characters.
    */
   name: string;
 
@@ -281,7 +283,8 @@ export interface ProviderCreateParams {
   client_secret?: string;
 
   /**
-   * Human-readable description
+   * Human-readable description. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   description?: string | null;
 
@@ -408,12 +411,14 @@ export interface ProviderUpdateParams {
   client_secret?: string | null;
 
   /**
-   * Body param: Human-readable description
+   * Body param: Human-readable description. Must not contain HTML tags (e.g.
+   * `<script>`, `<div>`) or control characters.
    */
   description?: string | null;
 
   /**
-   * Body param: User specified identifier, unique within the zone
+   * Body param: User specified identifier, unique within the zone. Must not contain
+   * HTML tags (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier?: string;
 
@@ -423,7 +428,8 @@ export interface ProviderUpdateParams {
   metadata?: unknown | null;
 
   /**
-   * Body param: Human-readable name
+   * Body param: Human-readable name. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   name?: string;
 
