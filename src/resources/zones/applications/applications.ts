@@ -107,6 +107,12 @@ export interface Application {
   id: string;
 
   /**
+   * Consent mode for the application. 'implicit' means consent is automatically
+   * granted, 'required' means explicit user consent is needed.
+   */
+  consent: 'implicit' | 'required';
+
+  /**
    * Entity creation timestamp
    */
   created_at: string;
@@ -336,14 +342,21 @@ export namespace ApplicationListResourcesResponse {
 
 export interface ApplicationCreateParams {
   /**
-   * User specified identifier, unique within the zone
+   * User specified identifier, unique within the zone. Must not contain HTML tags
+   * (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier: string;
 
   /**
-   * Human-readable name
+   * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
+   * control characters.
    */
   name: string;
+
+  /**
+   * Consent mode for the application. Defaults to 'required'.
+   */
+  consent?: 'implicit' | 'required';
 
   /**
    * Dependencies of the application
@@ -351,7 +364,8 @@ export interface ApplicationCreateParams {
   dependencies?: Array<ApplicationCreateParams.Dependency>;
 
   /**
-   * Human-readable description
+   * Human-readable description. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   description?: string | null;
 
@@ -415,12 +429,20 @@ export interface ApplicationUpdateParams {
   zoneId: string;
 
   /**
-   * Body param: Human-readable description
+   * Body param: Consent mode for the application. 'implicit' means consent is
+   * automatically granted, 'required' means explicit user consent is needed.
+   */
+  consent?: 'implicit' | 'required';
+
+  /**
+   * Body param: Human-readable description. Must not contain HTML tags (e.g.
+   * `<script>`, `<div>`) or control characters.
    */
   description?: string | null;
 
   /**
-   * Body param: User specified identifier, unique within the zone
+   * Body param: User specified identifier, unique within the zone. Must not contain
+   * HTML tags (e.g. `<script>`, `<div>`) or control characters.
    */
   identifier?: string;
 
@@ -430,7 +452,8 @@ export interface ApplicationUpdateParams {
   metadata?: MetadataUpdate | null;
 
   /**
-   * Body param: Human-readable name
+   * Body param: Human-readable name. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   name?: string;
 

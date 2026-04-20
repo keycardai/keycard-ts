@@ -290,6 +290,56 @@ export interface PolicySetDraft {
   description?: string | null;
 
   name?: string | null;
+
+  /**
+   * Warnings about manifest entries that would prevent creating a version from this
+   * draft. Present only when there are warnings; omitted when empty.
+   */
+  warnings?: Array<PolicySetDraft.Warning>;
+}
+
+export namespace PolicySetDraft {
+  export interface Warning {
+    /**
+     * Human-readable description of the warning, e.g. 'validated against schema
+     * "2026-02-24", draft targets "2026-03-16"' or 'policy version is archived'.
+     */
+    message: string;
+
+    policy_id: string;
+
+    policy_version_id: string;
+
+    type: 'policy_version_archived' | 'schema_version_mismatch';
+
+    /**
+     * Structured detail payload. Present for warning types that carry additional
+     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
+     * when the type alone is sufficient (e.g. policy_version_archived).
+     */
+    detail?: Warning.Detail;
+  }
+
+  export namespace Warning {
+    /**
+     * Structured detail payload. Present for warning types that carry additional
+     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
+     * when the type alone is sufficient (e.g. policy_version_archived).
+     */
+    export interface Detail {
+      /**
+       * Schema version the draft targets. Present only for schema_version_mismatch
+       * warnings.
+       */
+      draft_schema_version?: string;
+
+      /**
+       * Schema version the policy version was validated against. Present only for
+       * schema_version_mismatch warnings.
+       */
+      policy_schema_version?: string;
+    }
+  }
 }
 
 export interface PolicySetManifest {
@@ -326,6 +376,16 @@ export interface PolicySetWithBinding extends PolicySet {
   mode?: 'active' | 'shadow' | null;
 
   scope_target_id?: string | null;
+
+  /**
+   * Human-readable version number of the shadow version
+   */
+  shadow_version?: number | null;
+
+  /**
+   * Public ID of the shadow (observed) version, if any
+   */
+  shadow_version_id?: string | null;
 }
 
 export interface PolicySetListResponse {

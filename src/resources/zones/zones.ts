@@ -473,7 +473,8 @@ export namespace ZoneListResponse {
 
 export interface ZoneCreateParams {
   /**
-   * Human-readable name
+   * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
+   * control characters.
    */
   name: string;
 
@@ -483,7 +484,8 @@ export interface ZoneCreateParams {
   default_mcp_gateway_application?: boolean;
 
   /**
-   * Human-readable description
+   * Human-readable description. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   description?: string | null;
 
@@ -558,7 +560,8 @@ export interface ZoneUpdateParams {
   default_resource_id?: string | null;
 
   /**
-   * Human-readable description
+   * Human-readable description. Must not contain HTML tags (e.g. `<script>`,
+   * `<div>`) or control characters.
    */
   description?: string | null;
 
@@ -576,7 +579,8 @@ export interface ZoneUpdateParams {
   login_flow?: 'default' | 'identifier_first' | null;
 
   /**
-   * Human-readable name
+   * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
+   * control characters.
    */
   name?: string;
 
