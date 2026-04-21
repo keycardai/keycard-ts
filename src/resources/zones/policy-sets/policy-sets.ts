@@ -494,6 +494,13 @@ export interface PolicySetUpdateParams {
 
 export interface PolicySetListParams {
   /**
+   * Query param: Filter by active binding status. When `true`, returns only policy
+   * sets with an active binding. When `false`, returns only policy sets without one.
+   * Omit to return all.
+   */
+  active?: boolean;
+
+  /**
    * Query param: Return items after this cursor (forward pagination). Use
    * after_cursor from a previous response. Mutually exclusive with before.
    */

@@ -94,6 +94,7 @@ describe('resource policySets', () => {
       client.zones.policySets.list(
         'zone_id',
         {
+          active: true,
           after: 'after',
           before: 'before',
           expand: ['total_count'],
