@@ -102,6 +102,14 @@ export interface Resource {
   owner_type: 'platform' | 'customer';
 
   /**
+   * When true, the resource identifier is treated as a URI prefix, protecting all
+   * URLs that share the identifier as a prefix at path/query/fragment boundaries.
+   * Protocol and hostname must match exactly. When multiple prefix resources satisfy
+   * an identifier query, the resource with the longest prefix is matched.
+   */
+  prefix: boolean;
+
+  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
