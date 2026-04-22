@@ -78,8 +78,8 @@ describe('resource versions', () => {
   test.skip('list: required and optional params', async () => {
     const response = await client.zones.policies.versions.list('policy_id', {
       zone_id: 'zone_id',
-      after: 'after',
-      before: 'before',
+      after: 'x',
+      before: 'x',
       expand: ['total_count'],
       format: 'cedar',
       limit: 1,
