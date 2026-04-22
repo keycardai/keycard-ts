@@ -55,7 +55,7 @@
   },
   "pnpm": {
     "overrides": {
-      "minimatch": "^9.0.5"
+      "minimatch": "10.2.3"
     }
   },
   "resolutions": {
