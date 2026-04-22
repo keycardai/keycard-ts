@@ -400,7 +400,7 @@ export namespace OrganizationListIdentitiesResponse {
 
     /**
      * Total number of items across all pages. Only present when the request includes
-     * ?expand=total_count.
+     * ?expand[]=total_count.
      */
     total_count?: number;
   }
