@@ -10,79 +10,33 @@ export class SSOConnectionResource extends APIResource {
   /**
    * Get SSO connection configuration for organization
    */
-  retrieve(
-    organizationID: string,
-    params: SSOConnectionRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<SSOConnection> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/organizations/${organizationID}/sso-connection`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(organizationID: string, params: SSOConnectionRetrieveParams | null | undefined = {}, options?: RequestOptions): APIPromise<SSOConnection> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
+    return this._client.get(path`/organizations/${organizationID}/sso-connection`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Update SSO connection configuration
    */
-  update(
-    organizationID: string,
-    params: SSOConnectionUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<SSOConnection> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.patch(path`/organizations/${organizationID}/sso-connection`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  update(organizationID: string, params: SSOConnectionUpdateParams, options?: RequestOptions): APIPromise<SSOConnection> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.patch(path`/organizations/${organizationID}/sso-connection`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Disable SSO for organization
    */
-  disable(
-    organizationID: string,
-    params: SSOConnectionDisableParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
-    return this._client.delete(path`/organizations/${organizationID}/sso-connection`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          Accept: '*/*',
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  disable(organizationID: string, params: SSOConnectionDisableParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {}
+    return this._client.delete(path`/organizations/${organizationID}/sso-connection`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Enable SSO for organization
    */
-  enable(
-    organizationID: string,
-    params: SSOConnectionEnableParams,
-    options?: RequestOptions,
-  ): APIPromise<SSOConnection> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.post(path`/organizations/${organizationID}/sso-connection`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  enable(organizationID: string, params: SSOConnectionEnableParams, options?: RequestOptions): APIPromise<SSOConnection> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.post(path`/organizations/${organizationID}/sso-connection`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -284,6 +238,6 @@ export declare namespace SSOConnectionResource {
     type SSOConnectionRetrieveParams as SSOConnectionRetrieveParams,
     type SSOConnectionUpdateParams as SSOConnectionUpdateParams,
     type SSOConnectionDisableParams as SSOConnectionDisableParams,
-    type SSOConnectionEnableParams as SSOConnectionEnableParams,
+    type SSOConnectionEnableParams as SSOConnectionEnableParams
   };
 }

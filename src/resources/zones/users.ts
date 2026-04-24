@@ -10,18 +10,14 @@ export class Users extends APIResource {
    * Returns details of a specific user by user ID
    */
   retrieve(id: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<User> {
-    const { zoneId } = params;
+    const { zoneId } = params
     return this._client.get(path`/zones/${zoneId}/users/${id}`, options);
   }
 
   /**
    * Returns a list of users in the specified zone. Can be filtered by email address.
    */
-  list(
-    zoneID: string,
-    query: UserListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<UserListResponse> {
+  list(zoneID: string, query: UserListParams | null | undefined = {}, options?: RequestOptions): APIPromise<UserListResponse> {
     return this._client.get(path`/zones/${zoneID}/users`, { query, ...options });
   }
 }
@@ -157,6 +153,6 @@ export declare namespace Users {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
-    type UserListParams as UserListParams,
+    type UserListParams as UserListParams
   };
 }

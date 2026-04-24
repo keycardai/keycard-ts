@@ -14,104 +14,32 @@ export class Versions extends APIResource {
    * Create a new immutable policy version
    */
   create(policyID: string, params: VersionCreateParams, options?: RequestOptions): APIPromise<PolicyVersion> {
-    const {
-      zone_id,
-      'X-API-Version': xAPIVersion,
-      'X-Client-Request-ID': xClientRequestID,
-      ...body
-    } = params;
-    return this._client.post(path`/zones/${zone_id}/policies/${policyID}/versions`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.post(path`/zones/${zone_id}/policies/${policyID}/versions`, { body, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Get a specific policy version
    */
-  retrieve(
-    versionID: string,
-    params: VersionRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<PolicyVersion> {
-    const {
-      zone_id,
-      policy_id,
-      'X-API-Version': xAPIVersion,
-      'X-Client-Request-ID': xClientRequestID,
-      ...query
-    } = params;
-    return this._client.get(path`/zones/${zone_id}/policies/${policy_id}/versions/${versionID}`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  retrieve(versionID: string, params: VersionRetrieveParams, options?: RequestOptions): APIPromise<PolicyVersion> {
+    const { zone_id, policy_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...query } = params
+    return this._client.get(path`/zones/${zone_id}/policies/${policy_id}/versions/${versionID}`, { query, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * List versions of a policy
    */
-  list(
-    policyID: string,
-    params: VersionListParams,
-    options?: RequestOptions,
-  ): APIPromise<VersionListResponse> {
-    const {
-      zone_id,
-      'X-API-Version': xAPIVersion,
-      'X-Client-Request-ID': xClientRequestID,
-      ...query
-    } = params;
-    return this._client.get(path`/zones/${zone_id}/policies/${policyID}/versions`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  list(policyID: string, params: VersionListParams, options?: RequestOptions): APIPromise<VersionListResponse> {
+    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...query } = params
+    return this._client.get(path`/zones/${zone_id}/policies/${policyID}/versions`, { query, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Archive a policy version
    */
-  archive(
-    versionID: string,
-    params: VersionArchiveParams,
-    options?: RequestOptions,
-  ): APIPromise<PolicyVersion> {
-    const {
-      zone_id,
-      policy_id,
-      'X-API-Version': xAPIVersion,
-      'X-Client-Request-ID': xClientRequestID,
-    } = params;
-    return this._client.delete(path`/zones/${zone_id}/policies/${policy_id}/versions/${versionID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  archive(versionID: string, params: VersionArchiveParams, options?: RequestOptions): APIPromise<PolicyVersion> {
+    const { zone_id, policy_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.delete(path`/zones/${zone_id}/policies/${policy_id}/versions/${versionID}`, { ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -348,6 +276,6 @@ export declare namespace Versions {
     type VersionCreateParams as VersionCreateParams,
     type VersionRetrieveParams as VersionRetrieveParams,
     type VersionListParams as VersionListParams,
-    type VersionArchiveParams as VersionArchiveParams,
+    type VersionArchiveParams as VersionArchiveParams
   };
 }
