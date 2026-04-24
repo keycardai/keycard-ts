@@ -45,12 +45,7 @@ describe('resource users', () => {
     after: 'x',
     before: 'x',
     'expand[]': 'total_count',
-    'filter[email]': 'dev@stainless.com',
     limit: 1,
-    'query[]': 'x',
-    'query[email]': 'x',
-    'query[identifier]': 'x',
-    'query[subject]': 'x',
   }, { path: '/_stainless_unknown_path' }))
       .rejects
       .toThrow(KeycardAPI.NotFoundError);
