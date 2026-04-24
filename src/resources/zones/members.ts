@@ -11,12 +11,8 @@ export class Members extends APIResource {
   /**
    * Returns detailed information about a specific organization user in a zone.
    */
-  retrieve(
-    organizationUserID: string,
-    params: MemberRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<ZoneMember> {
-    const { zoneId } = params;
+  retrieve(organizationUserID: string, params: MemberRetrieveParams, options?: RequestOptions): APIPromise<ZoneMember> {
+    const { zoneId } = params
     return this._client.get(path`/zones/${zoneId}/members/${organizationUserID}`, options);
   }
 
@@ -24,12 +20,8 @@ export class Members extends APIResource {
    * Updates the role of an existing zone member. Only organization administrators
    * can perform this action.
    */
-  update(
-    organizationUserID: string,
-    params: MemberUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<ZoneMember> {
-    const { zoneId, ...body } = params;
+  update(organizationUserID: string, params: MemberUpdateParams, options?: RequestOptions): APIPromise<ZoneMember> {
+    const { zoneId, ...body } = params
     return this._client.patch(path`/zones/${zoneId}/members/${organizationUserID}`, { body, ...options });
   }
 
@@ -37,11 +29,7 @@ export class Members extends APIResource {
    * Lists all organization users in a zone with their roles and metadata. Supports
    * cursor-based pagination.
    */
-  list(
-    zoneID: string,
-    query: MemberListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<MemberListResponse> {
+  list(zoneID: string, query: MemberListParams | null | undefined = {}, options?: RequestOptions): APIPromise<MemberListResponse> {
     return this._client.get(path`/zones/${zoneID}/members`, { query, ...options });
   }
 
@@ -50,11 +38,8 @@ export class Members extends APIResource {
    * administrators can perform this action.
    */
   delete(organizationUserID: string, params: MemberDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params;
-    return this._client.delete(path`/zones/${zoneId}/members/${organizationUserID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    const { zoneId } = params
+    return this._client.delete(path`/zones/${zoneId}/members/${organizationUserID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
@@ -142,7 +127,7 @@ export namespace ZoneMember {
  * Zone role type. zone_manager has full management access, zone_viewer has
  * read-only access.
  */
-export type ZoneRole = 'zone_manager' | 'zone_viewer';
+export type ZoneRole = 'zone_manager' | 'zone_viewer'
 
 export interface MemberListResponse {
   items: Array<ZoneMember>;
@@ -254,6 +239,6 @@ export declare namespace Members {
     type MemberUpdateParams as MemberUpdateParams,
     type MemberListParams as MemberListParams,
     type MemberDeleteParams as MemberDeleteParams,
-    type MemberAddParams as MemberAddParams,
+    type MemberAddParams as MemberAddParams
   };
 }

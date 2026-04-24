@@ -12,56 +12,25 @@ export class Invitations extends APIResource {
   /**
    * Create an invitation to join an organization
    */
-  create(
-    organizationID: string,
-    params: InvitationCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<Invitation> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.post(path`/organizations/${organizationID}/invitations`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  create(organizationID: string, params: InvitationCreateParams, options?: RequestOptions): APIPromise<Invitation> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.post(path`/organizations/${organizationID}/invitations`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * List invitations for an organization
    */
-  list(
-    organizationID: string,
-    params: InvitationListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<InvitationListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/organizations/${organizationID}/invitations`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  list(organizationID: string, params: InvitationListParams | null | undefined = {}, options?: RequestOptions): APIPromise<InvitationListResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
+    return this._client.get(path`/organizations/${organizationID}/invitations`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Delete an invitation
    */
   delete(invitationID: string, params: InvitationDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.delete(path`/organizations/${organization_id}/invitations/${invitationID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          Accept: '*/*',
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.delete(path`/organizations/${organization_id}/invitations/${invitationID}`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -123,7 +92,7 @@ export interface Invitation {
 /**
  * Status of an invitation
  */
-export type InvitationStatus = 'pending' | 'accepted' | 'expired' | 'revoked';
+export type InvitationStatus = 'pending' | 'accepted' | 'expired' | 'revoked'
 
 export interface InvitationListResponse {
   items: Array<Invitation>;
@@ -212,6 +181,6 @@ export declare namespace Invitations {
     type InvitationListResponse as InvitationListResponse,
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,
-    type InvitationDeleteParams as InvitationDeleteParams,
+    type InvitationDeleteParams as InvitationDeleteParams
   };
 }

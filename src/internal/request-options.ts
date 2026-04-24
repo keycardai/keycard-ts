@@ -78,10 +78,14 @@ export type RequestOptions = {
   __security?: { oAuth2Auth?: boolean };
 
   __binaryResponse?: boolean | undefined;
+
 };
 
 export type EncodedContent = { bodyHeaders: HeadersLike; body: BodyInit };
-export type RequestEncoder = (request: { headers: NullableHeaders; body: unknown }) => EncodedContent;
+export type RequestEncoder = (request: {
+  headers: NullableHeaders;
+  body: unknown;
+}) => EncodedContent;
 
 export const FallbackEncoder: RequestEncoder = ({ headers, body }) => {
   return {

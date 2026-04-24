@@ -13,46 +13,30 @@ export class Resources extends APIResource {
    * Creates a new Resource - a system that exposes protected information or
    * functionality requiring authentication
    */
-  create(
-    zoneID: string,
-    body: ResourceCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<DependenciesAPI.Resource> {
+  create(zoneID: string, body: ResourceCreateParams, options?: RequestOptions): APIPromise<DependenciesAPI.Resource> {
     return this._client.post(path`/zones/${zoneID}/resources`, { body, ...options });
   }
 
   /**
    * Returns details of a specific Resource by ID
    */
-  retrieve(
-    id: string,
-    params: ResourceRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<DependenciesAPI.Resource> {
-    const { zoneId } = params;
+  retrieve(id: string, params: ResourceRetrieveParams, options?: RequestOptions): APIPromise<DependenciesAPI.Resource> {
+    const { zoneId } = params
     return this._client.get(path`/zones/${zoneId}/resources/${id}`, options);
   }
 
   /**
    * Updates a Resource's configuration and metadata
    */
-  update(
-    id: string,
-    params: ResourceUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<DependenciesAPI.Resource> {
-    const { zoneId, ...body } = params;
+  update(id: string, params: ResourceUpdateParams, options?: RequestOptions): APIPromise<DependenciesAPI.Resource> {
+    const { zoneId, ...body } = params
     return this._client.patch(path`/zones/${zoneId}/resources/${id}`, { body, ...options });
   }
 
   /**
    * Returns a list of resources in the specified zone
    */
-  list(
-    zoneID: string,
-    query: ResourceListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ResourceListResponse> {
+  list(zoneID: string, query: ResourceListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ResourceListResponse> {
     return this._client.get(path`/zones/${zoneID}/resources`, { query, ...options });
   }
 
@@ -60,11 +44,8 @@ export class Resources extends APIResource {
    * Permanently deletes a Resource
    */
   delete(id: string, params: ResourceDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params;
-    return this._client.delete(path`/zones/${zoneId}/resources/${id}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    const { zoneId } = params
+    return this._client.delete(path`/zones/${zoneId}/resources/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 }
 
@@ -266,6 +247,6 @@ export declare namespace Resources {
     type ResourceRetrieveParams as ResourceRetrieveParams,
     type ResourceUpdateParams as ResourceUpdateParams,
     type ResourceListParams as ResourceListParams,
-    type ResourceDeleteParams as ResourceDeleteParams,
+    type ResourceDeleteParams as ResourceDeleteParams
   };
 }

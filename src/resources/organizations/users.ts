@@ -11,83 +11,45 @@ export class Users extends APIResource {
   /**
    * Get a specific user in an organization
    */
-  retrieve(
-    userID: string,
-    params: UserRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<OrganizationUser> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
-    return this._client.get(path`/organizations/${organization_id}/users/${userID}`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(userID: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<OrganizationUser> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params
+    return this._client.get(path`/organizations/${organization_id}/users/${userID}`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Update user status in an organization
    */
   update(userID: string, params: UserUpdateParams, options?: RequestOptions): APIPromise<OrganizationUser> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.patch(path`/organizations/${organization_id}/users/${userID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.patch(path`/organizations/${organization_id}/users/${userID}`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * List users in an organization
    */
-  list(
-    organizationID: string,
-    params: UserListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<UserListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/organizations/${organizationID}/users`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  list(organizationID: string, params: UserListParams | null | undefined = {}, options?: RequestOptions): APIPromise<UserListResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
+    return this._client.get(path`/organizations/${organizationID}/users`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Remove a user from an organization
    */
   delete(userID: string, params: UserDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.delete(path`/organizations/${organization_id}/users/${userID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          Accept: '*/*',
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.delete(path`/organizations/${organization_id}/users/${userID}`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
 /**
  * User's role in the organization
  */
-export type OrganizationRole = 'org_admin' | 'org_member' | 'org_viewer';
+export type OrganizationRole = 'org_admin' | 'org_member' | 'org_viewer'
 
 /**
  * Status of organization membership
  */
-export type OrganizationStatus = 'active' | 'disabled';
+export type OrganizationStatus = 'active' | 'disabled'
 
 export interface OrganizationUser {
   /**
@@ -255,6 +217,6 @@ export declare namespace Users {
     type UserRetrieveParams as UserRetrieveParams,
     type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
-    type UserDeleteParams as UserDeleteParams,
+    type UserDeleteParams as UserDeleteParams
   };
 }

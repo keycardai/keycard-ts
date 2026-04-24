@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource sessions', () => {
@@ -58,23 +58,19 @@ describe('resource sessions', () => {
   // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.zones.sessions.list(
-        'zoneId',
-        {
-          active: 'true',
-          after: 'x',
-          before: 'x',
-          'expand[]': 'total_count',
-          include_nested: 'true',
-          limit: 1,
-          session_type: 'user',
-          status: 'active',
-          user_id: 'user_id',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+    await expect(client.zones.sessions.list('zoneId', {
+    active: 'true',
+    after: 'x',
+    before: 'x',
+    'expand[]': 'total_count',
+    include_nested: 'true',
+    limit: 1,
+    session_type: 'user',
+    status: 'active',
+    user_id: 'user_id',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled

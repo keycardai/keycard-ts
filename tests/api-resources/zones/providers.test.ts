@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource providers', () => {
@@ -24,31 +24,31 @@ describe('resource providers', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.providers.create('zoneId', {
-      identifier: 'x',
-      name: 'x',
-      client_id: 'client_id',
-      client_secret: 'client_secret',
-      description: 'description',
-      metadata: {},
-      protocols: {
-        oauth2: {
-          authorization_endpoint: 'https://example.com',
-          authorization_parameters: { foo: 'string' },
-          authorization_resource_enabled: true,
-          authorization_resource_parameter: 'authorization_resource_parameter',
-          code_challenge_methods_supported: ['string'],
-          issuer: 'https://example.com',
-          jwks_uri: 'https://example.com',
-          registration_endpoint: 'https://example.com',
-          scope_parameter: 'scope_parameter',
-          scope_separator: 'scope_separator',
-          scopes_supported: ['string'],
-          token_endpoint: 'https://example.com',
-          token_response_access_token_pointer: 'token_response_access_token_pointer',
-        },
-        openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
-      },
-    });
+    identifier: 'x',
+    name: 'x',
+    client_id: 'client_id',
+    client_secret: 'client_secret',
+    description: 'description',
+    metadata: {},
+    protocols: {
+    oauth2: {
+    authorization_endpoint: 'https://example.com',
+    authorization_parameters: { foo: 'string' },
+    authorization_resource_enabled: true,
+    authorization_resource_parameter: 'authorization_resource_parameter',
+    code_challenge_methods_supported: ['string'],
+    issuer: 'https://example.com',
+    jwks_uri: 'https://example.com',
+    registration_endpoint: 'https://example.com',
+    scope_parameter: 'scope_parameter',
+    scope_separator: 'scope_separator',
+    scopes_supported: ['string'],
+    token_endpoint: 'https://example.com',
+    token_response_access_token_pointer: 'token_response_access_token_pointer',
+  },
+    openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
+  },
+  });
   });
 
   // Mock server tests are disabled
@@ -83,32 +83,32 @@ describe('resource providers', () => {
   // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.providers.update('id', {
-      zoneId: 'zoneId',
-      client_id: 'client_id',
-      client_secret: 'client_secret',
-      description: 'description',
-      identifier: 'x',
-      metadata: {},
-      name: 'x',
-      protocols: {
-        oauth2: {
-          authorization_endpoint: 'https://example.com',
-          authorization_parameters: { foo: 'string' },
-          authorization_resource_enabled: true,
-          authorization_resource_parameter: 'authorization_resource_parameter',
-          code_challenge_methods_supported: ['string'],
-          issuer: 'https://example.com',
-          jwks_uri: 'https://example.com',
-          registration_endpoint: 'https://example.com',
-          scope_parameter: 'scope_parameter',
-          scope_separator: 'scope_separator',
-          scopes_supported: ['string'],
-          token_endpoint: 'https://example.com',
-          token_response_access_token_pointer: 'token_response_access_token_pointer',
-        },
-        openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
-      },
-    });
+    zoneId: 'zoneId',
+    client_id: 'client_id',
+    client_secret: 'client_secret',
+    description: 'description',
+    identifier: 'x',
+    metadata: {},
+    name: 'x',
+    protocols: {
+    oauth2: {
+    authorization_endpoint: 'https://example.com',
+    authorization_parameters: { foo: 'string' },
+    authorization_resource_enabled: true,
+    authorization_resource_parameter: 'authorization_resource_parameter',
+    code_challenge_methods_supported: ['string'],
+    issuer: 'https://example.com',
+    jwks_uri: 'https://example.com',
+    registration_endpoint: 'https://example.com',
+    scope_parameter: 'scope_parameter',
+    scope_separator: 'scope_separator',
+    scopes_supported: ['string'],
+    token_endpoint: 'https://example.com',
+    token_response_access_token_pointer: 'token_response_access_token_pointer',
+  },
+    openid: { user_identifier_claim: 'user_identifier_claim', userinfo_endpoint: 'https://example.com' },
+  },
+  });
   });
 
   // Mock server tests are disabled
@@ -126,22 +126,18 @@ describe('resource providers', () => {
   // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.zones.providers.list(
-        'zoneId',
-        {
-          after: 'x',
-          before: 'x',
-          cursor: 'cursor',
-          'expand[]': 'total_count',
-          identifier: 'identifier',
-          limit: 1,
-          slug: 'slug',
-          type: 'external',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+    await expect(client.zones.providers.list('zoneId', {
+    after: 'x',
+    before: 'x',
+    cursor: 'cursor',
+    'expand[]': 'total_count',
+    identifier: 'identifier',
+    limit: 1,
+    slug: 'slug',
+    type: 'external',
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled

@@ -8,72 +8,28 @@ import { path } from '../../internal/utils/path';
 
 export class Secrets extends APIResource {
   create(zoneID: string, params: SecretCreateParams, options?: RequestOptions): APIPromise<Secret> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.post(path`/zones/${zoneID}/secrets`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.post(path`/zones/${zoneID}/secrets`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
-  retrieve(
-    id: string,
-    params: SecretRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<SecretRetrieveResponse> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/secrets/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(id: string, params: SecretRetrieveParams, options?: RequestOptions): APIPromise<SecretRetrieveResponse> {
+    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.get(path`/zones/${zone_id}/secrets/${id}`, { ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   update(id: string, params: SecretUpdateParams, options?: RequestOptions): APIPromise<Secret> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.patch(path`/zones/${zone_id}/secrets/${id}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+    const { zone_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.patch(path`/zones/${zone_id}/secrets/${id}`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
-  list(
-    zoneID: string,
-    params: SecretListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<SecretListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/zones/${zoneID}/secrets`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  list(zoneID: string, params: SecretListParams | null | undefined = {}, options?: RequestOptions): APIPromise<SecretListResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
+    return this._client.get(path`/zones/${zoneID}/secrets`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   delete(id: string, params: SecretDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.delete(path`/zones/${zone_id}/secrets/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          Accept: '*/*',
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.delete(path`/zones/${zone_id}/secrets/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -171,7 +127,7 @@ export interface SecretRetrieveResponse {
   metadata?: unknown;
 }
 
-export type SecretListResponse = Array<Secret>;
+export type SecretListResponse = Array<Secret>
 
 export interface SecretCreateParams {
   /**
@@ -303,6 +259,6 @@ export declare namespace Secrets {
     type SecretRetrieveParams as SecretRetrieveParams,
     type SecretUpdateParams as SecretUpdateParams,
     type SecretListParams as SecretListParams,
-    type SecretDeleteParams as SecretDeleteParams,
+    type SecretDeleteParams as SecretDeleteParams
   };
 }

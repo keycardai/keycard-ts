@@ -3,17 +3,7 @@
 import { APIResource } from '../../../core/resource';
 import * as OrganizationsAPI from '../organizations';
 import * as CredentialsAPI from './credentials';
-import {
-  CredentialCreateParams,
-  CredentialCreateResponse,
-  CredentialDeleteParams,
-  CredentialListParams,
-  CredentialListResponse,
-  CredentialRetrieveParams,
-  CredentialUpdateParams,
-  Credentials,
-  ServiceAccountCredential,
-} from './credentials';
+import { CredentialCreateParams, CredentialCreateResponse, CredentialDeleteParams, CredentialListParams, CredentialListResponse, CredentialRetrieveParams, CredentialUpdateParams, Credentials, ServiceAccountCredential } from './credentials';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
@@ -25,98 +15,41 @@ export class ServiceAccounts extends APIResource {
   /**
    * Create a new service account for an organization
    */
-  create(
-    organizationID: string,
-    params: ServiceAccountCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.post(path`/organizations/${organizationID}/service-accounts`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  create(organizationID: string, params: ServiceAccountCreateParams, options?: RequestOptions): APIPromise<ServiceAccount> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.post(path`/organizations/${organizationID}/service-accounts`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Get a specific service account
    */
-  retrieve(
-    serviceAccountID: string,
-    params: ServiceAccountRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
-    return this._client.get(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(serviceAccountID: string, params: ServiceAccountRetrieveParams, options?: RequestOptions): APIPromise<ServiceAccount> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params
+    return this._client.get(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Update a service account
    */
-  update(
-    serviceAccountID: string,
-    params: ServiceAccountUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<ServiceAccount> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
-    return this._client.patch(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  update(serviceAccountID: string, params: ServiceAccountUpdateParams, options?: RequestOptions): APIPromise<ServiceAccount> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params
+    return this._client.patch(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * List service accounts for an organization
    */
-  list(
-    organizationID: string,
-    params: ServiceAccountListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ServiceAccountListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/organizations/${organizationID}/service-accounts`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
+  list(organizationID: string, params: ServiceAccountListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ServiceAccountListResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
+    return this._client.get(path`/organizations/${organizationID}/service-accounts`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 
   /**
    * Delete a service account
    */
-  delete(
-    serviceAccountID: string,
-    params: ServiceAccountDeleteParams,
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.delete(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, {
-      ...options,
-      headers: buildHeaders([
-        {
-          Accept: '*/*',
-          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
-        },
-        options?.headers,
-      ]),
-    });
+  delete(serviceAccountID: string, params: ServiceAccountDeleteParams, options?: RequestOptions): APIPromise<void> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params
+    return this._client.delete(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
   }
 }
 
@@ -290,7 +223,7 @@ export declare namespace ServiceAccounts {
     type ServiceAccountRetrieveParams as ServiceAccountRetrieveParams,
     type ServiceAccountUpdateParams as ServiceAccountUpdateParams,
     type ServiceAccountListParams as ServiceAccountListParams,
-    type ServiceAccountDeleteParams as ServiceAccountDeleteParams,
+    type ServiceAccountDeleteParams as ServiceAccountDeleteParams
   };
 
   export {
@@ -302,6 +235,6 @@ export declare namespace ServiceAccounts {
     type CredentialRetrieveParams as CredentialRetrieveParams,
     type CredentialUpdateParams as CredentialUpdateParams,
     type CredentialListParams as CredentialListParams,
-    type CredentialDeleteParams as CredentialDeleteParams,
+    type CredentialDeleteParams as CredentialDeleteParams
   };
 }
