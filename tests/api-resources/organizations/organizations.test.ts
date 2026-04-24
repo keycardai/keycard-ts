@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource organizations', () => {
@@ -24,9 +24,12 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('create: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.create({ name: 'name', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.create(
+        { name: 'name', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -44,9 +47,13 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.retrieve('x', { expand: ['permissions'], 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.retrieve(
+        'x',
+        { expand: ['permissions'], 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -76,15 +83,18 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.list({
-    after: 'x',
-    before: 'x',
-    expand: ['permissions'],
-    limit: 1,
-    'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.list(
+        {
+          after: 'x',
+          before: 'x',
+          expand: ['permissions'],
+          limit: 1,
+          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -102,9 +112,13 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('exchangeToken: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.exchangeToken('x', { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.exchangeToken(
+        'x',
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -122,17 +136,21 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('listIdentities: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.listIdentities('x', {
-    after: 'x',
-    before: 'x',
-    expand: ['permissions'],
-    limit: 1,
-    'query[email]': 'x',
-    role: 'org_admin',
-    'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.listIdentities(
+        'x',
+        {
+          after: 'x',
+          before: 'x',
+          expand: ['permissions'],
+          limit: 1,
+          'query[email]': 'x',
+          role: 'org_admin',
+          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -150,12 +168,16 @@ describe('resource organizations', () => {
   // Mock server tests are disabled
   test.skip('listRoles: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.organizations.listRoles('x', {
-    expand: ['permissions'],
-    scope: 'organization',
-    'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.organizations.listRoles(
+        'x',
+        {
+          expand: ['permissions'],
+          scope: 'organization',
+          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 });

@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource userAgents', () => {
@@ -41,13 +41,17 @@ describe('resource userAgents', () => {
   // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.zones.userAgents.list('zoneId', {
-    after: 'x',
-    before: 'x',
-    'expand[]': 'total_count',
-    limit: 1,
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.zones.userAgents.list(
+        'zoneId',
+        {
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          limit: 1,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 });

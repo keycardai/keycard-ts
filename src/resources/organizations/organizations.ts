@@ -3,13 +3,48 @@
 import { APIResource } from '../../core/resource';
 import * as OrganizationsAPI from './organizations';
 import * as InvitationsAPI from './invitations';
-import { Invitation, InvitationCreateParams, InvitationDeleteParams, InvitationListParams, InvitationListResponse, InvitationStatus, Invitations } from './invitations';
+import {
+  Invitation,
+  InvitationCreateParams,
+  InvitationDeleteParams,
+  InvitationListParams,
+  InvitationListResponse,
+  InvitationStatus,
+  Invitations,
+} from './invitations';
 import * as SSOConnectionAPI from './sso-connection';
-import { SSOConnection, SSOConnectionDisableParams, SSOConnectionEnableParams, SSOConnectionProtocol, SSOConnectionResource, SSOConnectionRetrieveParams, SSOConnectionUpdateParams } from './sso-connection';
+import {
+  SSOConnection,
+  SSOConnectionDisableParams,
+  SSOConnectionEnableParams,
+  SSOConnectionProtocol,
+  SSOConnectionResource,
+  SSOConnectionRetrieveParams,
+  SSOConnectionUpdateParams,
+} from './sso-connection';
 import * as UsersAPI from './users';
-import { OrganizationRole, OrganizationStatus, OrganizationUser, UserDeleteParams, UserListParams, UserListResponse, UserRetrieveParams, UserUpdateParams, Users } from './users';
+import {
+  OrganizationRole,
+  OrganizationStatus,
+  OrganizationUser,
+  UserDeleteParams,
+  UserListParams,
+  UserListResponse,
+  UserRetrieveParams,
+  UserUpdateParams,
+  Users,
+} from './users';
 import * as ServiceAccountsAPI from './service-accounts/service-accounts';
-import { ServiceAccount, ServiceAccountCreateParams, ServiceAccountDeleteParams, ServiceAccountListParams, ServiceAccountListResponse, ServiceAccountRetrieveParams, ServiceAccountUpdateParams, ServiceAccounts } from './service-accounts/service-accounts';
+import {
+  ServiceAccount,
+  ServiceAccountCreateParams,
+  ServiceAccountDeleteParams,
+  ServiceAccountListParams,
+  ServiceAccountListResponse,
+  ServiceAccountRetrieveParams,
+  ServiceAccountUpdateParams,
+  ServiceAccounts,
+} from './service-accounts/service-accounts';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -19,51 +54,116 @@ export class Organizations extends APIResource {
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
   invitations: InvitationsAPI.Invitations = new InvitationsAPI.Invitations(this._client);
   serviceAccounts: ServiceAccountsAPI.ServiceAccounts = new ServiceAccountsAPI.ServiceAccounts(this._client);
-  ssoConnection: SSOConnectionAPI.SSOConnectionResource = new SSOConnectionAPI.SSOConnectionResource(this._client);
+  ssoConnection: SSOConnectionAPI.SSOConnectionResource = new SSOConnectionAPI.SSOConnectionResource(
+    this._client,
+  );
 
-  create(params: OrganizationCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<Organization> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params ?? {}
-    return this._client.post('/organizations', { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  create(
+    params: OrganizationCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Organization> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params ?? {};
+    return this._client.post('/organizations', {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Get organization by ID or label
    */
-  retrieve(organizationID: string, params: OrganizationRetrieveParams | null | undefined = {}, options?: RequestOptions): APIPromise<Organization> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
-    return this._client.get(path`/organizations/${organizationID}`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  retrieve(
+    organizationID: string,
+    params: OrganizationRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Organization> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
+    return this._client.get(path`/organizations/${organizationID}`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Update organization details
    */
-  update(organizationID: string, params: OrganizationUpdateParams, options?: RequestOptions): APIPromise<Organization> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params
-    return this._client.patch(path`/organizations/${organizationID}`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  update(
+    organizationID: string,
+    params: OrganizationUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<Organization> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...body } = params;
+    return this._client.patch(path`/organizations/${organizationID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * List organizations for the current user
    */
-  list(params: OrganizationListParams | null | undefined = {}, options?: RequestOptions): APIPromise<OrganizationListResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
-    return this._client.get('/organizations', { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  list(
+    params: OrganizationListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<OrganizationListResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
+    return this._client.get('/organizations', {
+      query,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Exchange user token for organization-scoped M2M token
    */
-  exchangeToken(organizationID: string, params: OrganizationExchangeTokenParams | null | undefined = {}, options?: RequestOptions): APIPromise<TokenResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {}
-    return this._client.post(path`/organizations/${organizationID}/token`, { ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  exchangeToken(
+    organizationID: string,
+    params: OrganizationExchangeTokenParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<TokenResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
+    return this._client.post(path`/organizations/${organizationID}/token`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * List unified view of users and invitations in an organization
    */
-  listIdentities(organizationID: string, params: OrganizationListIdentitiesParams | null | undefined = {}, options?: RequestOptions): APIPromise<OrganizationListIdentitiesResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
-    return this._client.get(path`/organizations/${organizationID}/identities`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  listIdentities(
+    organizationID: string,
+    params: OrganizationListIdentitiesParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<OrganizationListIdentitiesResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
+    return this._client.get(path`/organizations/${organizationID}/identities`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -77,9 +177,20 @@ export class Organizations extends APIResource {
    * - `label`: Human-readable display name (e.g., Organization Administrator)
    * - `scope`: Whether the role applies at organization or zone level
    */
-  listRoles(organizationID: string, params: OrganizationListRolesParams | null | undefined = {}, options?: RequestOptions): APIPromise<OrganizationListRolesResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
-    return this._client.get(path`/organizations/${organizationID}/roles`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  listRoles(
+    organizationID: string,
+    params: OrganizationListRolesParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<OrganizationListRolesResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
+    return this._client.get(path`/organizations/${organizationID}/roles`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -154,7 +265,7 @@ export interface PageInfoCursor {
  * - organization: Roles that apply at the organization level (e.g., org_admin)
  * - zone: Roles that apply at the zone level (e.g., zone_manager)
  */
-export type RoleScope = 'organization' | 'zone'
+export type RoleScope = 'organization' | 'zone';
 
 /**
  * OAuth2-style token response for M2M tokens
@@ -507,7 +618,7 @@ export declare namespace Organizations {
     type OrganizationListParams as OrganizationListParams,
     type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
-    type OrganizationListRolesParams as OrganizationListRolesParams
+    type OrganizationListRolesParams as OrganizationListRolesParams,
   };
 
   export {
@@ -519,7 +630,7 @@ export declare namespace Organizations {
     type UserRetrieveParams as UserRetrieveParams,
     type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
-    type UserDeleteParams as UserDeleteParams
+    type UserDeleteParams as UserDeleteParams,
   };
 
   export {
@@ -529,7 +640,7 @@ export declare namespace Organizations {
     type InvitationListResponse as InvitationListResponse,
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,
-    type InvitationDeleteParams as InvitationDeleteParams
+    type InvitationDeleteParams as InvitationDeleteParams,
   };
 
   export {
@@ -540,7 +651,7 @@ export declare namespace Organizations {
     type ServiceAccountRetrieveParams as ServiceAccountRetrieveParams,
     type ServiceAccountUpdateParams as ServiceAccountUpdateParams,
     type ServiceAccountListParams as ServiceAccountListParams,
-    type ServiceAccountDeleteParams as ServiceAccountDeleteParams
+    type ServiceAccountDeleteParams as ServiceAccountDeleteParams,
   };
 
   export {
@@ -550,6 +661,6 @@ export declare namespace Organizations {
     type SSOConnectionRetrieveParams as SSOConnectionRetrieveParams,
     type SSOConnectionUpdateParams as SSOConnectionUpdateParams,
     type SSOConnectionDisableParams as SSOConnectionDisableParams,
-    type SSOConnectionEnableParams as SSOConnectionEnableParams
+    type SSOConnectionEnableParams as SSOConnectionEnableParams,
   };
 }

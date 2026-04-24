@@ -10,7 +10,7 @@ export class UserAgents extends APIResource {
    * Returns details of a specific user agent by user agent ID
    */
   retrieve(id: string, params: UserAgentRetrieveParams, options?: RequestOptions): APIPromise<UserAgent> {
-    const { zoneId } = params
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/user-agents/${id}`, options);
   }
 
@@ -19,7 +19,11 @@ export class UserAgents extends APIResource {
    * client software (browsers, desktop apps, CLI tools) registered via OAuth 2.0
    * Dynamic Client Registration.
    */
-  list(zoneID: string, query: UserAgentListParams | null | undefined = {}, options?: RequestOptions): APIPromise<UserAgentListResponse> {
+  list(
+    zoneID: string,
+    query: UserAgentListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<UserAgentListResponse> {
     return this._client.get(path`/zones/${zoneID}/user-agents`, { query, ...options });
   }
 }
@@ -133,6 +137,6 @@ export declare namespace UserAgents {
     type UserAgent as UserAgent,
     type UserAgentListResponse as UserAgentListResponse,
     type UserAgentRetrieveParams as UserAgentRetrieveParams,
-    type UserAgentListParams as UserAgentListParams
+    type UserAgentListParams as UserAgentListParams,
   };
 }

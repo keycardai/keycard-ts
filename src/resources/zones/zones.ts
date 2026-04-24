@@ -2,31 +2,157 @@
 
 import { APIResource } from '../../core/resource';
 import * as ApplicationCredentialsAPI from './application-credentials';
-import { ApplicationCredentialCreateParams, ApplicationCredentialCreateResponse, ApplicationCredentialDeleteParams, ApplicationCredentialListParams, ApplicationCredentialListResponse, ApplicationCredentialRetrieveParams, ApplicationCredentialUpdateParams, ApplicationCredentials, BaseFields, Credential, Password, Public, PublicKey, Token, URL } from './application-credentials';
+import {
+  ApplicationCredentialCreateParams,
+  ApplicationCredentialCreateResponse,
+  ApplicationCredentialDeleteParams,
+  ApplicationCredentialListParams,
+  ApplicationCredentialListResponse,
+  ApplicationCredentialRetrieveParams,
+  ApplicationCredentialUpdateParams,
+  ApplicationCredentials,
+  BaseFields,
+  Credential,
+  Password,
+  Public,
+  PublicKey,
+  Token,
+  URL,
+} from './application-credentials';
 import * as DelegatedGrantsAPI from './delegated-grants';
-import { DelegatedGrantDeleteParams, DelegatedGrantListParams, DelegatedGrantListResponse, DelegatedGrantRetrieveParams, DelegatedGrantUpdateParams, DelegatedGrants, Grant } from './delegated-grants';
+import {
+  DelegatedGrantDeleteParams,
+  DelegatedGrantListParams,
+  DelegatedGrantListResponse,
+  DelegatedGrantRetrieveParams,
+  DelegatedGrantUpdateParams,
+  DelegatedGrants,
+  Grant,
+} from './delegated-grants';
 import * as MembersAPI from './members';
-import { MemberAddParams, MemberDeleteParams, MemberListParams, MemberListResponse, MemberRetrieveParams, MemberUpdateParams, Members, ZoneMember, ZoneRole } from './members';
+import {
+  MemberAddParams,
+  MemberDeleteParams,
+  MemberListParams,
+  MemberListResponse,
+  MemberRetrieveParams,
+  MemberUpdateParams,
+  Members,
+  ZoneMember,
+  ZoneRole,
+} from './members';
 import * as PolicySchemasAPI from './policy-schemas';
-import { PolicySchemaListParams, PolicySchemaListResponse, PolicySchemaRetrieveParams, PolicySchemaSetDefaultParams, PolicySchemas, SchemaVersion, SchemaVersionWithZoneInfo } from './policy-schemas';
+import {
+  PolicySchemaListParams,
+  PolicySchemaListResponse,
+  PolicySchemaRetrieveParams,
+  PolicySchemaSetDefaultParams,
+  PolicySchemas,
+  SchemaVersion,
+  SchemaVersionWithZoneInfo,
+} from './policy-schemas';
 import * as ProvidersAPI from './providers';
-import { Provider, ProviderCreateParams, ProviderDeleteParams, ProviderListParams, ProviderListResponse, ProviderRetrieveParams, ProviderUpdateParams, Providers } from './providers';
+import {
+  Provider,
+  ProviderCreateParams,
+  ProviderDeleteParams,
+  ProviderListParams,
+  ProviderListResponse,
+  ProviderRetrieveParams,
+  ProviderUpdateParams,
+  Providers,
+} from './providers';
 import * as ResourcesAPI from './resources';
-import { ResourceCreateParams, ResourceDeleteParams, ResourceListParams, ResourceListResponse, ResourceRetrieveParams, ResourceUpdateParams, Resources } from './resources';
+import {
+  ResourceCreateParams,
+  ResourceDeleteParams,
+  ResourceListParams,
+  ResourceListResponse,
+  ResourceRetrieveParams,
+  ResourceUpdateParams,
+  Resources,
+} from './resources';
 import * as SecretsAPI from './secrets';
-import { Secret, SecretCreateParams, SecretDeleteParams, SecretListParams, SecretListResponse, SecretPasswordFields, SecretRetrieveParams, SecretRetrieveResponse, SecretTokenFields, SecretUpdateParams, Secrets } from './secrets';
+import {
+  Secret,
+  SecretCreateParams,
+  SecretDeleteParams,
+  SecretListParams,
+  SecretListResponse,
+  SecretPasswordFields,
+  SecretRetrieveParams,
+  SecretRetrieveResponse,
+  SecretTokenFields,
+  SecretUpdateParams,
+  Secrets,
+} from './secrets';
 import * as SessionsAPI from './sessions';
-import { Session, SessionDeleteParams, SessionListParams, SessionListResponse, SessionRetrieveParams, SessionUpdateParams, Sessions } from './sessions';
+import {
+  Session,
+  SessionDeleteParams,
+  SessionListParams,
+  SessionListResponse,
+  SessionRetrieveParams,
+  SessionUpdateParams,
+  Sessions,
+} from './sessions';
 import * as UserAgentsAPI from './user-agents';
-import { UserAgent, UserAgentListParams, UserAgentListResponse, UserAgentRetrieveParams, UserAgents } from './user-agents';
+import {
+  UserAgent,
+  UserAgentListParams,
+  UserAgentListResponse,
+  UserAgentRetrieveParams,
+  UserAgents,
+} from './user-agents';
 import * as UsersAPI from './users';
 import { User, UserListParams, UserListResponse, UserRetrieveParams, Users } from './users';
 import * as ApplicationsAPI from './applications/applications';
-import { Application, ApplicationCreateParams, ApplicationDeleteParams, ApplicationListCredentialsParams, ApplicationListCredentialsResponse, ApplicationListParams, ApplicationListResourcesParams, ApplicationListResourcesResponse, ApplicationListResponse, ApplicationRetrieveParams, ApplicationTrait, ApplicationUpdateParams, Applications, Metadata, MetadataUpdate } from './applications/applications';
+import {
+  Application,
+  ApplicationCreateParams,
+  ApplicationDeleteParams,
+  ApplicationListCredentialsParams,
+  ApplicationListCredentialsResponse,
+  ApplicationListParams,
+  ApplicationListResourcesParams,
+  ApplicationListResourcesResponse,
+  ApplicationListResponse,
+  ApplicationRetrieveParams,
+  ApplicationTrait,
+  ApplicationUpdateParams,
+  Applications,
+  Metadata,
+  MetadataUpdate,
+} from './applications/applications';
 import * as PoliciesAPI from './policies/policies';
-import { Policies, Policy, PolicyArchiveParams, PolicyCreateParams, PolicyDraft, PolicyListParams, PolicyListResponse, PolicyRetrieveParams, PolicyUpdateParams } from './policies/policies';
+import {
+  Policies,
+  Policy,
+  PolicyArchiveParams,
+  PolicyCreateParams,
+  PolicyDraft,
+  PolicyListParams,
+  PolicyListResponse,
+  PolicyRetrieveParams,
+  PolicyUpdateParams,
+} from './policies/policies';
 import * as PolicySetsAPI from './policy-sets/policy-sets';
-import { Attestation, AttestationStatement, PolicySet, PolicySetArchiveParams, PolicySetCreateParams, PolicySetDraft, PolicySetListParams, PolicySetListResponse, PolicySetManifest, PolicySetManifestEntry, PolicySetRetrieveParams, PolicySetUpdateParams, PolicySetWithBinding, PolicySets } from './policy-sets/policy-sets';
+import {
+  Attestation,
+  AttestationStatement,
+  PolicySet,
+  PolicySetArchiveParams,
+  PolicySetCreateParams,
+  PolicySetDraft,
+  PolicySetListParams,
+  PolicySetListResponse,
+  PolicySetManifest,
+  PolicySetManifestEntry,
+  PolicySetRetrieveParams,
+  PolicySetUpdateParams,
+  PolicySetWithBinding,
+  PolicySets,
+} from './policy-sets/policy-sets';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -34,7 +160,8 @@ import { path } from '../../internal/utils/path';
 
 export class Zones extends APIResource {
   applications: ApplicationsAPI.Applications = new ApplicationsAPI.Applications(this._client);
-  applicationCredentials: ApplicationCredentialsAPI.ApplicationCredentials = new ApplicationCredentialsAPI.ApplicationCredentials(this._client);
+  applicationCredentials: ApplicationCredentialsAPI.ApplicationCredentials =
+    new ApplicationCredentialsAPI.ApplicationCredentials(this._client);
   delegatedGrants: DelegatedGrantsAPI.DelegatedGrants = new DelegatedGrantsAPI.DelegatedGrants(this._client);
   providers: ProvidersAPI.Providers = new ProvidersAPI.Providers(this._client);
   resources: ResourcesAPI.Resources = new ResourcesAPI.Resources(this._client);
@@ -58,21 +185,32 @@ export class Zones extends APIResource {
   /**
    * Returns details of a specific zone by ID
    */
-  retrieve(zoneID: string, query: ZoneRetrieveParams | null | undefined = {}, options?: RequestOptions): APIPromise<Zone> {
+  retrieve(
+    zoneID: string,
+    query: ZoneRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Zone> {
     return this._client.get(path`/zones/${zoneID}`, { query, ...options });
   }
 
   /**
    * Updates a zone's configuration (partial update)
    */
-  update(zoneID: string, body: ZoneUpdateParams | null | undefined = {}, options?: RequestOptions): APIPromise<Zone> {
+  update(
+    zoneID: string,
+    body: ZoneUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Zone> {
     return this._client.patch(path`/zones/${zoneID}`, { body, ...options });
   }
 
   /**
    * Returns a list of zones for the authenticated organization
    */
-  list(query: ZoneListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ZoneListResponse> {
+  list(
+    query: ZoneListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ZoneListResponse> {
     return this._client.get('/zones', { query, ...options });
   }
 
@@ -80,7 +218,10 @@ export class Zones extends APIResource {
    * Permanently deletes a zone and all its associated resources
    */
   delete(zoneID: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.delete(path`/zones/${zoneID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    return this._client.delete(path`/zones/${zoneID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -548,7 +689,7 @@ export declare namespace Zones {
     type ZoneCreateParams as ZoneCreateParams,
     type ZoneRetrieveParams as ZoneRetrieveParams,
     type ZoneUpdateParams as ZoneUpdateParams,
-    type ZoneListParams as ZoneListParams
+    type ZoneListParams as ZoneListParams,
   };
 
   export {
@@ -566,7 +707,7 @@ export declare namespace Zones {
     type ApplicationListParams as ApplicationListParams,
     type ApplicationDeleteParams as ApplicationDeleteParams,
     type ApplicationListCredentialsParams as ApplicationListCredentialsParams,
-    type ApplicationListResourcesParams as ApplicationListResourcesParams
+    type ApplicationListResourcesParams as ApplicationListResourcesParams,
   };
 
   export {
@@ -584,7 +725,7 @@ export declare namespace Zones {
     type ApplicationCredentialRetrieveParams as ApplicationCredentialRetrieveParams,
     type ApplicationCredentialUpdateParams as ApplicationCredentialUpdateParams,
     type ApplicationCredentialListParams as ApplicationCredentialListParams,
-    type ApplicationCredentialDeleteParams as ApplicationCredentialDeleteParams
+    type ApplicationCredentialDeleteParams as ApplicationCredentialDeleteParams,
   };
 
   export {
@@ -594,7 +735,7 @@ export declare namespace Zones {
     type DelegatedGrantRetrieveParams as DelegatedGrantRetrieveParams,
     type DelegatedGrantUpdateParams as DelegatedGrantUpdateParams,
     type DelegatedGrantListParams as DelegatedGrantListParams,
-    type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams
+    type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams,
   };
 
   export {
@@ -605,7 +746,7 @@ export declare namespace Zones {
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
-    type ProviderDeleteParams as ProviderDeleteParams
+    type ProviderDeleteParams as ProviderDeleteParams,
   };
 
   export {
@@ -615,7 +756,7 @@ export declare namespace Zones {
     type ResourceRetrieveParams as ResourceRetrieveParams,
     type ResourceUpdateParams as ResourceUpdateParams,
     type ResourceListParams as ResourceListParams,
-    type ResourceDeleteParams as ResourceDeleteParams
+    type ResourceDeleteParams as ResourceDeleteParams,
   };
 
   export {
@@ -625,7 +766,7 @@ export declare namespace Zones {
     type SessionRetrieveParams as SessionRetrieveParams,
     type SessionUpdateParams as SessionUpdateParams,
     type SessionListParams as SessionListParams,
-    type SessionDeleteParams as SessionDeleteParams
+    type SessionDeleteParams as SessionDeleteParams,
   };
 
   export {
@@ -633,7 +774,7 @@ export declare namespace Zones {
     type UserAgent as UserAgent,
     type UserAgentListResponse as UserAgentListResponse,
     type UserAgentRetrieveParams as UserAgentRetrieveParams,
-    type UserAgentListParams as UserAgentListParams
+    type UserAgentListParams as UserAgentListParams,
   };
 
   export {
@@ -641,7 +782,7 @@ export declare namespace Zones {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
-    type UserListParams as UserListParams
+    type UserListParams as UserListParams,
   };
 
   export {
@@ -653,7 +794,7 @@ export declare namespace Zones {
     type MemberUpdateParams as MemberUpdateParams,
     type MemberListParams as MemberListParams,
     type MemberDeleteParams as MemberDeleteParams,
-    type MemberAddParams as MemberAddParams
+    type MemberAddParams as MemberAddParams,
   };
 
   export {
@@ -667,7 +808,7 @@ export declare namespace Zones {
     type SecretRetrieveParams as SecretRetrieveParams,
     type SecretUpdateParams as SecretUpdateParams,
     type SecretListParams as SecretListParams,
-    type SecretDeleteParams as SecretDeleteParams
+    type SecretDeleteParams as SecretDeleteParams,
   };
 
   export {
@@ -677,7 +818,7 @@ export declare namespace Zones {
     type PolicySchemaListResponse as PolicySchemaListResponse,
     type PolicySchemaRetrieveParams as PolicySchemaRetrieveParams,
     type PolicySchemaListParams as PolicySchemaListParams,
-    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams
+    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams,
   };
 
   export {
@@ -689,7 +830,7 @@ export declare namespace Zones {
     type PolicyRetrieveParams as PolicyRetrieveParams,
     type PolicyUpdateParams as PolicyUpdateParams,
     type PolicyListParams as PolicyListParams,
-    type PolicyArchiveParams as PolicyArchiveParams
+    type PolicyArchiveParams as PolicyArchiveParams,
   };
 
   export {
@@ -706,6 +847,6 @@ export declare namespace Zones {
     type PolicySetRetrieveParams as PolicySetRetrieveParams,
     type PolicySetUpdateParams as PolicySetUpdateParams,
     type PolicySetListParams as PolicySetListParams,
-    type PolicySetArchiveParams as PolicySetArchiveParams
+    type PolicySetArchiveParams as PolicySetArchiveParams,
   };
 }

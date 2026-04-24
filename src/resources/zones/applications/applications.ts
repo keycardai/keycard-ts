@@ -4,7 +4,15 @@ import { APIResource } from '../../../core/resource';
 import * as ApplicationCredentialsAPI from '../application-credentials';
 import * as ZonesAPI from '../zones';
 import * as DependenciesAPI from './dependencies';
-import { Dependencies, DependencyAddParams, DependencyListParams, DependencyListResponse, DependencyRemoveParams, DependencyRetrieveParams, Resource } from './dependencies';
+import {
+  Dependencies,
+  DependencyAddParams,
+  DependencyListParams,
+  DependencyListResponse,
+  DependencyRemoveParams,
+  DependencyRetrieveParams,
+  Resource,
+} from './dependencies';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
@@ -25,7 +33,7 @@ export class Applications extends APIResource {
    * Returns details of a specific Application by ID
    */
   retrieve(id: string, params: ApplicationRetrieveParams, options?: RequestOptions): APIPromise<Application> {
-    const { zoneId } = params
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/applications/${id}`, options);
   }
 
@@ -33,14 +41,18 @@ export class Applications extends APIResource {
    * Updates an Application's configuration and metadata
    */
   update(id: string, params: ApplicationUpdateParams, options?: RequestOptions): APIPromise<Application> {
-    const { zoneId, ...body } = params
+    const { zoneId, ...body } = params;
     return this._client.patch(path`/zones/${zoneId}/applications/${id}`, { body, ...options });
   }
 
   /**
    * Returns a list of applications in the specified zone
    */
-  list(zoneID: string, query: ApplicationListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ApplicationListResponse> {
+  list(
+    zoneID: string,
+    query: ApplicationListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ApplicationListResponse> {
     return this._client.get(path`/zones/${zoneID}/applications`, { query, ...options });
   }
 
@@ -48,23 +60,37 @@ export class Applications extends APIResource {
    * Permanently deletes an application
    */
   delete(id: string, params: ApplicationDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params
-    return this._client.delete(path`/zones/${zoneId}/applications/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId } = params;
+    return this._client.delete(path`/zones/${zoneId}/applications/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * Returns a list of application credentials for a specific application
    */
-  listCredentials(id: string, params: ApplicationListCredentialsParams, options?: RequestOptions): APIPromise<ApplicationListCredentialsResponse> {
-    const { zoneId, ...query } = params
-    return this._client.get(path`/zones/${zoneId}/applications/${id}/application-credentials`, { query, ...options });
+  listCredentials(
+    id: string,
+    params: ApplicationListCredentialsParams,
+    options?: RequestOptions,
+  ): APIPromise<ApplicationListCredentialsResponse> {
+    const { zoneId, ...query } = params;
+    return this._client.get(path`/zones/${zoneId}/applications/${id}/application-credentials`, {
+      query,
+      ...options,
+    });
   }
 
   /**
    * Returns a list of resources provided by an application
    */
-  listResources(id: string, params: ApplicationListResourcesParams, options?: RequestOptions): APIPromise<ApplicationListResourcesResponse> {
-    const { zoneId, ...query } = params
+  listResources(
+    id: string,
+    params: ApplicationListResourcesParams,
+    options?: RequestOptions,
+  ): APIPromise<ApplicationListResourcesResponse> {
+    const { zoneId, ...query } = params;
     return this._client.get(path`/zones/${zoneId}/applications/${id}/resources`, { query, ...options });
   }
 }
@@ -181,7 +207,7 @@ export namespace Application {
  * Traits ascribe behaviors and characteristics to an application, which may
  * activate trait-specific user experiences, workflows, or other system behaviors
  */
-export type ApplicationTrait = 'gateway' | 'mcp-provider'
+export type ApplicationTrait = 'gateway' | 'mcp-provider';
 
 /**
  * Entity metadata
@@ -589,7 +615,7 @@ export declare namespace Applications {
     type ApplicationListParams as ApplicationListParams,
     type ApplicationDeleteParams as ApplicationDeleteParams,
     type ApplicationListCredentialsParams as ApplicationListCredentialsParams,
-    type ApplicationListResourcesParams as ApplicationListResourcesParams
+    type ApplicationListResourcesParams as ApplicationListResourcesParams,
   };
 
   export {
@@ -599,6 +625,6 @@ export declare namespace Applications {
     type DependencyRetrieveParams as DependencyRetrieveParams,
     type DependencyListParams as DependencyListParams,
     type DependencyAddParams as DependencyAddParams,
-    type DependencyRemoveParams as DependencyRemoveParams
+    type DependencyRemoveParams as DependencyRemoveParams,
   };
 }
