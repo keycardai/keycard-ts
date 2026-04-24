@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.1 (2026-04-24)
+
+Full Changelog: [v0.9.0...v0.9.1](https://github.com/keycardai/keycard-ts/compare/v0.9.0...v0.9.1)
+
+### Chores
+
+* **formatter:** run prettier and eslint separately ([7d92f97](https://github.com/keycardai/keycard-ts/commit/7d92f97f6fa74aea78045caef261ce53f50ab704))
+
 ## 0.9.0 (2026-04-23)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/keycardai/keycard-ts/compare/v0.8.0...v0.9.0)
