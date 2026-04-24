@@ -15,12 +15,7 @@ export class Users extends APIResource {
   }
 
   /**
-   * Returns users in the specified zone with cursor-based pagination (after, before,
-   * limit). Use expand[]=total_count to include the total number of matching users.
-   * Exact match: filter[email] (repeatable for OR). Substring search
-   * (case-insensitive, repeatable for OR within each parameter): query[email],
-   * query[subject], query[identifier], query[] (across email, identifier, and
-   * subject). Non-empty query parameters are combined with AND.
+   * Returns a list of users in the specified zone. Can be filtered by email address.
    */
   list(
     zoneID: string,
@@ -152,34 +147,9 @@ export interface UserListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
-   * Filter by exact email address
-   */
-  'filter[email]'?: string | Array<string>;
-
-  /**
    * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Search across email, identifier, and federated subject (substring match)
-   */
-  'query[]'?: string | Array<string>;
-
-  /**
-   * Search by email (substring match)
-   */
-  'query[email]'?: string | Array<string>;
-
-  /**
-   * Search by user identifier (substring match)
-   */
-  'query[identifier]'?: string | Array<string>;
-
-  /**
-   * Search by federated credential subject (substring match)
-   */
-  'query[subject]'?: string | Array<string>;
 }
 
 export declare namespace Users {
