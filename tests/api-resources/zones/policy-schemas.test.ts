@@ -50,9 +50,10 @@ describe('resource policySchemas', () => {
       client.zones.policySchemas.list(
         'zone_id',
         {
-          after: 'after',
-          before: 'before',
+          after: 'x',
+          before: 'x',
           expand: ['total_count'],
+          'filter[default]': true,
           format: 'cedar',
           is_default: true,
           limit: 1,

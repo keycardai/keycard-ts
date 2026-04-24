@@ -154,28 +154,32 @@ export interface SchemaVersionWithZoneInfo extends SchemaVersion {
 export interface PolicySchemaListResponse {
   items: Array<SchemaVersionWithZoneInfo>;
 
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
   pagination: PolicySchemaListResponse.Pagination;
 }
 
 export namespace PolicySchemaListResponse {
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
   export interface Pagination {
     /**
-     * Cursor of the last item on the current page. Pass to after for the next page.
-     * Null when there is no next page.
+     * An opaque cursor used for paginating through a list of results
      */
     after_cursor: string | null;
 
     /**
-     * Cursor of the first item on the current page. Pass to before for the previous
-     * page. Null when there is no previous page.
+     * An opaque cursor used for paginating through a list of results
      */
     before_cursor: string | null;
 
     /**
-     * Total number of items matching the current filters. Only included when
-     * expand=total_count is requested.
+     * Total number of items across all pages. Only present when the request includes
+     * ?expand[]=total_count.
      */
-    total_count?: number | null;
+    total_count?: number;
   }
 }
 
@@ -206,21 +210,32 @@ export interface PolicySchemaRetrieveParams {
 
 export interface PolicySchemaListParams {
   /**
-   * Query param: Return items after this cursor (forward pagination). Use
-   * after_cursor from a previous response. Mutually exclusive with before.
+   * Query param: Cursor for forward pagination. Returned in
+   * `Pagination.after_cursor`. Mutually exclusive with `before`.
    */
   after?: string;
 
   /**
-   * Query param: Return items before this cursor (backward pagination). Use
-   * before_cursor from a previous response. Mutually exclusive with after.
+   * Query param: Cursor for backward pagination. Returned in
+   * `Pagination.before_cursor`. Mutually exclusive with `after`.
    */
   before?: string;
 
   /**
-   * Query param: Opt-in to additional response fields
+   * Query param: **Deprecated.** Use `expand[]` instead.
+   *
+   * Opt-in to additional response fields. Still honored for backward compatibility;
+   * supplying both `expand` and `expand[]` with disagreeing values returns
+   * `400 Bad Request`.
    */
   expand?: Array<'total_count'>;
+
+  /**
+   * Query param: Filter schemas by default status. When `true`, returns only the
+   * zone's default schema. When `false`, returns only non-default schemas. Omit to
+   * return all schemas.
+   */
+  'filter[default]'?: boolean;
 
   /**
    * Query param: Schema representation format. `cedar` returns human-readable Cedar
@@ -230,14 +245,19 @@ export interface PolicySchemaListParams {
   format?: 'cedar' | 'json';
 
   /**
-   * Query param: Filter schemas by default status. When `true`, returns only the
-   * zone's default schema. When `false`, returns only non-default schemas. Omit to
-   * return all schemas.
+   * Query param: **Deprecated.** Use `filter[default]` instead.
+   *
+   * Filter schemas by default status. When `true`, returns only the zone's default
+   * schema. When `false`, returns only non-default schemas. Omit to return all
+   * schemas.
+   *
+   * Still honored for backward compatibility. Supplying both `is_default` and
+   * `filter[default]` with conflicting values returns `400 Bad Request`.
    */
   is_default?: boolean;
 
   /**
-   * Query param: Maximum number of items to return
+   * Query param: Maximum number of items to return per page.
    */
   limit?: number;
 

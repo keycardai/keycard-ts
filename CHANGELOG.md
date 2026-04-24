@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.9.0 (2026-04-23)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/keycardai/keycard-ts/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* add filter/query to policy (set) queries (ACC-147) ([150e40b](https://github.com/keycardai/keycard-ts/commit/150e40b670337a55b5188145dc7ee1c369ffeeca))
+* add standard pagination/filter/search definitions ([746f849](https://github.com/keycardai/keycard-ts/commit/746f849e1031e0ff56017fec2f2eeb9f216a5337))
+* resource prefix flag ([f0e1275](https://github.com/keycardai/keycard-ts/commit/f0e1275b97adcc49084bd03b1fd9b391c82b5219))
+
+
+### Bug Fixes
+
+* **deps:** upgrade dependancies for vulnerabilties found by socket ([#13](https://github.com/keycardai/keycard-ts/issues/13)) ([b7e85cc](https://github.com/keycardai/keycard-ts/commit/b7e85cc43ba28a827508aff225c59dfdff5c8751))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([37402aa](https://github.com/keycardai/keycard-ts/commit/37402aab5bcce1af2b9c1a516ba07131724fd2df))
+
 ## 0.8.0 (2026-04-09)
 
 Full Changelog: [v0.7.1...v0.8.0](https://github.com/keycardai/keycard-ts/compare/v0.7.1...v0.8.0)

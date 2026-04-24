@@ -188,28 +188,32 @@ export interface PolicyDraft {
 export interface PolicyListResponse {
   items: Array<Policy>;
 
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
   pagination: PolicyListResponse.Pagination;
 }
 
 export namespace PolicyListResponse {
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
   export interface Pagination {
     /**
-     * Cursor of the last item on the current page. Pass to after for the next page.
-     * Null when there is no next page.
+     * An opaque cursor used for paginating through a list of results
      */
     after_cursor: string | null;
 
     /**
-     * Cursor of the first item on the current page. Pass to before for the previous
-     * page. Null when there is no previous page.
+     * An opaque cursor used for paginating through a list of results
      */
     before_cursor: string | null;
 
     /**
-     * Total number of items matching the current filters. Only included when
-     * expand=total_count is requested.
+     * Total number of items across all pages. Only present when the request includes
+     * ?expand[]=total_count.
      */
-    total_count?: number | null;
+    total_count?: number;
   }
 }
 
@@ -291,24 +295,44 @@ export interface PolicyUpdateParams {
 
 export interface PolicyListParams {
   /**
-   * Query param: Return items after this cursor (forward pagination). Use
-   * after_cursor from a previous response. Mutually exclusive with before.
+   * Query param: Cursor for forward pagination. Returned in
+   * `Pagination.after_cursor`. Mutually exclusive with `before`.
    */
   after?: string;
 
   /**
-   * Query param: Return items before this cursor (backward pagination). Use
-   * before_cursor from a previous response. Mutually exclusive with after.
+   * Query param: Cursor for backward pagination. Returned in
+   * `Pagination.before_cursor`. Mutually exclusive with `after`.
    */
   before?: string;
 
   /**
-   * Query param: Opt-in to additional response fields
+   * Query param: **Deprecated.** Use `expand[]` instead.
+   *
+   * Opt-in to additional response fields. Still honored for backward compatibility;
+   * supplying both `expand` and `expand[]` with disagreeing values returns
+   * `400 Bad Request`.
    */
   expand?: Array<'total_count'>;
 
   /**
-   * Query param: Maximum number of items to return
+   * Query param: Filter on `owner_type`. Repeatable; repeated instances OR across
+   * values (e.g. `?filter[owner_type]=platform&filter[owner_type]=customer` matches
+   * either). See `FilterValues` in the shared spec for the full wire convention.
+   *
+   * Allowed values: `platform`, `customer`. Unknown values return 400 with the list
+   * of allowed values. Comma-separated single values (e.g.
+   * `?filter[owner_type]=platform,customer`) are rejected with a 400 pointing at the
+   * repeated-parameter OR form.
+   *
+   * Note: the allowed-value enum is enforced in the handler (not as an OpenAPI
+   * `items.enum`) so the server can return a targeted error for the comma-AND form
+   * instead of a generic "not in allowed values" response.
+   */
+  'filter[owner_type]'?: Array<string>;
+
+  /**
+   * Query param: Maximum number of items to return per page.
    */
   limit?: number;
 
@@ -316,6 +340,25 @@ export interface PolicyListParams {
    * Query param: Sort direction. Default is desc (newest first).
    */
   order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Case-insensitive substring search across all searchable fields of
+   * the resource. For policies that is `name` and `description`; for policy sets
+   * that is `name`. Repeatable; if multiple terms are supplied they are OR-ed.
+   */
+  query?: Array<string>;
+
+  /**
+   * Query param: Case-insensitive substring search on `description` (policies only).
+   * Repeatable; if multiple terms are supplied they are OR-ed.
+   */
+  'query[description]'?: Array<string>;
+
+  /**
+   * Query param: Case-insensitive substring search on `name`. Repeatable; if
+   * multiple terms are supplied they are OR-ed (any matching term returns the row).
+   */
+  'query[name]'?: Array<string>;
 
   /**
    * Query param: Field to sort by.

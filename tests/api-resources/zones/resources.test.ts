@@ -31,6 +31,7 @@ describe('resource resources', () => {
       credential_provider_id: 'credential_provider_id',
       description: 'description',
       metadata: { docs_url: 'https://example.com' },
+      prefix: true,
       scopes: ['string'],
     });
   });
@@ -75,6 +76,7 @@ describe('resource resources', () => {
       identifier: 'x',
       metadata: { docs_url: 'https://example.com' },
       name: 'x',
+      prefix: true,
       scopes: ['x'],
     });
   });
