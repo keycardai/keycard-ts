@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0 (2026-04-25)
+
+Full Changelog: [v0.9.1...v0.10.0](https://github.com/keycardai/keycard-ts/compare/v0.9.1...v0.10.0)
+
+### Features
+
+* Matte/revert in progress commits ([96ae331](https://github.com/keycardai/keycard-ts/commit/96ae331200531490075c3a4b327d48b6ba338881))
+* **mgmt api:** add list Users pagination, querying, filtering ([15477bc](https://github.com/keycardai/keycard-ts/commit/15477bc71eb39212c7df08d78e321caab269c3ec))
+* store all evaluation requests for replay and impact (ACC-134) ([cf69edc](https://github.com/keycardai/keycard-ts/commit/cf69edc92f5069af2ec55ba13a737b3582dec309))
+
+
+### Chores
+
+* **formatter:** run prettier and eslint separately ([9428a4a](https://github.com/keycardai/keycard-ts/commit/9428a4ad9fdeea02b4dbf9ce66a14d1d305f0306))
+* update SDK settings ([668af37](https://github.com/keycardai/keycard-ts/commit/668af377fd46a57e7c33b4dc707a864ef9ed1e25))
+
 ## 0.9.1 (2026-04-24)
 
 Full Changelog: [v0.9.0...v0.9.1](https://github.com/keycardai/keycard-ts/compare/v0.9.0...v0.9.1)
