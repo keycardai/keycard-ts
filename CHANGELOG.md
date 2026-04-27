@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.0 (2026-04-27)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/keycardai/keycard-ts/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* support setting headers via env ([475bba6](https://github.com/keycardai/keycard-ts/commit/475bba6cfdb404bbf37f21613945f4141ed5eae3))
+
+
+### Chores
+
+* **internal:** codegen related update ([74906be](https://github.com/keycardai/keycard-ts/commit/74906be80a94ad638c14dffea5f44026d1232adb))
+
 ## 0.10.0 (2026-04-25)
 
 Full Changelog: [v0.9.1...v0.10.0](https://github.com/keycardai/keycard-ts/compare/v0.9.1...v0.10.0)
