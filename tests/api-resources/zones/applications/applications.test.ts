@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource applications', () => {
@@ -24,14 +24,19 @@ describe('resource applications', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.applications.create('zoneId', {
-    identifier: 'x',
-    name: 'x',
-    consent: 'implicit',
-    dependencies: [{ id: 'id', type: 'type' }],
-    description: 'description',
-    metadata: { docs_url: 'https://example.com' },
-    protocols: { oauth2: { post_logout_redirect_uris: ['https://example.com'], redirect_uris: ['https://example.com'] } },
-  });
+      identifier: 'x',
+      name: 'x',
+      consent: 'implicit',
+      dependencies: [{ id: 'id', type: 'type' }],
+      description: 'description',
+      metadata: { docs_url: 'https://example.com' },
+      protocols: {
+        oauth2: {
+          post_logout_redirect_uris: ['https://example.com'],
+          redirect_uris: ['https://example.com'],
+        },
+      },
+    });
   });
 
   // Mock server tests are disabled
@@ -66,14 +71,19 @@ describe('resource applications', () => {
   // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.applications.update('id', {
-    zoneId: 'zoneId',
-    consent: 'implicit',
-    description: 'description',
-    identifier: 'x',
-    metadata: { docs_url: 'https://example.com' },
-    name: 'x',
-    protocols: { oauth2: { post_logout_redirect_uris: ['https://example.com'], redirect_uris: ['https://example.com'] } },
-  });
+      zoneId: 'zoneId',
+      consent: 'implicit',
+      description: 'description',
+      identifier: 'x',
+      metadata: { docs_url: 'https://example.com' },
+      name: 'x',
+      protocols: {
+        oauth2: {
+          post_logout_redirect_uris: ['https://example.com'],
+          redirect_uris: ['https://example.com'],
+        },
+      },
+    });
   });
 
   // Mock server tests are disabled
@@ -91,19 +101,23 @@ describe('resource applications', () => {
   // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.zones.applications.list('zoneId', {
-    after: 'x',
-    before: 'x',
-    cursor: 'cursor',
-    'expand[]': 'total_count',
-    identifier: 'identifier',
-    limit: 1,
-    slug: 'slug',
-    traits: ['gateway'],
-    'traits[all]': ['gateway'],
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.zones.applications.list(
+        'zoneId',
+        {
+          after: 'x',
+          before: 'x',
+          cursor: 'cursor',
+          'expand[]': 'total_count',
+          identifier: 'identifier',
+          limit: 1,
+          slug: 'slug',
+          traits: ['gateway'],
+          'traits[all]': ['gateway'],
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -138,13 +152,13 @@ describe('resource applications', () => {
   // Mock server tests are disabled
   test.skip('listCredentials: required and optional params', async () => {
     const response = await client.zones.applications.listCredentials('id', {
-    zoneId: 'zoneId',
-    after: 'x',
-    before: 'x',
-    cursor: 'cursor',
-    'expand[]': 'total_count',
-    limit: 1,
-  });
+      zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
+      cursor: 'cursor',
+      'expand[]': 'total_count',
+      limit: 1,
+    });
   });
 
   // Mock server tests are disabled
@@ -162,12 +176,12 @@ describe('resource applications', () => {
   // Mock server tests are disabled
   test.skip('listResources: required and optional params', async () => {
     const response = await client.zones.applications.listResources('id', {
-    zoneId: 'zoneId',
-    after: 'x',
-    before: 'x',
-    cursor: 'cursor',
-    'expand[]': 'total_count',
-    limit: 1,
-  });
+      zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
+      cursor: 'cursor',
+      'expand[]': 'total_count',
+      limit: 1,
+    });
   });
 });

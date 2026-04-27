@@ -11,41 +11,109 @@ export class Credentials extends APIResource {
   /**
    * Create a new credential for a service account
    */
-  create(serviceAccountID: string, params: CredentialCreateParams, options?: RequestOptions): APIPromise<CredentialCreateResponse> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params
-    return this._client.post(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}/credentials`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  create(
+    serviceAccountID: string,
+    params: CredentialCreateParams,
+    options?: RequestOptions,
+  ): APIPromise<CredentialCreateResponse> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
+    return this._client.post(
+      path`/organizations/${organization_id}/service-accounts/${serviceAccountID}/credentials`,
+      {
+        body,
+        ...options,
+        headers: buildHeaders([
+          { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+          options?.headers,
+        ]),
+      },
+    );
   }
 
   /**
    * Get a specific service account credential
    */
-  retrieve(credentialID: string, params: CredentialRetrieveParams, options?: RequestOptions): APIPromise<ServiceAccountCredential> {
-    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params
-    return this._client.get(path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  retrieve(
+    credentialID: string,
+    params: CredentialRetrieveParams,
+    options?: RequestOptions,
+  ): APIPromise<ServiceAccountCredential> {
+    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
+    return this._client.get(
+      path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`,
+      {
+        query,
+        ...options,
+        headers: buildHeaders([
+          { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+          options?.headers,
+        ]),
+      },
+    );
   }
 
   /**
    * Update a service account credential
    */
-  update(credentialID: string, params: CredentialUpdateParams, options?: RequestOptions): APIPromise<ServiceAccountCredential> {
-    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params
-    return this._client.patch(path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`, { body, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  update(
+    credentialID: string,
+    params: CredentialUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<ServiceAccountCredential> {
+    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID, ...body } = params;
+    return this._client.patch(
+      path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`,
+      {
+        body,
+        ...options,
+        headers: buildHeaders([
+          { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+          options?.headers,
+        ]),
+      },
+    );
   }
 
   /**
    * List credentials for a service account
    */
-  list(serviceAccountID: string, params: CredentialListParams, options?: RequestOptions): APIPromise<CredentialListResponse> {
-    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params
-    return this._client.get(path`/organizations/${organization_id}/service-accounts/${serviceAccountID}/credentials`, { query, ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  list(
+    serviceAccountID: string,
+    params: CredentialListParams,
+    options?: RequestOptions,
+  ): APIPromise<CredentialListResponse> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
+    return this._client.get(
+      path`/organizations/${organization_id}/service-accounts/${serviceAccountID}/credentials`,
+      {
+        query,
+        ...options,
+        headers: buildHeaders([
+          { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+          options?.headers,
+        ]),
+      },
+    );
   }
 
   /**
    * Delete a service account credential
    */
   delete(credentialID: string, params: CredentialDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID } = params
-    return this._client.delete(path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`, { ...options, headers: buildHeaders([{Accept: '*/*', ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+    const { organization_id, service_account_id, 'X-Client-Request-ID': xClientRequestID } = params;
+    return this._client.delete(
+      path`/organizations/${organization_id}/service-accounts/${service_account_id}/credentials/${credentialID}`,
+      {
+        ...options,
+        headers: buildHeaders([
+          {
+            Accept: '*/*',
+            ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+          },
+          options?.headers,
+        ]),
+      },
+    );
   }
 }
 
@@ -286,6 +354,6 @@ export declare namespace Credentials {
     type CredentialRetrieveParams as CredentialRetrieveParams,
     type CredentialUpdateParams as CredentialUpdateParams,
     type CredentialListParams as CredentialListParams,
-    type CredentialDeleteParams as CredentialDeleteParams
+    type CredentialDeleteParams as CredentialDeleteParams,
   };
 }

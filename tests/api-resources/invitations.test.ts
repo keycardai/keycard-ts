@@ -5,7 +5,7 @@ import KeycardAPI from '@keycardai/api';
 const client = new KeycardAPI({
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource invitations', () => {
@@ -24,9 +24,13 @@ describe('resource invitations', () => {
   // Mock server tests are disabled
   test.skip('retrieve: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.invitations.retrieve('token', { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.invitations.retrieve(
+        'token',
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -44,8 +48,12 @@ describe('resource invitations', () => {
   // Mock server tests are disabled
   test.skip('accept: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.invitations.accept('token', { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(KeycardAPI.NotFoundError);
+    await expect(
+      client.invitations.accept(
+        'token',
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 });

@@ -27,25 +27,72 @@ export class PolicySchemas extends APIResource {
   /**
    * Get a policy schema by version
    */
-  retrieve(version: string, params: PolicySchemaRetrieveParams, options?: RequestOptions): APIPromise<SchemaVersionWithZoneInfo> {
-    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...query } = params
-    return this._client.get(path`/zones/${zone_id}/policy-schemas/${version}`, { query, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  retrieve(
+    version: string,
+    params: PolicySchemaRetrieveParams,
+    options?: RequestOptions,
+  ): APIPromise<SchemaVersionWithZoneInfo> {
+    const {
+      zone_id,
+      'X-API-Version': xAPIVersion,
+      'X-Client-Request-ID': xClientRequestID,
+      ...query
+    } = params;
+    return this._client.get(path`/zones/${zone_id}/policy-schemas/${version}`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
+          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * List policy schemas
    */
-  list(zoneID: string, params: PolicySchemaListParams | null | undefined = {}, options?: RequestOptions): APIPromise<PolicySchemaListResponse> {
-    const { 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {}
-    return this._client.get(path`/zones/${zoneID}/policy-schemas`, { query, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  list(
+    zoneID: string,
+    params: PolicySchemaListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PolicySchemaListResponse> {
+    const { 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
+    return this._client.get(path`/zones/${zoneID}/policy-schemas`, {
+      query,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
+          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Set the default policy schema for a zone
    */
-  setDefault(version: string, params: PolicySchemaSetDefaultParams, options?: RequestOptions): APIPromise<SchemaVersionWithZoneInfo> {
-    const { zone_id, body, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params
-    return this._client.patch(path`/zones/${zone_id}/policy-schemas/${version}`, { body: body, ...options, headers: buildHeaders([{...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined), ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  setDefault(
+    version: string,
+    params: PolicySchemaSetDefaultParams,
+    options?: RequestOptions,
+  ): APIPromise<SchemaVersionWithZoneInfo> {
+    const { zone_id, body, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params;
+    return this._client.patch(path`/zones/${zone_id}/policy-schemas/${version}`, {
+      body: body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
+          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -266,6 +313,6 @@ export declare namespace PolicySchemas {
     type PolicySchemaListResponse as PolicySchemaListResponse,
     type PolicySchemaRetrieveParams as PolicySchemaRetrieveParams,
     type PolicySchemaListParams as PolicySchemaListParams,
-    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams
+    type PolicySchemaSetDefaultParams as PolicySchemaSetDefaultParams,
   };
 }

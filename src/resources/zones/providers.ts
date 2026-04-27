@@ -20,7 +20,7 @@ export class Providers extends APIResource {
    * Returns details of a specific Provider by ID
    */
   retrieve(id: string, params: ProviderRetrieveParams, options?: RequestOptions): APIPromise<Provider> {
-    const { zoneId } = params
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/providers/${id}`, options);
   }
 
@@ -28,14 +28,18 @@ export class Providers extends APIResource {
    * Updates a Provider's configuration and metadata
    */
   update(id: string, params: ProviderUpdateParams, options?: RequestOptions): APIPromise<Provider> {
-    const { zoneId, ...body } = params
+    const { zoneId, ...body } = params;
     return this._client.patch(path`/zones/${zoneId}/providers/${id}`, { body, ...options });
   }
 
   /**
    * Returns a list of providers in the specified zone
    */
-  list(zoneID: string, query: ProviderListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ProviderListResponse> {
+  list(
+    zoneID: string,
+    query: ProviderListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ProviderListResponse> {
     return this._client.get(path`/zones/${zoneID}/providers`, { query, ...options });
   }
 
@@ -43,8 +47,11 @@ export class Providers extends APIResource {
    * Permanently deletes a provider
    */
   delete(id: string, params: ProviderDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params
-    return this._client.delete(path`/zones/${zoneId}/providers/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId } = params;
+    return this._client.delete(path`/zones/${zoneId}/providers/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -563,6 +570,6 @@ export declare namespace Providers {
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
-    type ProviderDeleteParams as ProviderDeleteParams
+    type ProviderDeleteParams as ProviderDeleteParams,
   };
 }

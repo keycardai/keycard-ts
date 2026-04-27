@@ -14,7 +14,7 @@ export class DelegatedGrants extends APIResource {
    * Returns details of a specific delegated grant by grant ID
    */
   retrieve(id: string, params: DelegatedGrantRetrieveParams, options?: RequestOptions): APIPromise<Grant> {
-    const { zoneId } = params
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/delegated-grants/${id}`, options);
   }
 
@@ -22,7 +22,7 @@ export class DelegatedGrants extends APIResource {
    * Revokes an active delegated grant
    */
   update(id: string, params: DelegatedGrantUpdateParams, options?: RequestOptions): APIPromise<Grant> {
-    const { zoneId, ...body } = params
+    const { zoneId, ...body } = params;
     return this._client.patch(path`/zones/${zoneId}/delegated-grants/${id}`, { body, ...options });
   }
 
@@ -30,7 +30,11 @@ export class DelegatedGrants extends APIResource {
    * Returns a list of delegated grants in the specified zone. Can be filtered by
    * user, resource, or status.
    */
-  list(zoneID: string, query: DelegatedGrantListParams | null | undefined = {}, options?: RequestOptions): APIPromise<DelegatedGrantListResponse> {
+  list(
+    zoneID: string,
+    query: DelegatedGrantListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<DelegatedGrantListResponse> {
     return this._client.get(path`/zones/${zoneID}/delegated-grants`, { query, ...options });
   }
 
@@ -39,8 +43,11 @@ export class DelegatedGrants extends APIResource {
    * protected resource
    */
   delete(id: string, params: DelegatedGrantDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params
-    return this._client.delete(path`/zones/${zoneId}/delegated-grants/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId } = params;
+    return this._client.delete(path`/zones/${zoneId}/delegated-grants/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -236,6 +243,6 @@ export declare namespace DelegatedGrants {
     type DelegatedGrantRetrieveParams as DelegatedGrantRetrieveParams,
     type DelegatedGrantUpdateParams as DelegatedGrantUpdateParams,
     type DelegatedGrantListParams as DelegatedGrantListParams,
-    type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams
+    type DelegatedGrantDeleteParams as DelegatedGrantDeleteParams,
   };
 }

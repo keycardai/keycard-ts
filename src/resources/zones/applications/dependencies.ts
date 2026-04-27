@@ -13,16 +13,24 @@ export class Dependencies extends APIResource {
   /**
    * Retrieves a specific resource dependency of an application
    */
-  retrieve(dependencyID: string, params: DependencyRetrieveParams, options?: RequestOptions): APIPromise<Resource> {
-    const { zoneId, id } = params
+  retrieve(
+    dependencyID: string,
+    params: DependencyRetrieveParams,
+    options?: RequestOptions,
+  ): APIPromise<Resource> {
+    const { zoneId, id } = params;
     return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, options);
   }
 
   /**
    * Returns resource dependencies for an application
    */
-  list(id: string, params: DependencyListParams, options?: RequestOptions): APIPromise<DependencyListResponse> {
-    const { zoneId, ...query } = params
+  list(
+    id: string,
+    params: DependencyListParams,
+    options?: RequestOptions,
+  ): APIPromise<DependencyListResponse> {
+    const { zoneId, ...query } = params;
     return this._client.get(path`/zones/${zoneId}/applications/${id}/dependencies`, { query, ...options });
   }
 
@@ -30,16 +38,23 @@ export class Dependencies extends APIResource {
    * Adds a resource dependency to an application
    */
   add(dependencyID: string, params: DependencyAddParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId, id, when_accessing } = params
-    return this._client.put(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, { query: { when_accessing }, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId, id, when_accessing } = params;
+    return this._client.put(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
+      query: { when_accessing },
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * Removes a resource dependency from an application
    */
   remove(dependencyID: string, params: DependencyRemoveParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId, id } = params
-    return this._client.delete(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId, id } = params;
+    return this._client.delete(path`/zones/${zoneId}/applications/${id}/dependencies/${dependencyID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -264,6 +279,6 @@ export declare namespace Dependencies {
     type DependencyRetrieveParams as DependencyRetrieveParams,
     type DependencyListParams as DependencyListParams,
     type DependencyAddParams as DependencyAddParams,
-    type DependencyRemoveParams as DependencyRemoveParams
+    type DependencyRemoveParams as DependencyRemoveParams,
   };
 }

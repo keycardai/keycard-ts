@@ -14,7 +14,7 @@ export class Sessions extends APIResource {
    * Returns details of a specific session by session ID
    */
   retrieve(id: string, params: SessionRetrieveParams, options?: RequestOptions): APIPromise<Session> {
-    const { zoneId } = params
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/sessions/${id}`, options);
   }
 
@@ -22,7 +22,7 @@ export class Sessions extends APIResource {
    * Revokes an active session
    */
   update(id: string, params: SessionUpdateParams, options?: RequestOptions): APIPromise<Session> {
-    const { zoneId, ...body } = params
+    const { zoneId, ...body } = params;
     return this._client.patch(path`/zones/${zoneId}/sessions/${id}`, { body, ...options });
   }
 
@@ -32,7 +32,11 @@ export class Sessions extends APIResource {
    * session). Use include_nested=true to include nested sessions. Can be filtered by
    * session type, status, and user.
    */
-  list(zoneID: string, query: SessionListParams | null | undefined = {}, options?: RequestOptions): APIPromise<SessionListResponse> {
+  list(
+    zoneID: string,
+    query: SessionListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SessionListResponse> {
     return this._client.get(path`/zones/${zoneID}/sessions`, { query, ...options });
   }
 
@@ -40,8 +44,11 @@ export class Sessions extends APIResource {
    * Permanently deletes a session, effectively logging out the user or application
    */
   delete(id: string, params: SessionDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params
-    return this._client.delete(path`/zones/${zoneId}/sessions/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId } = params;
+    return this._client.delete(path`/zones/${zoneId}/sessions/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -51,7 +58,7 @@ export class Sessions extends APIResource {
  * service-to-service authentication). User sessions support hierarchical
  * relationships via parent_id, while application sessions are always standalone.
  */
-export type Session = Session.IamUserSessionType | Session.IamApplicationSessionType
+export type Session = Session.IamUserSessionType | Session.IamApplicationSessionType;
 
 export namespace Session {
   /**
@@ -386,6 +393,6 @@ export declare namespace Sessions {
     type SessionRetrieveParams as SessionRetrieveParams,
     type SessionUpdateParams as SessionUpdateParams,
     type SessionListParams as SessionListParams,
-    type SessionDeleteParams as SessionDeleteParams
+    type SessionDeleteParams as SessionDeleteParams,
   };
 }

@@ -12,17 +12,38 @@ export class Invitations extends APIResource {
   /**
    * View invitation details by token without consuming the token
    */
-  retrieve(token: string, params: InvitationRetrieveParams | null | undefined = {}, options?: RequestOptions): APIPromise<InvitationRetrieveResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {}
-    return this._client.get(path`/invitations/${token}`, { ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]), __security: {  } });
+  retrieve(
+    token: string,
+    params: InvitationRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<InvitationRetrieveResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
+    return this._client.get(path`/invitations/${token}`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+      __security: {},
+    });
   }
 
   /**
    * Accept and consume an invitation token to join the organization
    */
-  accept(token: string, params: InvitationAcceptParams | null | undefined = {}, options?: RequestOptions): APIPromise<InvitationAcceptResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {}
-    return this._client.post(path`/invitations/${token}/accept`, { ...options, headers: buildHeaders([{...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined)}, options?.headers]) });
+  accept(
+    token: string,
+    params: InvitationAcceptParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<InvitationAcceptResponse> {
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
+    return this._client.post(path`/invitations/${token}/accept`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -107,6 +128,6 @@ export declare namespace Invitations {
     type InvitationRetrieveResponse as InvitationRetrieveResponse,
     type InvitationAcceptResponse as InvitationAcceptResponse,
     type InvitationRetrieveParams as InvitationRetrieveParams,
-    type InvitationAcceptParams as InvitationAcceptParams
+    type InvitationAcceptParams as InvitationAcceptParams,
   };
 }

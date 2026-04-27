@@ -13,30 +13,46 @@ export class ApplicationCredentials extends APIResource {
   /**
    * Creates a new application credential
    */
-  create(zoneID: string, body: ApplicationCredentialCreateParams, options?: RequestOptions): APIPromise<ApplicationCredentialCreateResponse> {
+  create(
+    zoneID: string,
+    body: ApplicationCredentialCreateParams,
+    options?: RequestOptions,
+  ): APIPromise<ApplicationCredentialCreateResponse> {
     return this._client.post(path`/zones/${zoneID}/application-credentials`, { body, ...options });
   }
 
   /**
    * Returns details of a specific application credential by ID
    */
-  retrieve(id: string, params: ApplicationCredentialRetrieveParams, options?: RequestOptions): APIPromise<Credential> {
-    const { zoneId } = params
+  retrieve(
+    id: string,
+    params: ApplicationCredentialRetrieveParams,
+    options?: RequestOptions,
+  ): APIPromise<Credential> {
+    const { zoneId } = params;
     return this._client.get(path`/zones/${zoneId}/application-credentials/${id}`, options);
   }
 
   /**
    * Updates an application credential's configuration
    */
-  update(id: string, params: ApplicationCredentialUpdateParams, options?: RequestOptions): APIPromise<Credential> {
-    const { zoneId, ...body } = params
+  update(
+    id: string,
+    params: ApplicationCredentialUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<Credential> {
+    const { zoneId, ...body } = params;
     return this._client.patch(path`/zones/${zoneId}/application-credentials/${id}`, { body, ...options });
   }
 
   /**
    * Returns a list of application credentials in the specified zone
    */
-  list(zoneID: string, query: ApplicationCredentialListParams | null | undefined = {}, options?: RequestOptions): APIPromise<ApplicationCredentialListResponse> {
+  list(
+    zoneID: string,
+    query: ApplicationCredentialListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ApplicationCredentialListResponse> {
     return this._client.get(path`/zones/${zoneID}/application-credentials`, { query, ...options });
   }
 
@@ -44,8 +60,11 @@ export class ApplicationCredentials extends APIResource {
    * Permanently deletes an application credential
    */
   delete(id: string, params: ApplicationCredentialDeleteParams, options?: RequestOptions): APIPromise<void> {
-    const { zoneId } = params
-    return this._client.delete(path`/zones/${zoneId}/application-credentials/${id}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { zoneId } = params;
+    return this._client.delete(path`/zones/${zoneId}/application-credentials/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -99,7 +118,7 @@ export interface BaseFields {
 /**
  * Credentials for accessing external services from applications
  */
-export type Credential = Token | Password | PublicKey | URL | Public
+export type Credential = Token | Password | PublicKey | URL | Public;
 
 /**
  * Password-based application credential
@@ -193,7 +212,7 @@ export interface URL extends BaseFields {
 /**
  * Response for creating a new application credential
  */
-export type ApplicationCredentialCreateResponse = Token | Password | PublicKey | URL | Public
+export type ApplicationCredentialCreateResponse = Token | Password | PublicKey | URL | Public;
 
 export interface ApplicationCredentialListResponse {
   items: Array<Credential>;
@@ -232,7 +251,12 @@ export namespace ApplicationCredentialListResponse {
   }
 }
 
-export type ApplicationCredentialCreateParams = ApplicationCredentialCreateParams.IamApplicationCredentialCreateToken | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePassword | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePublicKey | ApplicationCredentialCreateParams.IamApplicationCredentialCreateURL | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePublic
+export type ApplicationCredentialCreateParams =
+  | ApplicationCredentialCreateParams.IamApplicationCredentialCreateToken
+  | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePassword
+  | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePublicKey
+  | ApplicationCredentialCreateParams.IamApplicationCredentialCreateURL
+  | ApplicationCredentialCreateParams.IamApplicationCredentialCreatePublic;
 
 export declare namespace ApplicationCredentialCreateParams {
   export interface IamApplicationCredentialCreateToken {
@@ -324,7 +348,12 @@ export interface ApplicationCredentialRetrieveParams {
   zoneId: string;
 }
 
-export type ApplicationCredentialUpdateParams = ApplicationCredentialUpdateParams.IamTokenCredentialUpdate | ApplicationCredentialUpdateParams.IamPasswordCredentialUpdate | ApplicationCredentialUpdateParams.IamPublicKeyCredentialUpdate | ApplicationCredentialUpdateParams.IamURLCredentialUpdate | ApplicationCredentialUpdateParams.IamPublicCredentialUpdate
+export type ApplicationCredentialUpdateParams =
+  | ApplicationCredentialUpdateParams.IamTokenCredentialUpdate
+  | ApplicationCredentialUpdateParams.IamPasswordCredentialUpdate
+  | ApplicationCredentialUpdateParams.IamPublicKeyCredentialUpdate
+  | ApplicationCredentialUpdateParams.IamURLCredentialUpdate
+  | ApplicationCredentialUpdateParams.IamPublicCredentialUpdate;
 
 export declare namespace ApplicationCredentialUpdateParams {
   export interface IamTokenCredentialUpdate {
@@ -449,6 +478,6 @@ export declare namespace ApplicationCredentials {
     type ApplicationCredentialRetrieveParams as ApplicationCredentialRetrieveParams,
     type ApplicationCredentialUpdateParams as ApplicationCredentialUpdateParams,
     type ApplicationCredentialListParams as ApplicationCredentialListParams,
-    type ApplicationCredentialDeleteParams as ApplicationCredentialDeleteParams
+    type ApplicationCredentialDeleteParams as ApplicationCredentialDeleteParams,
   };
 }
