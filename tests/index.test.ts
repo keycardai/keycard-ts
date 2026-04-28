@@ -78,7 +78,6 @@ describe('instantiate client', () => {
       process.env = { ...env };
       process.env['KEYCARD_API_LOG'] = undefined;
     });
-
     afterEach(() => {
       process.env = env;
     });
