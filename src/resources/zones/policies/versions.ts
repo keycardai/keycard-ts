@@ -151,12 +151,16 @@ export interface PolicyVersion {
   archived_by?: string | null;
 
   /**
-   * Cedar policy in JSON representation. Populated when format=json (default).
+   * Cedar policy in JSON representation. Populated by default and when `format=json`
+   * is passed; null when `format=cedar` narrows the response to the text
+   * representation only.
    */
   cedar_json?: unknown | null;
 
   /**
-   * Cedar policy in human-readable syntax. Populated when format=cedar.
+   * Cedar policy in human-readable syntax. Populated by default and when
+   * `format=cedar` is passed; null when `format=json` narrows the response to the
+   * JSON representation only.
    */
   cedar_raw?: string | null;
 }
@@ -241,8 +245,10 @@ export interface VersionRetrieveParams {
   policy_id: string;
 
   /**
-   * Query param: Policy representation format. `json` returns cedar_json, `cedar`
-   * returns cedar_raw.
+   * Query param: Narrows which Cedar representation the response includes. When
+   * omitted, both `cedar_json` and `cedar_raw` are populated. Pass `json` to receive
+   * only `cedar_json`, or `cedar` to receive only `cedar_raw`. Callers that don't
+   * care about payload size can skip this parameter.
    */
   format?: 'cedar' | 'json';
 
@@ -286,8 +292,10 @@ export interface VersionListParams {
   expand?: Array<'total_count'>;
 
   /**
-   * Query param: Policy representation format. `json` returns cedar_json, `cedar`
-   * returns cedar_raw.
+   * Query param: Narrows which Cedar representation the response includes. When
+   * omitted, both `cedar_json` and `cedar_raw` are populated. Pass `json` to receive
+   * only `cedar_json`, or `cedar` to receive only `cedar_raw`. Callers that don't
+   * care about payload size can skip this parameter.
    */
   format?: 'cedar' | 'json';
 

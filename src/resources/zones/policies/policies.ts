@@ -175,12 +175,16 @@ export interface PolicyDraft {
   base_version_id?: string | null;
 
   /**
-   * Cedar policy in JSON representation. Populated when format=json (default).
+   * Cedar policy in JSON representation. Populated by default and when `format=json`
+   * is passed; null when `format=cedar` narrows the response to the text
+   * representation only.
    */
   cedar_json?: unknown | null;
 
   /**
-   * Cedar policy in human-readable syntax. Populated when format=cedar.
+   * Cedar policy in human-readable syntax. Populated by default and when
+   * `format=cedar` is passed; null when `format=json` narrows the response to the
+   * JSON representation only.
    */
   cedar_raw?: string | null;
 }
