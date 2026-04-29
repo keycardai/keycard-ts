@@ -481,8 +481,10 @@ export interface VersionListPoliciesParams {
   expand?: Array<'total_count'>;
 
   /**
-   * Query param: Policy representation format. `json` returns cedar_json, `cedar`
-   * returns cedar_raw.
+   * Query param: Narrows which Cedar representation the response includes. When
+   * omitted, both `cedar_json` and `cedar_raw` are populated. Pass `json` to receive
+   * only `cedar_json`, or `cedar` to receive only `cedar_raw`. Callers that don't
+   * care about payload size can skip this parameter.
    */
   format?: 'cedar' | 'json';
 
