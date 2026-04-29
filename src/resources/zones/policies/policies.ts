@@ -148,6 +148,13 @@ export interface Policy {
   description?: string | null;
 
   /**
+   * Schema version the latest version was validated against (e.g., "2026-02-24").
+   * Null when the policy has no published versions. Denormalized from
+   * `PolicyVersion.schema_version` for the policy referenced by `latest_version_id`.
+   */
+  latest_schema_version?: string | null;
+
+  /**
    * Human-readable version number of the latest version (e.g., 1, 2, 3)
    */
   latest_version?: number | null;
