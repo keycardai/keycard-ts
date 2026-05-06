@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.0 (2026-05-06)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/keycardai/keycard-ts/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* **ACC-225:** return both cedar_json and cedar_raw on policy version fetch ([f82299f](https://github.com/keycardai/keycard-ts/commit/f82299f7a7b9900f071389b1a7bdbab95827b646))
+* **api:** add latest_schema_version to the Policy entity (ACC-251) ([8e4d6ba](https://github.com/keycardai/keycard-ts/commit/8e4d6ba913c8d097a85f07a937e87b52d926f1ed))
+* **mgmt api:** cursor pagination works with sort on listInvitations ([6504111](https://github.com/keycardai/keycard-ts/commit/6504111863b5579985b0b7a784244d699bef0052))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([171fd59](https://github.com/keycardai/keycard-ts/commit/171fd59d9e4732c21389e425d5aa137034230c4d))
+
 ## 0.11.0 (2026-04-27)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/keycardai/keycard-ts/compare/v0.10.0...v0.11.0)
