@@ -658,6 +658,8 @@ export interface ZoneListParams {
 
   'expand[]'?: 'total_count' | 'permissions' | Array<'total_count' | 'permissions'>;
 
+  'filter[organization_id]'?: string;
+
   /**
    * Maximum number of items to return
    */
