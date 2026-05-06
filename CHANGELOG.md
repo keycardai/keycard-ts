@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.1 (2026-05-06)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/keycardai/keycard-ts/compare/v0.12.0...v0.12.1)
+
+### Bug Fixes
+
+* **stainless config:** follow stainless docs for npm publish config ([250cdb5](https://github.com/keycardai/keycard-ts/commit/250cdb59569852e37b8fa32e5e385ccfe76dea01))
+
 ## 0.12.0 (2026-05-06)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/keycardai/keycard-ts/compare/v0.11.0...v0.12.0)
