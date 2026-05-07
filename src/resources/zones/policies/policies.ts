@@ -83,7 +83,16 @@ export class Policies extends APIResource {
   }
 
   /**
-   * List policies in a zone
+   * Returns a paginated list of policies in the zone. Supports cursor-based
+   * pagination, sorting, full-text search, and composable filters.
+   *
+   * The `filter[id]` parameter restricts results to a known set of policy IDs (up to
+   * 100). It composes with other filters (`filter[owner_type]`, `query[]`, etc.) but
+   * **cannot** be combined with cursor pagination (`after` / `before`) — the server
+   * returns 400 if both are present. When `filter[id]` is used without an explicit
+   * `limit`, the limit defaults to the number of requested IDs so all results fit in
+   * a single page. IDs that don't exist or fall outside the zone are silently
+   * omitted.
    */
   list(
     zoneID: string,
@@ -325,6 +334,23 @@ export interface PolicyListParams {
    * `400 Bad Request`.
    */
   expand?: Array<'total_count'>;
+
+  /**
+   * Query param: Filter by policy ID. Repeatable; multiple values are OR-ed (e.g.
+   * `?filter[id]=p1&filter[id]=p2`). Capped at 100 IDs per request — over-cap
+   * returns 400.
+   *
+   * Cannot be combined with cursor pagination (`after` or `before`). The server
+   * returns 400 if both are present.
+   *
+   * Composes with other filters (`filter[owner_type]`, `query[]`, etc.). When no
+   * explicit `limit` is provided, it defaults to the number of requested IDs so all
+   * results fit in a single page.
+   *
+   * IDs that don't exist or fall outside the zone scope are silently omitted;
+   * callers diff against the request set if they care about missing IDs.
+   */
+  'filter[id]'?: Array<string>;
 
   /**
    * Query param: Filter on `owner_type`. Repeatable; repeated instances OR across
