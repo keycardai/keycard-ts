@@ -2,7 +2,12 @@
 
 set -eux
 
-npm config set '//registry.npmjs.org/:_authToken' "$NPM_TOKEN"
+if [[ ${NPM_TOKEN:-} ]]; then
+  npm config set '//registry.npmjs.org/:_authToken' "$NPM_TOKEN"
+elif [[ ! ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-} ]]; then
+  echo "ERROR: NPM_TOKEN must be set if not running in a Github Action with id-token permission"
+  exit 1
+fi
 
 pnpm build
 cd dist
@@ -24,10 +29,10 @@ VERSION="$(jq -r -e '.version' ./package.json)"
 NPM_INFO="$(npm view "$PACKAGE_NAME" version --json 2>/dev/null || true)"
 
 # Check if we got an E404 error
-if echo "$NPM_INFO" | jq -e '.error.code == "E404"' > /dev/null 2>&1; then
+if echo "$NPM_INFO" | jq -e '.error.code == "E404"' >/dev/null 2>&1; then
   # Package doesn't exist yet, no last version
   LAST_VERSION=""
-elif echo "$NPM_INFO" | jq -e '.error' > /dev/null 2>&1; then
+elif echo "$NPM_INFO" | jq -e '.error' >/dev/null 2>&1; then
   # Report other errors
   echo "ERROR: npm returned unexpected data:"
   echo "$NPM_INFO"
@@ -57,5 +62,8 @@ else
   TAG="latest"
 fi
 
+# Install OIDC compatible npm version
+npm install --prefix ../oidc/ npm@11.6.2
+
 # Publish with the appropriate tag
-pnpm publish --no-git-checks --tag "$TAG"
+pnpm publish --npm-path "$(cd ../ && pwd)/oidc/node_modules/.bin/npm" --no-git-checks --tag "$TAG"
