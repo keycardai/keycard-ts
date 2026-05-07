@@ -592,9 +592,12 @@ export interface PolicySetListParams {
   'query[name]'?: Array<string>;
 
   /**
-   * Query param: Field to sort by.
+   * Query param: Field to sort by. `created_at` (default) sorts by creation date.
+   * `status` sorts active-first, then by creation date within each group. When
+   * `sort=status`, only descending order and forward pagination are supported;
+   * `order=asc` or `before` cursors return 400.
    */
-  sort?: 'created_at';
+  sort?: 'created_at' | 'status';
 
   /**
    * Header param: API version header (date-based, e.g. 2026-02-01)

@@ -10,6 +10,9 @@ jobs:
     name: release doctor
     runs-on: ubuntu-latest
     if: github.repository == 'keycardai/keycard-ts' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'release-please') || github.head_ref == 'next')
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v6
