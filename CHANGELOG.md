@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.0 (2026-05-11)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/keycardai/keycard-ts/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* **ID-177:** make invitations.last_sent_at non-nullable ([6f26fe8](https://github.com/keycardai/keycard-ts/commit/6f26fe8b63bc5c74632b8d5a0d69cd8b6e59c70d))
+
 ## 0.13.0 (2026-05-07)
 
 Full Changelog: [v0.12.1...v0.13.0](https://github.com/keycardai/keycard-ts/compare/v0.12.1...v0.13.0)
