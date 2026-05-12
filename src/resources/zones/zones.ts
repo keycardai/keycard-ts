@@ -324,12 +324,6 @@ export interface Zone {
   encryption_key?: EncryptionKeyAwsKmsConfig;
 
   /**
-   * Login flow style for the zone. 'default' uses standard authentication,
-   * 'identifier_first' uses identifier-based provider routing.
-   */
-  login_flow?: 'default' | 'identifier_first';
-
-  /**
    * Permissions granted to the authenticated principal. Only populated when
    * expand[]=permissions query parameter is provided. Keys are resource types,
    * values are objects mapping action names to boolean values.
@@ -381,6 +375,11 @@ export namespace Zone {
       authorization_server_metadata: string;
 
       /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      cimd: Oauth2.Cimd;
+
+      /**
        * Whether Dynamic Client Registration is enabled
        */
       dcr_enabled: boolean;
@@ -414,6 +413,26 @@ export namespace Zone {
        * OAuth 2.0 token endpoint
        */
       token_endpoint: string;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      export interface Cimd {
+        /**
+         * Allowlist for CIMD client_id URLs. Each entry is an exact URL, a wildcard origin
+         * with a single _ replacing one subdomain label (e.g. https://_.example.com
+         * matches https://app.example.com but not https://a.b.example.com), or the literal
+         * _ to allow any client. Only one _ is permitted per entry.
+         */
+        allowed_client_ids: Array<string>;
+
+        /**
+         * Whether CIMD auto-provisioning is enabled for unregistered URL-based clients
+         */
+        enabled: boolean;
+      }
     }
 
     /**
@@ -496,12 +515,6 @@ export interface ZoneCreateParams {
   encryption_key?: EncryptionKeyAwsKmsConfig;
 
   /**
-   * Login flow style for the zone. 'default' uses standard authentication,
-   * 'identifier_first' uses identifier-based provider routing.
-   */
-  login_flow?: 'default' | 'identifier_first';
-
-  /**
    * Protocol configuration for zone creation
    */
   protocols?: ZoneCreateParams.Protocols;
@@ -530,6 +543,11 @@ export namespace ZoneCreateParams {
      */
     export interface Oauth2 {
       /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      cimd?: Oauth2.Cimd;
+
+      /**
        * Whether Dynamic Client Registration is enabled
        */
       dcr_enabled?: boolean;
@@ -538,6 +556,26 @@ export namespace ZoneCreateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      export interface Cimd {
+        /**
+         * Allowlist for CIMD client_id URLs. Each entry is an exact URL, a wildcard origin
+         * with a single _ replacing one subdomain label (e.g. https://_.example.com
+         * matches https://app.example.com but not https://a.b.example.com), or the literal
+         * _ to allow any client. Only one _ is permitted per entry.
+         */
+        allowed_client_ids: Array<string>;
+
+        /**
+         * Whether CIMD auto-provisioning is enabled for unregistered URL-based clients
+         */
+        enabled: boolean;
+      }
     }
   }
 }
@@ -570,13 +608,6 @@ export interface ZoneUpdateParams {
    * customer-managed key and revert to default)
    */
   encryption_key?: ZoneUpdateParams.EncryptionKey | null;
-
-  /**
-   * Login flow style for the zone. 'default' uses standard authentication,
-   * 'identifier_first' uses identifier-based provider routing. Set to null to reset
-   * to 'default'.
-   */
-  login_flow?: 'default' | 'identifier_first' | null;
 
   /**
    * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
@@ -631,6 +662,11 @@ export namespace ZoneUpdateParams {
      */
     export interface Oauth2 {
       /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      cimd?: Oauth2.Cimd;
+
+      /**
        * Whether Dynamic Client Registration is enabled
        */
       dcr_enabled?: boolean | null;
@@ -639,6 +675,26 @@ export namespace ZoneUpdateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean | null;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Client ID Metadata Document auto-provisioning configuration
+       */
+      export interface Cimd {
+        /**
+         * Allowlist for CIMD client_id URLs. Each entry is an exact URL, a wildcard origin
+         * with a single _ replacing one subdomain label (e.g. https://_.example.com
+         * matches https://app.example.com but not https://a.b.example.com), or the literal
+         * _ to allow any client. Only one _ is permitted per entry.
+         */
+        allowed_client_ids: Array<string>;
+
+        /**
+         * Whether CIMD auto-provisioning is enabled for unregistered URL-based clients
+         */
+        enabled: boolean;
+      }
     }
   }
 }
