@@ -137,6 +137,13 @@ export interface Resource {
   application_id?: string;
 
   /**
+   * Credential lifetime override in seconds. When set, overrides the default
+   * credential lifetime for this resource. When absent, the default from the
+   * provider or zone is used.
+   */
+  credential_lifetime_seconds?: number | null;
+
+  /**
    * @deprecated A Provider is a system that supplies access to Resources and allows
    * actors (Users or Applications) to authenticate.
    */
