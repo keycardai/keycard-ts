@@ -126,12 +126,6 @@ export interface ResourceCreateParams {
   application_type?: 'native' | 'web';
 
   /**
-   * Credential lifetime override in seconds. When set, overrides the default
-   * credential lifetime for this resource.
-   */
-  credential_lifetime_seconds?: number;
-
-  /**
    * ID of the credential provider to associate with the resource
    */
   credential_provider_id?: string;
@@ -185,12 +179,6 @@ export interface ResourceUpdateParams {
    * must use https URLs and must not use localhost as the hostname.
    */
   application_type?: 'native' | 'web';
-
-  /**
-   * Body param: Credential lifetime override in seconds. Set to null to clear the
-   * override and use the default.
-   */
-  credential_lifetime_seconds?: number | null;
 
   /**
    * Body param: ID of the credential provider to associate with the resource (set to
