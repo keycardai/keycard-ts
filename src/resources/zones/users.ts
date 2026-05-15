@@ -15,7 +15,26 @@ export class Users extends APIResource {
   }
 
   /**
-   * Returns a list of users in the specified zone. Can be filtered by email address.
+   * Returns a list of users in the specified zone.
+   *
+   * **Rollout note:** the paginated/searchable/sortable behavior described below is
+   * gated behind the `user-pagination` feature flag and is currently disabled for
+   * most zones. While the flag is off, the response returns every user in the zone
+   * (capped at 100) in `items` and a fixed pagination envelope where `after_cursor`
+   * and `before_cursor` are `null` and `total_count` is `0`. The query parameters
+   * below are accepted but ignored. The flag is rolled out per-zone in Datadog and
+   * will become the default once Console adopts the paginated contract.
+   *
+   * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
+   * prefix with `-` for descending. Use `expand[]=total_count` to include the
+   * matching row count. Filter by exact email via `filter[email]`; search via
+   * `query[email]` / `query[subject]` / `query[]` (substring match, OR'd across
+   * repeated values). `query[]` matches against email and federation credential
+   * subject. Pass `filter[id]` (repeatable, max 100) to restrict results to a known
+   * set of users — mutually exclusive with `after`/`before` (returns 400 if
+   * combined). When `filter[id]` is set, `limit` is ignored and the response
+   * contains every requested user that exists in the zone, in a single page. IDs not
+   * in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -147,9 +166,41 @@ export interface UserListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
+   * Filter by exact email address
+   */
+  'filter[email]'?: string | Array<string>;
+
+  /**
+   * Restrict results to users with this publicId. Repeatable, max 100. Mutually
+   * exclusive with after/before.
+   */
+  'filter[id]'?: string | Array<string>;
+
+  /**
    * Maximum number of items to return
    */
   limit?: number;
+
+  /**
+   * Search across email and credential subject (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by email (substring match)
+   */
+  'query[email]'?: string | Array<string>;
+
+  /**
+   * Search by federated credential subject (substring match)
+   */
+  'query[subject]'?: string | Array<string>;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * email, authenticated_at
+   */
+  sort?: string;
 }
 
 export declare namespace Users {
