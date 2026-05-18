@@ -28,8 +28,14 @@ describe('resource zones', () => {
       default_mcp_gateway_application: true,
       description: 'description',
       encryption_key: { arn: 'x', type: 'aws' },
-      login_flow: 'default',
-      protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+      organization_id: 'organization_id',
+      protocols: {
+        oauth2: {
+          cimd: { allowed_client_ids: ['string'], enabled: true },
+          dcr_enabled: true,
+          pkce_required: true,
+        },
+      },
       requires_invitation: true,
     });
   });
@@ -77,9 +83,14 @@ describe('resource zones', () => {
           default_resource_id: 'default_resource_id',
           description: 'description',
           encryption_key: { arn: 'x', type: 'aws' },
-          login_flow: 'default',
           name: 'x',
-          protocols: { oauth2: { dcr_enabled: true, pkce_required: true } },
+          protocols: {
+            oauth2: {
+              cimd: { allowed_client_ids: ['string'], enabled: true },
+              dcr_enabled: true,
+              pkce_required: true,
+            },
+          },
           requires_invitation: true,
           user_identity_provider_id: 'user_identity_provider_id',
         },

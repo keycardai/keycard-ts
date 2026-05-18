@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.15.0 (2026-05-15)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/keycardai/keycard-ts/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **ACC-277:** list policy versions pinned by a policy-set draft ([52afceb](https://github.com/keycardai/keycard-ts/commit/52afceb15924a8320c12d6dc2513086c90963847))
+* accept ID Zone platform principals in management API ([19dc1d7](https://github.com/keycardai/keycard-ts/commit/19dc1d7594e708995ce8dadbd3d07ce2b3d05503))
+* add jwt_lifetime_seconds to resources ([f481ad4](https://github.com/keycardai/keycard-ts/commit/f481ad4ae9416299a09ec14be3d8c4c555549b71))
+
+
+### Bug Fixes
+
+* housekeeping ([c1a374f](https://github.com/keycardai/keycard-ts/commit/c1a374f477600baf7fd496e041877e483fb60e7f))
+
 ## 0.14.0 (2026-05-11)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/keycardai/keycard-ts/compare/v0.13.0...v0.14.0)

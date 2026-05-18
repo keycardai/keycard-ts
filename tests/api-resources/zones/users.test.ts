@@ -48,7 +48,13 @@ describe('resource users', () => {
           after: 'x',
           before: 'x',
           'expand[]': 'total_count',
+          'filter[email]': 'dev@stainless.com',
+          'filter[id]': 'string',
           limit: 1,
+          'query[]': 'x',
+          'query[email]': 'x',
+          'query[subject]': 'x',
+          sort: '-authenticated_at,\t\r\r \tauthenticated_at,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
       ),
