@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.15.1 (2026-05-18)
+
+Full Changelog: [v0.15.0...v0.15.1](https://github.com/keycardai/keycard-ts/compare/v0.15.0...v0.15.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([b2337ed](https://github.com/keycardai/keycard-ts/commit/b2337ed6c1542a195741765d2211792358b48977))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([131d475](https://github.com/keycardai/keycard-ts/commit/131d47531426233018da30d3b29c12ce7f817c5e))
+
 ## 0.15.0 (2026-05-15)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/keycardai/keycard-ts/compare/v0.14.0...v0.15.0)
