@@ -71,6 +71,7 @@ describe('resource delegatedGrants', () => {
           'expand[]': 'total_count',
           limit: 1,
           resource_id: 'resource_id',
+          sort: '-created_at, -created_at,\r\r \t\n\r-created_at,\n\n\t-created_at,\n\r \rcreated_at,\n\t\t\n\t\ncreated_at,\n  \n\r\r -created_at, \t\n\n -created_at',
           status: 'active',
           user_id: 'user_id',
         },

@@ -212,6 +212,12 @@ export namespace Provider {
      */
     export interface Openid {
       /**
+       * Additional OIDC scopes to request from this provider during authentication (e.g.
+       * "groups"). Merged with the default scopes (openid, profile, email).
+       */
+      scopes?: Array<string> | null;
+
+      /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
        * identifier on user creation. When not set, the user's Keycard ID is used.
        */
@@ -379,6 +385,12 @@ export namespace ProviderCreateParams {
      */
     export interface Openid {
       /**
+       * Additional OIDC scopes to request from this provider during authentication (e.g.
+       * "groups"). Merged with the default scopes (openid, profile, email).
+       */
+      scopes?: Array<string>;
+
+      /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
        * identifier on user creation. When not set, the user's Keycard ID is used.
        */
@@ -519,6 +531,13 @@ export namespace ProviderUpdateParams {
      * OpenID Connect protocol configuration. Set to null to remove all OpenID config.
      */
     export interface Openid {
+      /**
+       * Additional OIDC scopes to request from this provider during authentication (e.g.
+       * "groups"). Merged with the default scopes (openid, profile, email). Set to null
+       * to clear.
+       */
+      scopes?: Array<string> | null;
+
       /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
        * identifier on user creation. Set to null to revert to default. Changing this
