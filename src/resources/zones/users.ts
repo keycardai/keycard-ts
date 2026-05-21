@@ -27,14 +27,15 @@ export class Users extends APIResource {
    *
    * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
-   * matching row count. Filter by exact email via `filter[email]`; search via
-   * `query[email]` / `query[subject]` / `query[]` (substring match, OR'd across
-   * repeated values). `query[]` matches against email and federation credential
-   * subject. Pass `filter[id]` (repeatable, max 100) to restrict results to a known
-   * set of users — mutually exclusive with `after`/`before` (returns 400 if
-   * combined). When `filter[id]` is set, `limit` is ignored and the response
-   * contains every requested user that exists in the zone, in a single page. IDs not
-   * in the zone are silently omitted.
+   * matching row count, `expand[]=session_count` to include per-user session counts,
+   * and `expand[]=grant_count` to include per-user delegated-grant counts. Filter by
+   * exact email via `filter[email]`; search via `query[email]` / `query[subject]` /
+   * `query[]` (substring match, OR'd across repeated values). `query[]` matches
+   * against email and federation credential subject. Pass `filter[id]` (repeatable,
+   * max 100) to restrict results to a known set of users — mutually exclusive with
+   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
+   * ignored and the response contains every requested user that exists in the zone,
+   * in a single page. IDs not in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -97,6 +98,12 @@ export interface User {
   authenticated_at?: string;
 
   /**
+   * Delegated-grant count for this user. Populated only when `expand[]=grant_count`
+   * is set on the listing endpoint.
+   */
+  grant_count?: number;
+
+  /**
    * Issuer identifier of the identity provider
    */
   issuer?: string;
@@ -106,6 +113,12 @@ export interface User {
    * identity provider is deleted but the user is not deleted.
    */
   provider_id?: string;
+
+  /**
+   * Session count for this user. Populated only when `expand[]=session_count` is set
+   * on the listing endpoint.
+   */
+  session_count?: number;
 
   /**
    * Subject identifier from the identity provider
@@ -163,7 +176,11 @@ export interface UserListParams {
    */
   before?: string;
 
-  'expand[]'?: 'total_count' | Array<'total_count'>;
+  'expand[]'?:
+    | 'total_count'
+    | 'session_count'
+    | 'grant_count'
+    | Array<'total_count' | 'session_count' | 'grant_count'>;
 
   /**
    * Filter by exact email address
