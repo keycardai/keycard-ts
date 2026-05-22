@@ -28,7 +28,9 @@ export class DelegatedGrants extends APIResource {
 
   /**
    * Returns a list of delegated grants in the specified zone. Can be filtered by
-   * user, resource, or status.
+   * user, resource, or status. Use cursor pagination via `after`/`before`. Sort:
+   * comma-separated field list; prefix with `-` for descending. Use
+   * `expand[]=total_count` to include the matching row count.
    */
   list(
     zoneID: string,
@@ -220,6 +222,11 @@ export interface DelegatedGrantListParams {
    * Filter by resource ID
    */
   resource_id?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at
+   */
+  sort?: string;
 
   status?: 'active' | 'expired' | 'revoked';
 
