@@ -107,11 +107,17 @@ describe('resource applications', () => {
         {
           after: 'x',
           before: 'x',
-          cursor: 'cursor',
           'expand[]': 'total_count',
+          'filter[id]': 'string',
+          'filter[identifier]': 'string',
+          'filter[slug]': 'string',
           identifier: 'identifier',
           limit: 1,
+          'query[]': 'x',
+          'query[identifier]': 'x',
+          'query[name]': 'x',
           slug: 'slug',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
           traits: ['gateway'],
           'traits[all]': ['gateway'],
         },
