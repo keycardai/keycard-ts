@@ -7,6 +7,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Install packages and manage package installations.
+ */
 export class Installs extends APIResource {
   /**
    * Create an install of a package
