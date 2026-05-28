@@ -6,6 +6,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Track the progress of install and uninstall operations.
+ */
 export class CatalogTasks extends APIResource {
   /**
    * Returns 200 with task details when pending, running, or failed. Returns 303

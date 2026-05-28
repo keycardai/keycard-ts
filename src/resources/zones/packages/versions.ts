@@ -7,6 +7,9 @@ import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
+/**
+ * Browse available packages and their versions.
+ */
 export class Versions extends APIResource {
   /**
    * Get a specific zone package version

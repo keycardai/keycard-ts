@@ -14,6 +14,9 @@ import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
+/**
+ * Browse available packages and their versions.
+ */
 export class Packages extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
 
