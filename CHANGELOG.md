@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.17.0 (2026-05-28)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/keycardai/keycard-ts/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* add openapi tags ([04b6c22](https://github.com/keycardai/keycard-ts/commit/04b6c22d8278b54a63e67125c05447503f9d43aa))
+* add svc-catalog resources to Stainless SDK config ([576b5a4](https://github.com/keycardai/keycard-ts/commit/576b5a495a7322cb0e30e0eb9329dd54cc1f43df))
+* **ID-229:** paginate listApplications behind application-pagination flag ([9cf11cb](https://github.com/keycardai/keycard-ts/commit/9cf11cba932a931c3e7da6659a4447ffd4cda292))
+
 ## 0.16.0 (2026-05-21)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/keycardai/keycard-ts/compare/v0.15.0...v0.16.0)
