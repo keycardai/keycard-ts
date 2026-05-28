@@ -19,6 +19,8 @@ import {
   Token,
   URL,
 } from './application-credentials';
+import * as CatalogTasksAPI from './catalog-tasks';
+import { CatalogTaskRetrieveParams, CatalogTasks, Task, TaskOperation, TaskStatus } from './catalog-tasks';
 import * as DelegatedGrantsAPI from './delegated-grants';
 import {
   DelegatedGrantDeleteParams,
@@ -29,6 +31,17 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
+import * as InstallsAPI from './installs';
+import {
+  Install,
+  InstallCreateParams,
+  InstallDeleteParams,
+  InstallList,
+  InstallListParams,
+  InstallRetrieveParams,
+  InstallStatus,
+  Installs,
+} from './installs';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -124,6 +137,20 @@ import {
   Metadata,
   MetadataUpdate,
 } from './applications/applications';
+import * as PackagesAPI from './packages/packages';
+import {
+  InputState,
+  Package,
+  PackageDraft,
+  PackageInputBinding,
+  PackageList,
+  PackageListParams,
+  PackageOutputBinding,
+  PackageRetrieveDraftParams,
+  PackageRetrieveParams,
+  PackageSource,
+  Packages,
+} from './packages/packages';
 import * as PoliciesAPI from './policies/policies';
 import {
   Policies,
@@ -172,6 +199,9 @@ export class Zones extends APIResource {
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
   policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
+  packages: PackagesAPI.Packages = new PackagesAPI.Packages(this._client);
+  installs: InstallsAPI.Installs = new InstallsAPI.Installs(this._client);
+  catalogTasks: CatalogTasksAPI.CatalogTasks = new CatalogTasksAPI.CatalogTasks(this._client);
   policySets: PolicySetsAPI.PolicySets = new PolicySetsAPI.PolicySets(this._client);
 
   /**
@@ -743,6 +773,9 @@ Zones.Members = Members;
 Zones.Secrets = Secrets;
 Zones.PolicySchemas = PolicySchemas;
 Zones.Policies = Policies;
+Zones.Packages = Packages;
+Zones.Installs = Installs;
+Zones.CatalogTasks = CatalogTasks;
 Zones.PolicySets = PolicySets;
 
 export declare namespace Zones {
@@ -896,6 +929,39 @@ export declare namespace Zones {
     type PolicyUpdateParams as PolicyUpdateParams,
     type PolicyListParams as PolicyListParams,
     type PolicyArchiveParams as PolicyArchiveParams,
+  };
+
+  export {
+    Packages as Packages,
+    type InputState as InputState,
+    type Package as Package,
+    type PackageDraft as PackageDraft,
+    type PackageInputBinding as PackageInputBinding,
+    type PackageList as PackageList,
+    type PackageOutputBinding as PackageOutputBinding,
+    type PackageSource as PackageSource,
+    type PackageRetrieveParams as PackageRetrieveParams,
+    type PackageListParams as PackageListParams,
+    type PackageRetrieveDraftParams as PackageRetrieveDraftParams,
+  };
+
+  export {
+    Installs as Installs,
+    type Install as Install,
+    type InstallList as InstallList,
+    type InstallStatus as InstallStatus,
+    type InstallCreateParams as InstallCreateParams,
+    type InstallRetrieveParams as InstallRetrieveParams,
+    type InstallListParams as InstallListParams,
+    type InstallDeleteParams as InstallDeleteParams,
+  };
+
+  export {
+    CatalogTasks as CatalogTasks,
+    type Task as Task,
+    type TaskOperation as TaskOperation,
+    type TaskStatus as TaskStatus,
+    type CatalogTaskRetrieveParams as CatalogTaskRetrieveParams,
   };
 
   export {

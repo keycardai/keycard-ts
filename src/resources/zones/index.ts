@@ -35,6 +35,13 @@ export {
   type ApplicationListResourcesParams,
 } from './applications/index';
 export {
+  CatalogTasks,
+  type Task,
+  type TaskOperation,
+  type TaskStatus,
+  type CatalogTaskRetrieveParams,
+} from './catalog-tasks';
+export {
   DelegatedGrants,
   type Grant,
   type DelegatedGrantListResponse,
@@ -43,6 +50,16 @@ export {
   type DelegatedGrantListParams,
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
+export {
+  Installs,
+  type Install,
+  type InstallList,
+  type InstallStatus,
+  type InstallCreateParams,
+  type InstallRetrieveParams,
+  type InstallListParams,
+  type InstallDeleteParams,
+} from './installs';
 export {
   Members,
   type ZoneMember,
@@ -54,6 +71,19 @@ export {
   type MemberDeleteParams,
   type MemberAddParams,
 } from './members';
+export {
+  Packages,
+  type InputState,
+  type Package,
+  type PackageDraft,
+  type PackageInputBinding,
+  type PackageList,
+  type PackageOutputBinding,
+  type PackageSource,
+  type PackageRetrieveParams,
+  type PackageListParams,
+  type PackageRetrieveDraftParams,
+} from './packages/index';
 export {
   Policies,
   type Policy,

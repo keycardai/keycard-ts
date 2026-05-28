@@ -232,6 +232,63 @@ Methods:
 - <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
 
+## Packages
+
+Types:
+
+- <code><a href="./src/resources/zones/packages/packages.ts">InputState</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">Package</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">PackageDraft</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">PackageInputBinding</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">PackageList</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">PackageOutputBinding</a></code>
+- <code><a href="./src/resources/zones/packages/packages.ts">PackageSource</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/packages/{package_id}">client.zones.packages.<a href="./src/resources/zones/packages/packages.ts">retrieve</a>(packageID, { ...params }) -> Package</code>
+- <code title="get /zones/{zone_id}/packages">client.zones.packages.<a href="./src/resources/zones/packages/packages.ts">list</a>(zoneID, { ...params }) -> PackageList</code>
+- <code title="get /zones/{zone_id}/packages/{package_id}/draft">client.zones.packages.<a href="./src/resources/zones/packages/packages.ts">retrieveDraft</a>(packageID, { ...params }) -> PackageDraft</code>
+
+### Versions
+
+Types:
+
+- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersion</a></code>
+- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersionList</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/packages/{package_id}/versions/{version_id}">client.zones.packages.versions.<a href="./src/resources/zones/packages/versions.ts">retrieve</a>(versionID, { ...params }) -> PackageVersion</code>
+- <code title="get /zones/{zone_id}/packages/{package_id}/versions">client.zones.packages.versions.<a href="./src/resources/zones/packages/versions.ts">list</a>(packageID, { ...params }) -> PackageVersionList</code>
+
+## Installs
+
+Types:
+
+- <code><a href="./src/resources/zones/installs.ts">Install</a></code>
+- <code><a href="./src/resources/zones/installs.ts">InstallList</a></code>
+- <code><a href="./src/resources/zones/installs.ts">InstallStatus</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/installs">client.zones.installs.<a href="./src/resources/zones/installs.ts">create</a>(zoneID, { ...params }) -> Task</code>
+- <code title="get /zones/{zone_id}/installs/{install_id}">client.zones.installs.<a href="./src/resources/zones/installs.ts">retrieve</a>(installID, { ...params }) -> Install</code>
+- <code title="get /zones/{zone_id}/installs">client.zones.installs.<a href="./src/resources/zones/installs.ts">list</a>(zoneID, { ...params }) -> InstallList</code>
+- <code title="delete /zones/{zone_id}/installs/{install_id}">client.zones.installs.<a href="./src/resources/zones/installs.ts">delete</a>(installID, { ...params }) -> Task</code>
+
+## CatalogTasks
+
+Types:
+
+- <code><a href="./src/resources/zones/catalog-tasks.ts">Task</a></code>
+- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskOperation</a></code>
+- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskStatus</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/catalog_tasks/{task_id}">client.zones.catalogTasks.<a href="./src/resources/zones/catalog-tasks.ts">retrieve</a>(taskID, { ...params }) -> Task</code>
+
 ## PolicySets
 
 Types:
