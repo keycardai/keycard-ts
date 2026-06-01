@@ -46,7 +46,17 @@ export class Applications extends APIResource {
   }
 
   /**
-   * Returns a list of applications in the specified zone
+   * Returns a paginated list of applications in the specified zone. Use cursor
+   * pagination via `after`/`before`. Sort: comma-separated field list; prefix with
+   * `-` for descending. Use `expand[]=total_count` to include the matching row
+   * count. Filter by exact slug via `filter[slug]` and by exact identifier via
+   * `filter[identifier]`. Search via `query[name]` / `query[identifier]` / `query[]`
+   * (substring match, OR'd across repeated values). `query[]` matches against name
+   * and identifier. Pass `filter[id]` (repeatable, max 100) to restrict results to a
+   * known set of applications — mutually exclusive with `after`/`before` (returns
+   * 400 if combined). When `filter[id]` is set, `limit` is ignored and the response
+   * contains every requested application that exists in the zone, in a single page.
+   * IDs not in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -233,7 +243,7 @@ export interface ApplicationListResponse {
   items: Array<Application>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
 
@@ -504,9 +514,23 @@ export interface ApplicationListParams {
    */
   before?: string;
 
-  cursor?: string;
-
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Restrict results to applications with this publicId. Repeatable, max 100.
+   * Mutually exclusive with after/before.
+   */
+  'filter[id]'?: string | Array<string>;
+
+  /**
+   * Filter by exact application identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
+
+  /**
+   * Filter by exact application slug
+   */
+  'filter[slug]'?: string | Array<string>;
 
   identifier?: string;
 
@@ -515,7 +539,28 @@ export interface ApplicationListParams {
    */
   limit?: number;
 
+  /**
+   * Search across name and identifier (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by identifier (substring match)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by name (substring match)
+   */
+  'query[name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * name, identifier
+   */
+  sort?: string;
 
   /**
    * Filter by traits (OR matching - returns applications with any of the specified
