@@ -86,11 +86,6 @@ export interface Provider {
   organization_id: string;
 
   /**
-   * Who owns this provider. Platform-owned providers cannot be modified via API.
-   */
-  owner_type: 'platform' | 'customer';
-
-  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
