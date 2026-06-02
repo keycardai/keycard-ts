@@ -148,12 +148,6 @@ export interface Application {
   organization_id: string;
 
   /**
-   * Who owns this application. Platform-owned applications cannot be modified via
-   * API.
-   */
-  owner_type: 'platform' | 'customer';
-
-  /**
    * URL-safe identifier, unique within the zone
    */
   slug: string;
