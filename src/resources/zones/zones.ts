@@ -318,6 +318,11 @@ export interface Zone {
   organization_id: string;
 
   /**
+   * Who owns this zone. Platform-owned zones cannot be modified via API.
+   */
+  owner_type: 'platform' | 'customer';
+
+  /**
    * Protocol configuration for a zone
    */
   protocols: Zone.Protocols;
