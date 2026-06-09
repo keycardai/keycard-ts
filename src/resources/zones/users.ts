@@ -28,14 +28,16 @@ export class Users extends APIResource {
    * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
    * matching row count, `expand[]=session_count` to include per-user session counts,
-   * and `expand[]=grant_count` to include per-user delegated-grant counts. Filter by
-   * exact email via `filter[email]`; search via `query[email]` / `query[subject]` /
-   * `query[]` (substring match, OR'd across repeated values). `query[]` matches
-   * against email and federation credential subject. Pass `filter[id]` (repeatable,
-   * max 100) to restrict results to a known set of users — mutually exclusive with
-   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
-   * ignored and the response contains every requested user that exists in the zone,
-   * in a single page. IDs not in the zone are silently omitted.
+   * `expand[]=grant_count` to include per-user delegated-grant counts, and
+   * `expand[]=role-assignments` to include each user's structured role grants.
+   * Filter by exact email via `filter[email]`; search via `query[email]` /
+   * `query[subject]` / `query[]` (substring match, OR'd across repeated values).
+   * `query[]` matches against email and federation credential subject. Pass
+   * `filter[id]` (repeatable, max 100) to restrict results to a known set of users —
+   * mutually exclusive with `after`/`before` (returns 400 if combined). When
+   * `filter[id]` is set, `limit` is ignored and the response contains every
+   * requested user that exists in the zone, in a single page. IDs not in the zone
+   * are silently omitted.
    */
   list(
     zoneID: string,
@@ -115,6 +117,12 @@ export interface User {
   provider_id?: string;
 
   /**
+   * Role grants for this user within the zone. Populated only when
+   * `expand[]=role-assignments` is set on the listing endpoint.
+   */
+  role_assignments?: Array<User.RoleAssignment>;
+
+  /**
    * Session count for this user. Populated only when `expand[]=session_count` is set
    * on the listing endpoint.
    */
@@ -124,6 +132,48 @@ export interface User {
    * Subject identifier from the identity provider
    */
   subject?: string;
+}
+
+export namespace User {
+  /**
+   * A role granted to a user within a zone.
+   */
+  export interface RoleAssignment {
+    /**
+     * ID of the assigned role
+     */
+    role_id: string;
+
+    /**
+     * Opaque role identifier. Treated as an opaque identifier by the API and unique
+     * within a zone.
+     */
+    role_identifier: string;
+
+    /**
+     * The resource this grant is scoped to, or null when the grant is unscoped
+     * (applies to the owning zone itself).
+     */
+    scope: RoleAssignment.Scope | null;
+  }
+
+  export namespace RoleAssignment {
+    /**
+     * The resource this grant is scoped to, or null when the grant is unscoped
+     * (applies to the owning zone itself).
+     */
+    export interface Scope {
+      /**
+       * The ID of the scoped resource.
+       */
+      id: string;
+
+      /**
+       * The kind of resource this grant is scoped to (e.g. `zone`).
+       */
+      type: string;
+    }
+  }
 }
 
 export interface UserListResponse {
@@ -180,7 +230,8 @@ export interface UserListParams {
     | 'total_count'
     | 'session_count'
     | 'grant_count'
-    | Array<'total_count' | 'session_count' | 'grant_count'>;
+    | 'role-assignments'
+    | Array<'total_count' | 'session_count' | 'grant_count' | 'role-assignments'>;
 
   /**
    * Filter by exact email address
