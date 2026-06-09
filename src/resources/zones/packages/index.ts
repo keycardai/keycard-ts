@@ -10,13 +10,5 @@ export {
   type PackageOutputBinding,
   type PackageSource,
   type PackageRetrieveParams,
-  type PackageListParams,
-  type PackageRetrieveDraftParams,
 } from './packages';
-export {
-  Versions,
-  type PackageVersion,
-  type PackageVersionList,
-  type VersionRetrieveParams,
-  type VersionListParams,
-} from './versions';
+export { Versions, type PackageVersion, type PackageVersionList } from './versions';

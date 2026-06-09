@@ -1,32 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import { APIPromise } from '../../core/api-promise';
-import { buildHeaders } from '../../internal/headers';
-import { RequestOptions } from '../../internal/request-options';
-import { path } from '../../internal/utils/path';
 
-/**
- * Track the progress of install and uninstall operations.
- */
-export class CatalogTasks extends APIResource {
-  /**
-   * Returns 200 with task details when pending, running, or failed. Returns 303
-   * redirect to the install when completed.
-   */
-  retrieve(taskID: string, params: CatalogTaskRetrieveParams, options?: RequestOptions): APIPromise<Task> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/catalog_tasks/${taskID}`, {
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
-}
+export class CatalogTasks extends APIResource {}
 
 export interface Task {
   id: string;
@@ -164,24 +140,6 @@ export type TaskOperation = 'create' | 'delete';
 
 export type TaskStatus = 'pending' | 'running' | 'completed' | 'failed';
 
-export interface CatalogTaskRetrieveParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
 export declare namespace CatalogTasks {
-  export {
-    type Task as Task,
-    type TaskOperation as TaskOperation,
-    type TaskStatus as TaskStatus,
-    type CatalogTaskRetrieveParams as CatalogTaskRetrieveParams,
-  };
+  export { type Task as Task, type TaskOperation as TaskOperation, type TaskStatus as TaskStatus };
 }

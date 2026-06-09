@@ -2,56 +2,8 @@
 
 import { APIResource } from '../../../core/resource';
 import * as PackagesAPI from './packages';
-import { APIPromise } from '../../../core/api-promise';
-import { buildHeaders } from '../../../internal/headers';
-import { RequestOptions } from '../../../internal/request-options';
-import { path } from '../../../internal/utils/path';
 
-/**
- * Browse available packages and their versions.
- */
-export class Versions extends APIResource {
-  /**
-   * Get a specific zone package version
-   */
-  retrieve(
-    versionID: string,
-    params: VersionRetrieveParams,
-    options?: RequestOptions,
-  ): APIPromise<PackageVersion> {
-    const { zone_id, package_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/packages/${package_id}/versions/${versionID}`, {
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
-
-  /**
-   * List zone package versions
-   */
-  list(
-    packageID: string,
-    params: VersionListParams,
-    options?: RequestOptions,
-  ): APIPromise<PackageVersionList> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID, ...query } = params;
-    return this._client.get(path`/zones/${zone_id}/packages/${packageID}/versions`, {
-      query,
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
-}
+export class Versions extends APIResource {}
 
 export interface PackageVersion {
   id: string;
@@ -185,59 +137,6 @@ export namespace PackageVersionList {
   }
 }
 
-export interface VersionRetrieveParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Path param
-   */
-  package_id: string;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
-export interface VersionListParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Query param: Cursor for forward pagination. Returned in
-   * `Pagination.after_cursor`. Mutually exclusive with `before`.
-   */
-  after?: string;
-
-  /**
-   * Query param: Cursor for backward pagination. Returned in
-   * `Pagination.before_cursor`. Mutually exclusive with `after`.
-   */
-  before?: string;
-
-  /**
-   * Query param: Maximum number of items to return per page.
-   */
-  limit?: number;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
 export declare namespace Versions {
-  export {
-    type PackageVersion as PackageVersion,
-    type PackageVersionList as PackageVersionList,
-    type VersionRetrieveParams as VersionRetrieveParams,
-    type VersionListParams as VersionListParams,
-  };
+  export { type PackageVersion as PackageVersion, type PackageVersionList as PackageVersionList };
 }
