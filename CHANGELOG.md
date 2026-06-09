@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.18.0 (2026-06-09)
+
+Full Changelog: [v0.17.0...v0.18.0](https://github.com/keycardai/keycard-ts/compare/v0.17.0...v0.18.0)
+
+### Features
+
+* **ACC-441:** add roles and role assignments to the management api ([0cc5751](https://github.com/keycardai/keycard-ts/commit/0cc57517bc9066a3de9682706139661e13f1fd2f))
+* **iam:** ACC-441 add management api role and assignment routes ([a296ff1](https://github.com/keycardai/keycard-ts/commit/a296ff1247731970c5ae268427f75e3236723f7e))
+* **ID-269:** Add owner_type: platform | customer to zones ([06ee747](https://github.com/keycardai/keycard-ts/commit/06ee7478c5e74c4a9d07a9eee7a32e7f236aac69))
+* **ID-270:** gate owner_type and federation.keycard to platform-owned entities ([7771db3](https://github.com/keycardai/keycard-ts/commit/7771db3404cc08c8a749c34d926776df38c1b3c2))
+
 ## 0.17.0 (2026-05-28)
 
 Full Changelog: [v0.16.0...v0.17.0](https://github.com/keycardai/keycard-ts/compare/v0.16.0...v0.17.0)
