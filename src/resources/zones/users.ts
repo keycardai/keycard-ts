@@ -85,6 +85,11 @@ export interface User {
   organization_id: string;
 
   /**
+   * Status of the user. Disabled users cannot authenticate.
+   */
+  status: 'active' | 'disabled';
+
+  /**
    * Entity update timestamp
    */
   updated_at: string;
