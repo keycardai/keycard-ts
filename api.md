@@ -244,10 +244,6 @@ Types:
 - <code><a href="./src/resources/zones/packages/packages.ts">PackageOutputBinding</a></code>
 - <code><a href="./src/resources/zones/packages/packages.ts">PackageSource</a></code>
 
-Methods:
-
-- <code title="get /zones/{zone_id}/packages/{package_id}">client.zones.packages.<a href="./src/resources/zones/packages/packages.ts">retrieve</a>(packageID, { ...params }) -> Package</code>
-
 ### Versions
 
 Types:

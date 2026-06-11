@@ -136,7 +136,6 @@ import {
   PackageInputBinding,
   PackageList,
   PackageOutputBinding,
-  PackageRetrieveParams,
   PackageSource,
   Packages,
 } from './packages/packages';
@@ -934,7 +933,6 @@ export declare namespace Zones {
     type PackageList as PackageList,
     type PackageOutputBinding as PackageOutputBinding,
     type PackageSource as PackageSource,
-    type PackageRetrieveParams as PackageRetrieveParams,
   };
 
   export {

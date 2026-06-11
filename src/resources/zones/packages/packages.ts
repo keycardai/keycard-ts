@@ -3,32 +3,9 @@
 import { APIResource } from '../../../core/resource';
 import * as VersionsAPI from './versions';
 import { PackageVersion, PackageVersionList, Versions } from './versions';
-import { APIPromise } from '../../../core/api-promise';
-import { buildHeaders } from '../../../internal/headers';
-import { RequestOptions } from '../../../internal/request-options';
-import { path } from '../../../internal/utils/path';
 
-/**
- * Browse available packages and their versions.
- */
 export class Packages extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
-
-  /**
-   * Get a zone package
-   */
-  retrieve(packageID: string, params: PackageRetrieveParams, options?: RequestOptions): APIPromise<Package> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/packages/${packageID}`, {
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
 }
 
 /**
@@ -713,19 +690,6 @@ export interface PackageSource {
   scope: 'global' | 'org' | 'zone';
 }
 
-export interface PackageRetrieveParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
 Packages.Versions = Versions;
 
 export declare namespace Packages {
@@ -737,7 +701,6 @@ export declare namespace Packages {
     type PackageList as PackageList,
     type PackageOutputBinding as PackageOutputBinding,
     type PackageSource as PackageSource,
-    type PackageRetrieveParams as PackageRetrieveParams,
   };
 
   export {
