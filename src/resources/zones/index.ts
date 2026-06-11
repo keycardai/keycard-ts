@@ -65,7 +65,6 @@ export {
   type PackageList,
   type PackageOutputBinding,
   type PackageSource,
-  type PackageRetrieveParams,
 } from './packages/index';
 export {
   Policies,

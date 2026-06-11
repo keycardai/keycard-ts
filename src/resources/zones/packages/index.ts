@@ -9,6 +9,5 @@ export {
   type PackageList,
   type PackageOutputBinding,
   type PackageSource,
-  type PackageRetrieveParams,
 } from './packages';
 export { Versions, type PackageVersion, type PackageVersionList } from './versions';
