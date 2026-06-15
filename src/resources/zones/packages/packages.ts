@@ -155,6 +155,12 @@ export interface Package {
   name: string;
 
   /**
+   * Whether the package is published. Unpublished packages are excluded from list
+   * endpoints by default; pass `include_unpublished=true` to include them.
+   */
+  published: boolean;
+
+  /**
    * Server-populated URL-friendly identifier.
    */
   slug: string;
