@@ -26,6 +26,7 @@ describe('resource policySets', () => {
     const response = await client.zones.policySets.create('zone_id', {
       name: 'name',
       scope_type: 'zone',
+      target_type: 'zone',
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -101,6 +102,7 @@ describe('resource policySets', () => {
           'filter[active]': true,
           'filter[owner_type]': ['string'],
           'filter[scope_type]': ['string'],
+          'filter[target_type]': ['string'],
           limit: 1,
           order: 'asc',
           query: ['x'],
