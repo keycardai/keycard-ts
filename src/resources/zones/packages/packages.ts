@@ -2,80 +2,10 @@
 
 import { APIResource } from '../../../core/resource';
 import * as VersionsAPI from './versions';
-import {
-  PackageVersion,
-  PackageVersionList,
-  VersionListParams,
-  VersionRetrieveParams,
-  Versions,
-} from './versions';
-import { APIPromise } from '../../../core/api-promise';
-import { buildHeaders } from '../../../internal/headers';
-import { RequestOptions } from '../../../internal/request-options';
-import { path } from '../../../internal/utils/path';
+import { PackageVersion, PackageVersionList, Versions } from './versions';
 
-/**
- * Browse available packages and their versions.
- */
 export class Packages extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
-
-  /**
-   * Get a zone package
-   */
-  retrieve(packageID: string, params: PackageRetrieveParams, options?: RequestOptions): APIPromise<Package> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/packages/${packageID}`, {
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
-
-  /**
-   * List zone packages
-   */
-  list(
-    zoneID: string,
-    params: PackageListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<PackageList> {
-    const { 'X-Client-Request-ID': xClientRequestID, ...query } = params ?? {};
-    return this._client.get(path`/zones/${zoneID}/packages`, {
-      query,
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
-
-  /**
-   * Get the zone package draft
-   */
-  retrieveDraft(
-    packageID: string,
-    params: PackageRetrieveDraftParams,
-    options?: RequestOptions,
-  ): APIPromise<PackageDraft> {
-    const { zone_id, 'X-Client-Request-ID': xClientRequestID } = params;
-    return this._client.get(path`/zones/${zone_id}/packages/${packageID}/draft`, {
-      defaultBaseURL: '/',
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-      __security: {},
-    });
-  }
 }
 
 /**
@@ -223,6 +153,12 @@ export interface Package {
   kind: string;
 
   name: string;
+
+  /**
+   * Whether the package is published. Unpublished packages are excluded from list
+   * endpoints by default; pass `include_unpublished=true` to include them.
+   */
+  published: boolean;
 
   /**
    * Server-populated URL-friendly identifier.
@@ -760,67 +696,6 @@ export interface PackageSource {
   scope: 'global' | 'org' | 'zone';
 }
 
-export interface PackageRetrieveParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
-export interface PackageListParams {
-  /**
-   * Query param: Cursor for forward pagination. Returned in
-   * `Pagination.after_cursor`. Mutually exclusive with `before`.
-   */
-  after?: string;
-
-  /**
-   * Query param: Cursor for backward pagination. Returned in
-   * `Pagination.before_cursor`. Mutually exclusive with `after`.
-   */
-  before?: string;
-
-  /**
-   * Query param: Filter packages by slug
-   */
-  'filters[slug]'?: string;
-
-  /**
-   * Query param: Filter packages by kind (comma-separated)
-   */
-  kind?: string;
-
-  /**
-   * Query param: Maximum number of items to return per page.
-   */
-  limit?: number;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
-export interface PackageRetrieveDraftParams {
-  /**
-   * Path param
-   */
-  zone_id: string;
-
-  /**
-   * Header param: Unique request identifier specified by the originating caller and
-   * passed along by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
 Packages.Versions = Versions;
 
 export declare namespace Packages {
@@ -832,16 +707,11 @@ export declare namespace Packages {
     type PackageList as PackageList,
     type PackageOutputBinding as PackageOutputBinding,
     type PackageSource as PackageSource,
-    type PackageRetrieveParams as PackageRetrieveParams,
-    type PackageListParams as PackageListParams,
-    type PackageRetrieveDraftParams as PackageRetrieveDraftParams,
   };
 
   export {
     Versions as Versions,
     type PackageVersion as PackageVersion,
     type PackageVersionList as PackageVersionList,
-    type VersionRetrieveParams as VersionRetrieveParams,
-    type VersionListParams as VersionListParams,
   };
 }

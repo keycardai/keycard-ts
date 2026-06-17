@@ -100,7 +100,12 @@ export class PolicySets extends APIResource {
   }
 
   /**
-   * List policy sets in a zone
+   * Returns a paginated list of policy sets in the zone.
+   *
+   * `filter[target_type]` defaults to `zone`, hiding principal-scoped sets (e.g.
+   * per-user bundle sets) unless explicitly widened. The deprecated
+   * `filter[scope_type]` is honored as an equivalent and suppresses the default;
+   * supplying both with different value sets returns 400.
    */
   list(
     zoneID: string,
@@ -243,14 +248,20 @@ export interface PolicySet {
   owner_type: 'platform' | 'customer';
 
   /**
-   * The scope at which this policy set applies:
-   *
-   * - `"zone"` — applies to all requests in the zone.
-   * - `"resource"` — scoped to a specific resource.
-   * - `"user"` — scoped to a specific user.
-   * - `"session"` — scoped to a specific session.
+   * @deprecated **Deprecated.** Use `target_type` instead. Carries the same value.
    */
   scope_type: 'zone' | 'resource' | 'user' | 'session';
+
+  /**
+   * What this policy set targets:
+   *
+   * - `"zone"` — applies to all requests in the zone.
+   * - `"user"` — scoped to a specific user.
+   *
+   * `resource` and `session` are reserved; legacy sets with those scopes carry them
+   * in the deprecated `scope_type` field.
+   */
+  target_type: 'zone' | 'user';
 
   updated_at: string;
 
@@ -375,6 +386,10 @@ export interface PolicySetWithBinding extends PolicySet {
 
   mode?: 'active' | 'shadow' | null;
 
+  /**
+   * @deprecated **Deprecated.** Use `target_id` instead. Carries the active
+   * binding's target; null when unbound.
+   */
   scope_target_id?: string | null;
 
   /**
@@ -386,6 +401,13 @@ export interface PolicySetWithBinding extends PolicySet {
    * Public ID of the shadow (observed) version, if any
    */
   shadow_version_id?: string | null;
+
+  /**
+   * Target entity ID. Equals `zone_id` for zone-targeted sets; the principal
+   * identifier for principal-scoped sets. Null only for legacy non-zone sets that
+   * predate target tracking.
+   */
+  target_id?: string | null;
 }
 
 export interface PolicySetListResponse {
@@ -427,14 +449,18 @@ export interface PolicySetCreateParams {
   name: string;
 
   /**
-   * Body param: The scope at which this policy set applies:
+   * @deprecated Body param: **Deprecated.** Use `target_type` instead. Only `zone`
+   * is accepted; use `target_type` for `user` targets.
+   */
+  scope_type?: 'zone';
+
+  /**
+   * Body param: What this policy set targets:
    *
    * - `"zone"` — applies to all requests in the zone.
-   * - `"resource"` — scoped to a specific resource.
-   * - `"user"` — scoped to a specific user.
-   * - `"session"` — scoped to a specific session.
+   * - `"user"` — can be bound to a specific user.
    */
-  scope_type?: 'zone' | 'resource' | 'user' | 'session';
+  target_type?: 'zone' | 'user';
 
   /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
@@ -554,19 +580,42 @@ export interface PolicySetListParams {
   'filter[owner_type]'?: Array<string>;
 
   /**
-   * Query param: Filter on `scope_type` (policy sets only). Repeatable; repeated
-   * instances OR across values. See `FilterValues` in the shared spec for the full
-   * wire convention.
+   * Query param: **Deprecated.** Use `filter[target_type]` instead.
    *
-   * Allowed values: `zone`, `resource`, `user`, `session`. Unknown values return 400
-   * with the list of allowed values. Comma-separated single values are rejected with
-   * a 400 pointing at the repeated-parameter OR form.
+   * Filter on `scope_type` (policy sets only). Repeatable; repeated instances OR
+   * across values. See `FilterValues` in the shared spec for the full wire
+   * convention.
+   *
+   * Allowed values: `zone` only. Use `filter[target_type]` to select `user` (or
+   * future) targets. Unknown values return 400 with the list of allowed values.
+   * Comma-separated single values are rejected with a 400 pointing at the
+   * repeated-parameter OR form.
+   *
+   * Still honored for backward compatibility and suppresses the
+   * `filter[target_type]` zone default. Supplying both this and
+   * `filter[target_type]` with different value sets returns `400 Bad Request`.
+   */
+  'filter[scope_type]'?: Array<string>;
+
+  /**
+   * Query param: Filter on `target_type`. Repeatable; repeated instances OR across
+   * values. See `FilterValues` in the shared spec for the full wire convention.
+   *
+   * Allowed values: `zone`, `user` (`resource` and `session` are reserved and not
+   * yet accepted). Unknown values return 400 with the list of allowed values.
+   * Comma-separated single values are rejected with a 400 pointing at the
+   * repeated-parameter OR form.
+   *
+   * **Defaults to `zone`** when omitted (and no deprecated equivalent parameter is
+   * supplied), so listings exclude principal-scoped elements unless explicitly
+   * widened. On `listPolicies` the default is skipped when `filter[id]` is present,
+   * so by-ID fetches resolve regardless of target.
    *
    * Note: the allowed-value enum is enforced in the handler (not as an OpenAPI
    * `items.enum`) so the server can return a targeted error for the comma-AND form
    * instead of a generic "not in allowed values" response.
    */
-  'filter[scope_type]'?: Array<string>;
+  'filter[target_type]'?: Array<string>;
 
   /**
    * Query param: Maximum number of items to return per page.

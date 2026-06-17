@@ -20,7 +20,7 @@ import {
   URL,
 } from './application-credentials';
 import * as CatalogTasksAPI from './catalog-tasks';
-import { CatalogTaskRetrieveParams, CatalogTasks, Task, TaskOperation, TaskStatus } from './catalog-tasks';
+import { CatalogTasks, Task, TaskOperation, TaskStatus } from './catalog-tasks';
 import * as DelegatedGrantsAPI from './delegated-grants';
 import {
   DelegatedGrantDeleteParams,
@@ -32,16 +32,7 @@ import {
   Grant,
 } from './delegated-grants';
 import * as InstallsAPI from './installs';
-import {
-  Install,
-  InstallCreateParams,
-  InstallDeleteParams,
-  InstallList,
-  InstallListParams,
-  InstallRetrieveParams,
-  InstallStatus,
-  Installs,
-} from './installs';
+import { Install, InstallList, InstallStatus, Installs } from './installs';
 import * as MembersAPI from './members';
 import {
   MemberAddParams,
@@ -144,10 +135,7 @@ import {
   PackageDraft,
   PackageInputBinding,
   PackageList,
-  PackageListParams,
   PackageOutputBinding,
-  PackageRetrieveDraftParams,
-  PackageRetrieveParams,
   PackageSource,
   Packages,
 } from './packages/packages';
@@ -945,9 +933,6 @@ export declare namespace Zones {
     type PackageList as PackageList,
     type PackageOutputBinding as PackageOutputBinding,
     type PackageSource as PackageSource,
-    type PackageRetrieveParams as PackageRetrieveParams,
-    type PackageListParams as PackageListParams,
-    type PackageRetrieveDraftParams as PackageRetrieveDraftParams,
   };
 
   export {
@@ -955,10 +940,6 @@ export declare namespace Zones {
     type Install as Install,
     type InstallList as InstallList,
     type InstallStatus as InstallStatus,
-    type InstallCreateParams as InstallCreateParams,
-    type InstallRetrieveParams as InstallRetrieveParams,
-    type InstallListParams as InstallListParams,
-    type InstallDeleteParams as InstallDeleteParams,
   };
 
   export {
@@ -966,7 +947,6 @@ export declare namespace Zones {
     type Task as Task,
     type TaskOperation as TaskOperation,
     type TaskStatus as TaskStatus,
-    type CatalogTaskRetrieveParams as CatalogTaskRetrieveParams,
   };
 
   export {

@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.19.0 (2026-06-16)
+
+Full Changelog: [v0.18.0...v0.19.0](https://github.com/keycardai/keycard-ts/compare/v0.18.0...v0.19.0)
+
+### Features
+
+* **ACC-513:** reduced scope implementation ([4aeaefb](https://github.com/keycardai/keycard-ts/commit/4aeaefbe7b0da47e8dbf3c9cd4cd3f74b975859d))
+* **catalog:** add published flag to gate package visibility ([e216dfb](https://github.com/keycardai/keycard-ts/commit/e216dfb7c3c32c76f0c85aa85757ad189a174ead))
+* **ID-185:** Disable Zone Users ([d6d0a2a](https://github.com/keycardai/keycard-ts/commit/d6d0a2a58f75f6baef4f6bbae6207c152bd1a4b1))
+
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([e312607](https://github.com/keycardai/keycard-ts/commit/e312607ad3cc70b754224fd85eb054ee60ba9762))
+* Hide non-GA Catalog endpoints from docs and SDKs ([979cc7e](https://github.com/keycardai/keycard-ts/commit/979cc7e790f45f483b9d7c3c840353f6bb2cc7f9))
+* mark package get x-internal ([338ad4e](https://github.com/keycardai/keycard-ts/commit/338ad4e092b5b9d0855a190ae25c557e1bb5872c))
+
 ## 0.18.0 (2026-06-09)
 
 Full Changelog: [v0.17.0...v0.18.0](https://github.com/keycardai/keycard-ts/compare/v0.17.0...v0.18.0)
