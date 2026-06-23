@@ -48,6 +48,7 @@ describe('resource providers', () => {
         },
         openid: {
           scopes: ['string'],
+          single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
           userinfo_endpoint: 'https://example.com',
         },
@@ -112,6 +113,7 @@ describe('resource providers', () => {
         },
         openid: {
           scopes: ['string'],
+          single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
           userinfo_endpoint: 'https://example.com',
         },

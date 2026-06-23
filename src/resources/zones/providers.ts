@@ -218,6 +218,12 @@ export namespace Provider {
       scopes?: Array<string> | null;
 
       /**
+       * When true, logging out of the zone propagates the logout to this provider's
+       * end_session_endpoint (RP-initiated logout). Defaults to false.
+       */
+      single_logout_enabled?: boolean | null;
+
+      /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
        * identifier on user creation. When not set, the user's Keycard ID is used.
        */
@@ -391,6 +397,12 @@ export namespace ProviderCreateParams {
       scopes?: Array<string>;
 
       /**
+       * When true, logging out of the zone propagates the logout to this provider's
+       * end_session_endpoint (RP-initiated logout). Defaults to false.
+       */
+      single_logout_enabled?: boolean;
+
+      /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
        * identifier on user creation. When not set, the user's Keycard ID is used.
        */
@@ -537,6 +549,12 @@ export namespace ProviderUpdateParams {
        * to clear.
        */
       scopes?: Array<string> | null;
+
+      /**
+       * When true, logging out of the zone propagates the logout to this provider's
+       * end_session_endpoint (RP-initiated logout). Defaults to false.
+       */
+      single_logout_enabled?: boolean | null;
 
       /**
        * Name of a top-level string claim in this provider's ID Token to use as the user
