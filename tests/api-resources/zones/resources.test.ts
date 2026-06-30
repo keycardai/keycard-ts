@@ -33,7 +33,7 @@ describe('resource resources', () => {
       description: 'description',
       metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       prefix: true,
-      scopes: ['string'],
+      scopes: ['x'],
     });
   });
 
