@@ -29,7 +29,7 @@ describe('resource applications', () => {
       consent: 'implicit',
       dependencies: [{ id: 'id', type: 'type' }],
       description: 'description',
-      metadata: { docs_url: 'https://example.com' },
+      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       protocols: {
         oauth2: {
           post_logout_redirect_uris: ['https://example.com'],
@@ -75,7 +75,7 @@ describe('resource applications', () => {
       consent: 'implicit',
       description: 'description',
       identifier: 'x',
-      metadata: { docs_url: 'https://example.com' },
+      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       name: 'x',
       protocols: {
         oauth2: {

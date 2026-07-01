@@ -227,6 +227,11 @@ export interface Metadata {
    * Documentation URL
    */
   docs_url?: string;
+
+  /**
+   * Icon URL
+   */
+  icon_url?: string;
 }
 
 /**
@@ -237,6 +242,11 @@ export interface MetadataUpdate {
    * Documentation URL (set to null to unset)
    */
   docs_url?: string | null;
+
+  /**
+   * Icon URL (set to null to unset)
+   */
+  icon_url?: string | null;
 }
 
 export interface ApplicationListResponse {

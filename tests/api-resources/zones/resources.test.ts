@@ -31,9 +31,9 @@ describe('resource resources', () => {
       credential_lifetime_seconds: 60,
       credential_provider_id: 'credential_provider_id',
       description: 'description',
-      metadata: { docs_url: 'https://example.com' },
+      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       prefix: true,
-      scopes: ['string'],
+      scopes: ['x'],
     });
   });
 
@@ -76,7 +76,7 @@ describe('resource resources', () => {
       credential_provider_id: 'credential_provider_id',
       description: 'description',
       identifier: 'x',
-      metadata: { docs_url: 'https://example.com' },
+      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       name: 'x',
       prefix: true,
       scopes: ['x'],
