@@ -46,7 +46,10 @@ export class Resources extends APIResource {
   }
 
   /**
-   * Returns a list of resources in the specified zone
+   * Returns a list of resources in the specified zone. Filter by exact identifier
+   * via `filter[identifier]` (repeatable, OR'd). Matching is exact: identifiers are
+   * unique per zone, so a filter returns at most one resource per value and never
+   * performs URL prefix resolution.
    */
   list(
     zoneID: string,
@@ -250,6 +253,11 @@ export interface ResourceListParams {
   credentialProviderId?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Filter by exact resource identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
 
   /**
    * Filter resources by identifier

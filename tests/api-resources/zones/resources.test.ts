@@ -106,6 +106,7 @@ describe('resource resources', () => {
           before: 'x',
           credentialProviderId: 'credentialProviderId',
           'expand[]': 'total_count',
+          'filter[identifier]': 'string',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
