@@ -160,6 +160,12 @@ export namespace SSOConnectionProtocol {
     authorization_endpoint?: string | null;
 
     /**
+     * Custom query parameters appended to authorization redirect URLs. Use for
+     * non-standard providers (e.g. Google prompt=consent, access_type=offline).
+     */
+    authorization_parameters?: { [key: string]: string } | null;
+
+    /**
      * Supported PKCE code challenge methods
      */
     code_challenge_methods_supported?: Array<string> | null;
@@ -189,6 +195,18 @@ export namespace SSOConnectionProtocol {
    * OpenID Connect protocol configuration for SSO connection
    */
   export interface Openid {
+    /**
+     * Additional OIDC scopes to request from this provider during authentication (e.g.
+     * "groups"). Merged with the default scopes (openid, profile, email).
+     */
+    scopes?: Array<string> | null;
+
+    /**
+     * Name of a top-level string claim in the provider's ID Token to use as the user
+     * identifier on user creation. When not set, the user's Keycard ID is used.
+     */
+    user_identifier_claim?: string | null;
+
     /**
      * OpenID Connect UserInfo endpoint
      */
@@ -230,15 +248,105 @@ export interface SSOConnectionUpdateParams {
   identifier?: string;
 
   /**
-   * Body param: Protocol configuration for SSO connection
+   * Body param: Protocol configuration for an SSO connection update. Omit a protocol
+   * to leave it unchanged.
    */
-  protocols?: SSOConnectionProtocol | null;
+  protocols?: SSOConnectionUpdateParams.Protocols | null;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
+}
+
+export namespace SSOConnectionUpdateParams {
+  /**
+   * Protocol configuration for an SSO connection update. Omit a protocol to leave it
+   * unchanged.
+   */
+  export interface Protocols {
+    /**
+     * OAuth 2.0 protocol configuration for an SSO connection update. Each field is
+     * tri-state, omit to leave unchanged, send null to clear, send a value to set.
+     */
+    oauth2?: Protocols.Oauth2 | null;
+
+    /**
+     * OpenID Connect protocol configuration for an SSO connection update. Each field
+     * is tri-state, omit to leave unchanged, send null to clear, send a value to set.
+     */
+    openid?: Protocols.Openid | null;
+  }
+
+  export namespace Protocols {
+    /**
+     * OAuth 2.0 protocol configuration for an SSO connection update. Each field is
+     * tri-state, omit to leave unchanged, send null to clear, send a value to set.
+     */
+    export interface Oauth2 {
+      /**
+       * OAuth 2.0 authorization endpoint. Set to null to clear.
+       */
+      authorization_endpoint?: string | null;
+
+      /**
+       * Custom query parameters appended to authorization redirect URLs. Use for
+       * non-standard providers (e.g. Google prompt=consent, access_type=offline). Set to
+       * null to clear.
+       */
+      authorization_parameters?: { [key: string]: string } | null;
+
+      /**
+       * Supported PKCE code challenge methods. Set to null to clear.
+       */
+      code_challenge_methods_supported?: Array<string> | null;
+
+      /**
+       * JSON Web Key Set endpoint. Set to null to clear.
+       */
+      jwks_uri?: string | null;
+
+      /**
+       * OAuth 2.0 registration endpoint. Set to null to clear.
+       */
+      registration_endpoint?: string | null;
+
+      /**
+       * Supported OAuth 2.0 scopes. Set to null to clear.
+       */
+      scopes_supported?: Array<string> | null;
+
+      /**
+       * OAuth 2.0 token endpoint. Set to null to clear.
+       */
+      token_endpoint?: string | null;
+    }
+
+    /**
+     * OpenID Connect protocol configuration for an SSO connection update. Each field
+     * is tri-state, omit to leave unchanged, send null to clear, send a value to set.
+     */
+    export interface Openid {
+      /**
+       * Additional OIDC scopes to request from this provider during authentication (e.g.
+       * "groups"). Merged with the default scopes (openid, profile, email). Set to null
+       * to clear.
+       */
+      scopes?: Array<string> | null;
+
+      /**
+       * Name of a top-level string claim in the provider's ID Token to use as the user
+       * identifier on user creation. Set to null to clear.
+       */
+      user_identifier_claim?: string | null;
+
+      /**
+       * OpenID Connect UserInfo endpoint. Set to null to clear.
+       */
+      userinfo_endpoint?: string | null;
+    }
+  }
 }
 
 export interface SSOConnectionDisableParams {
