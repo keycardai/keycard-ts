@@ -50,6 +50,7 @@ describe('resource users', () => {
           'expand[]': 'total_count',
           'filter[email]': 'dev@stainless.com',
           'filter[id]': 'string',
+          'filter[identifier]': 'string',
           limit: 1,
           'query[]': 'x',
           'query[email]': 'x',
