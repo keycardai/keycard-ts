@@ -43,6 +43,7 @@ describe('instantiate client', () => {
     const client = new KeycardAPI({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: mockTokenFetch,
@@ -111,6 +112,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         logger: logger,
         logLevel: 'debug',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -122,6 +124,7 @@ describe('instantiate client', () => {
 
     test('default logLevel is warn', async () => {
       const client = new KeycardAPI({
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -141,6 +144,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         logger: logger,
         logLevel: 'info',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -162,6 +166,7 @@ describe('instantiate client', () => {
       process.env['KEYCARD_API_LOG'] = 'debug';
       const client = new KeycardAPI({
         logger: logger,
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -184,6 +189,7 @@ describe('instantiate client', () => {
       process.env['KEYCARD_API_LOG'] = 'not a log level';
       const client = new KeycardAPI({
         logger: logger,
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -207,6 +213,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         logger: logger,
         logLevel: 'off',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -229,6 +236,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         logger: logger,
         logLevel: 'debug',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -243,6 +251,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -254,6 +263,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -265,6 +275,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -276,6 +287,7 @@ describe('instantiate client', () => {
   test('custom fetch', async () => {
     const client = new KeycardAPI({
       baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: wrapWithTokenFetch((url) => {
@@ -295,6 +307,7 @@ describe('instantiate client', () => {
     // make sure the global fetch type is assignable to our Fetch type
     const client = new KeycardAPI({
       baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: defaultFetch,
@@ -304,6 +317,7 @@ describe('instantiate client', () => {
   test('custom signal', async () => {
     const client = new KeycardAPI({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: wrapWithTokenFetch((...args) => {
@@ -337,6 +351,7 @@ describe('instantiate client', () => {
 
     const client = new KeycardAPI({
       baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -350,6 +365,7 @@ describe('instantiate client', () => {
     test('trailing slash', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/custom/path/',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
       });
@@ -359,6 +375,7 @@ describe('instantiate client', () => {
     test('no trailing slash', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/custom/path',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
       });
@@ -372,6 +389,7 @@ describe('instantiate client', () => {
     test('explicit option', () => {
       const client = new KeycardAPI({
         baseURL: 'https://example.com',
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
       });
@@ -380,24 +398,40 @@ describe('instantiate client', () => {
 
     test('env variable', () => {
       process.env['KEYCARD_API_BASE_URL'] = 'https://example.com/from_env';
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        apiKey: 'My API Key',
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+      });
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
       process.env['KEYCARD_API_BASE_URL'] = ''; // empty
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        apiKey: 'My API Key',
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+      });
       expect(client.baseURL).toEqual('https://api.keycard.ai');
     });
 
     test('blank env variable', () => {
       process.env['KEYCARD_API_BASE_URL'] = '  '; // blank
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        apiKey: 'My API Key',
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+      });
       expect(client.baseURL).toEqual('https://api.keycard.ai');
     });
 
     test('in request options', () => {
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        apiKey: 'My API Key',
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+      });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/option/foo',
       );
@@ -405,6 +439,7 @@ describe('instantiate client', () => {
 
     test('in request options overridden by client options', () => {
       const client = new KeycardAPI({
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         baseURL: 'http://localhost:5000/client',
@@ -416,7 +451,11 @@ describe('instantiate client', () => {
 
     test('in request options overridden by env variable', () => {
       process.env['KEYCARD_API_BASE_URL'] = 'http://localhost:5000/env';
-      const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+      const client = new KeycardAPI({
+        apiKey: 'My API Key',
+        clientID: 'My Client ID',
+        clientSecret: 'My Client Secret',
+      });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
       );
@@ -426,13 +465,18 @@ describe('instantiate client', () => {
   test('maxRetries option is correctly set', () => {
     const client = new KeycardAPI({
       maxRetries: 4,
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
     });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+    const client2 = new KeycardAPI({
+      apiKey: 'My API Key',
+      clientID: 'My Client ID',
+      clientSecret: 'My Client Secret',
+    });
     expect(client2.maxRetries).toEqual(2);
   });
 
@@ -441,6 +485,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/',
         maxRetries: 3,
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -469,6 +514,7 @@ describe('instantiate client', () => {
         baseURL: 'http://localhost:5000/',
         defaultHeaders: { 'X-Test-Header': 'test-value' },
         defaultQuery: { 'test-param': 'test-value' },
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -489,6 +535,7 @@ describe('instantiate client', () => {
       const client = new KeycardAPI({
         baseURL: 'http://localhost:5000/',
         timeout: 1000,
+        apiKey: 'My API Key',
         clientID: 'My Client ID',
         clientSecret: 'My Client Secret',
         fetch: mockTokenFetch,
@@ -520,18 +567,26 @@ describe('instantiate client', () => {
 
   test('with environment variable arguments', () => {
     // set options via env var
+    process.env['KEYCARD_API_API_KEY'] = 'My API Key';
     process.env['KEYCARD_API_CLIENT_ID'] = 'My Client ID';
     process.env['KEYCARD_API_CLIENT_SECRET'] = 'My Client Secret';
     const client = new KeycardAPI();
+    expect(client.apiKey).toBe('My API Key');
     expect(client.clientID).toBe('My Client ID');
     expect(client.clientSecret).toBe('My Client Secret');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
+    process.env['KEYCARD_API_API_KEY'] = 'another My API Key';
     process.env['KEYCARD_API_CLIENT_ID'] = 'another My Client ID';
     process.env['KEYCARD_API_CLIENT_SECRET'] = 'another My Client Secret';
-    const client = new KeycardAPI({ clientID: 'My Client ID', clientSecret: 'My Client Secret' });
+    const client = new KeycardAPI({
+      apiKey: 'My API Key',
+      clientID: 'My Client ID',
+      clientSecret: 'My Client Secret',
+    });
+    expect(client.apiKey).toBe('My API Key');
     expect(client.clientID).toBe('My Client ID');
     expect(client.clientSecret).toBe('My Client Secret');
   });
@@ -539,6 +594,7 @@ describe('instantiate client', () => {
 
 describe('request building', () => {
   const client = new KeycardAPI({
+    apiKey: 'My API Key',
     clientID: 'My Client ID',
     clientSecret: 'My Client Secret',
     fetch: mockTokenFetch,
@@ -562,6 +618,7 @@ describe('request building', () => {
 
 describe('default encoder', () => {
   const client = new KeycardAPI({
+    apiKey: 'My API Key',
     clientID: 'My Client ID',
     clientSecret: 'My Client Secret',
     fetch: mockTokenFetch,
@@ -668,6 +725,7 @@ describe('retries', () => {
     });
 
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       timeout: 10,
@@ -689,6 +747,7 @@ describe('retries', () => {
     const { testFetch, getCount, getCapturedRequest } = makeRetryCountFetch();
 
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -704,6 +763,7 @@ describe('retries', () => {
   test('omit retry count header', async () => {
     const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -724,6 +784,7 @@ describe('retries', () => {
   test('omit retry count header by default', async () => {
     const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -744,6 +805,7 @@ describe('retries', () => {
   test('overwrite retry count header', async () => {
     const { testFetch, getCapturedRequest } = makeRetryCountFetch();
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -776,6 +838,7 @@ describe('retries', () => {
     });
 
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,
@@ -807,6 +870,7 @@ describe('retries', () => {
     });
 
     const client = new KeycardAPI({
+      apiKey: 'My API Key',
       clientID: 'My Client ID',
       clientSecret: 'My Client Secret',
       fetch: testFetch,

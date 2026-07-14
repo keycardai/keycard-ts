@@ -273,9 +273,19 @@ export class KeycardAPI {
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { oAuth2Auth?: boolean },
+    schemes: { bearerAuth?: boolean; oAuth2Auth?: boolean },
   ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([schemes.oAuth2Auth ? await this.oAuth2Auth(opts) : null]);
+    return buildHeaders([
+      schemes.bearerAuth ? await this.bearerAuth(opts) : null,
+      schemes.oAuth2Auth ? await this.oAuth2Auth(opts) : null,
+    ]);
+  }
+
+  protected async bearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (this.apiKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   private oAuth2AuthState:
@@ -776,7 +786,7 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options, options.__security ?? { oAuth2Auth: true }),
+      await this.authHeaders(options, options.__security ?? { bearerAuth: true, oAuth2Auth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
