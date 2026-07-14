@@ -232,41 +232,6 @@ Methods:
 - <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
 
-## Packages
-
-Types:
-
-- <code><a href="./src/resources/zones/packages/packages.ts">InputState</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">Package</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageDraft</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageInputBinding</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageList</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageOutputBinding</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageSource</a></code>
-
-### Versions
-
-Types:
-
-- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersion</a></code>
-- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersionList</a></code>
-
-## Installs
-
-Types:
-
-- <code><a href="./src/resources/zones/installs.ts">Install</a></code>
-- <code><a href="./src/resources/zones/installs.ts">InstallList</a></code>
-- <code><a href="./src/resources/zones/installs.ts">InstallStatus</a></code>
-
-## CatalogTasks
-
-Types:
-
-- <code><a href="./src/resources/zones/catalog-tasks.ts">Task</a></code>
-- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskOperation</a></code>
-- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskStatus</a></code>
-
 ## PolicySets
 
 Types:

@@ -75,7 +75,7 @@ export type RequestOptions = {
    */
   defaultBaseURL?: string | undefined;
 
-  __security?: { oAuth2Auth?: boolean };
+  __security?: { bearerAuth?: boolean; oAuth2Auth?: boolean };
 
   __binaryResponse?: boolean | undefined;
 };
