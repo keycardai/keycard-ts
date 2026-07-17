@@ -217,7 +217,7 @@ export namespace Application {
  * Traits ascribe behaviors and characteristics to an application, which may
  * activate trait-specific user experiences, workflows, or other system behaviors
  */
-export type ApplicationTrait = 'gateway' | 'mcp-provider';
+export type ApplicationTrait = 'gateway' | 'mcp-provider' | 'unified-gateway' | 'mcp-server';
 
 /**
  * Entity metadata

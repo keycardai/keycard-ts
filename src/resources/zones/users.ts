@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as ProvidersAPI from './providers';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -27,16 +28,19 @@ export class Users extends APIResource {
    * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
    * matching row count, `expand[]=session_count` to include per-user session counts,
-   * `expand[]=grant_count` to include per-user delegated-grant counts, and
-   * `expand[]=role-assignments` to include each user's structured role grants.
-   * Filter by exact email via `filter[email]` and by exact identifier via
-   * `filter[identifier]`; search via `query[email]` / `query[subject]` / `query[]`
-   * (substring match, OR'd across repeated values). `query[]` matches against email
-   * and federation credential subject. Pass `filter[id]` (repeatable, max 100) to
-   * restrict results to a known set of users — mutually exclusive with
-   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
-   * ignored and the response contains every requested user that exists in the zone,
-   * in a single page. IDs not in the zone are silently omitted.
+   * `expand[]=grant_count` to include per-user delegated-grant counts,
+   * `expand[]=role-assignments` to include each user's structured role grants,
+   * `expand[]=credentials` to include each user's authentication credentials (each
+   * with its `provider_id`), and `expand[]=credentials.provider` to additionally
+   * inline the full identity provider on each federation credential. Filter by exact
+   * email via `filter[email]` and by exact identifier via `filter[identifier]`;
+   * search via `query[email]` / `query[subject]` / `query[]` (substring match, OR'd
+   * across repeated values). `query[]` matches against email and federation
+   * credential subject. Pass `filter[id]` (repeatable, max 100) to restrict results
+   * to a known set of users — mutually exclusive with `after`/`before` (returns 400
+   * if combined). When `filter[id]` is set, `limit` is ignored and the response
+   * contains every requested user that exists in the zone, in a single page. IDs not
+   * in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -104,6 +108,13 @@ export interface User {
   authenticated_at?: string;
 
   /**
+   * Authentication credentials for this user, each carrying its identity provider
+   * for federation credentials. Populated only when `expand[]=credentials` is set on
+   * the listing endpoint.
+   */
+  credentials?: Array<User.IamUserCredentialFederation | User.IamUserCredentialPassword>;
+
+  /**
    * Delegated-grant count for this user. Populated only when `expand[]=grant_count`
    * is set on the listing endpoint.
    */
@@ -139,6 +150,63 @@ export interface User {
 }
 
 export namespace User {
+  /**
+   * Federation credential: the user authenticates through an identity provider.
+   */
+  export interface IamUserCredentialFederation {
+    /**
+     * Entity creation timestamp
+     */
+    created_at: string;
+
+    /**
+     * ID of the identity provider backing this credential. `null` when the source
+     * provider has been deleted.
+     */
+    provider_id: string | null;
+
+    type: 'federation';
+
+    /**
+     * Entity update timestamp
+     */
+    updated_at: string;
+
+    /**
+     * Issuer identifier of the identity provider.
+     */
+    issuer?: string;
+
+    /**
+     * A Provider is a system that supplies access to Resources and allows actors
+     * (Users or Applications) to authenticate.
+     */
+    provider?: ProvidersAPI.Provider;
+
+    /**
+     * Subject identifier from the identity provider.
+     */
+    subject?: string;
+  }
+
+  /**
+   * Password credential: the user authenticates with email and password. The email
+   * lives on the user.
+   */
+  export interface IamUserCredentialPassword {
+    /**
+     * Entity creation timestamp
+     */
+    created_at: string;
+
+    type: 'password';
+
+    /**
+     * Entity update timestamp
+     */
+    updated_at: string;
+  }
+
   /**
    * A role granted to a user within a zone.
    */
@@ -235,7 +303,16 @@ export interface UserListParams {
     | 'session_count'
     | 'grant_count'
     | 'role-assignments'
-    | Array<'total_count' | 'session_count' | 'grant_count' | 'role-assignments'>;
+    | 'credentials'
+    | 'credentials.provider'
+    | Array<
+        | 'total_count'
+        | 'session_count'
+        | 'grant_count'
+        | 'role-assignments'
+        | 'credentials'
+        | 'credentials.provider'
+      >;
 
   /**
    * Filter by exact email address
