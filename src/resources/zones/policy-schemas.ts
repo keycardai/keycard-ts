@@ -17,7 +17,7 @@ import { path } from '../../internal/utils/path';
  * - **Keycard::RegistrationMethod** — enum entity: `"managed"`, `"dcr"`
  * - **Keycard::CredentialType** — enum entity: `"token"`, `"password"`, `"public-key"`, `"url"`, `"public"`
  * - **Keycard::Resource** — `id` (String), `name` (String), `scopes` (Set of String)
- * - **Keycard::Claims** — `email` (String), `groups` (Set of String), plus arbitrary additional fields
+ * - **Keycard::Claims** — `email` (String), `groups` (Set of String), `issuer_claims` (issuer-specific claims record), plus arbitrary additional fields
  *
  * Enum-like attributes use Cedar enum entity types (schema version `2026-03-16`+).
  * In policies, reference values as `RegistrationMethod::"managed"` or `CredentialType::"token"`.
