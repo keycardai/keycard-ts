@@ -217,10 +217,18 @@ export namespace User {
     role_id: string;
 
     /**
-     * Opaque role identifier. Treated as an opaque identifier by the API and unique
-     * within a zone.
+     * Role identifier: a lowercase slug (letters and digits separated by single
+     * hyphens or underscores), unique per owner type within a zone. Role identifiers
+     * surface in policy evaluation, so the slug restriction keeps them unambiguous in
+     * policy text.
      */
     role_identifier: string;
+
+    /**
+     * Owner type of the granted role. Disambiguates roles that share an identifier
+     * across owner types.
+     */
+    role_owner_type: 'platform' | 'customer';
 
     /**
      * The resource this grant is scoped to, or null when the grant is unscoped
