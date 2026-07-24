@@ -378,3 +378,11 @@ Methods:
 
 - <code title="get /invitations/{token}">client.invitations.<a href="./src/resources/invitations.ts">retrieve</a>(token, { ...params }) -> InvitationRetrieveResponse</code>
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
+
+# PolicyBundle
+
+Methods:
+
+- <code title="get /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">retrieve</a>({ ...params }) -> Response</code>
+- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>({ ...params }) -> Response</code>
+- <code title="delete /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">reset</a>({ ...params }) -> void</code>

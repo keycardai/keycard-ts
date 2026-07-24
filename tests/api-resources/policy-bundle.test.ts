@@ -1,0 +1,55 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import KeycardAPI, { toFile } from '@keycardai/api';
+
+const client = new KeycardAPI({
+  apiKey: 'My API Key',
+  clientID: 'My Client ID',
+  clientSecret: 'My Client Secret',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
+
+describe('resource policyBundle', () => {
+  // Mock server tests are disabled
+  test.skip('retrieve: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.policyBundle.retrieve(
+        { 'If-None-Match': 'If-None-Match', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.policyBundle.update({
+      body: await toFile(Buffer.from('Example data'), 'README.md'),
+      'If-Match': 'If-Match',
+      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('reset', async () => {
+    const responsePromise = client.policyBundle.reset();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('reset: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.policyBundle.reset(
+        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  });
+});
