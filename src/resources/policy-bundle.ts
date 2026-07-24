@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { type Uploadable } from '../core/uploads';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 
@@ -51,7 +50,7 @@ export class PolicyBundle extends APIResource {
       ...options,
       headers: buildHeaders([
         {
-          Accept: 'application/vnd.keycard.policy-bundle.v1+tar+gzip',
+          Accept: 'application/octet-stream',
           ...(ifNoneMatch != null ? { 'If-None-Match': ifNoneMatch } : undefined),
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
         },
@@ -82,15 +81,19 @@ export class PolicyBundle extends APIResource {
    * On success the server returns the materialized bundle (in the same codec) and
    * its new `ETag`.
    */
-  update(params: PolicyBundleUpdateParams, options?: RequestOptions): APIPromise<Response> {
-    const { body, 'If-Match': ifMatch, 'X-Client-Request-ID': xClientRequestID } = params;
+  update(
+    body: string | ArrayBuffer | ArrayBufferView | Blob | DataView,
+    params: PolicyBundleUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<Response> {
+    const { 'If-Match': ifMatch, 'X-Client-Request-ID': xClientRequestID } = params;
     return this._client.put('/policy/bundle', {
       body: body,
       ...options,
       headers: buildHeaders([
         {
-          'Content-Type': 'application/vnd.keycard.policy-bundle.v1+tar+gzip',
-          Accept: 'application/vnd.keycard.policy-bundle.v1+tar+gzip',
+          'Content-Type': 'application/octet-stream',
+          Accept: 'application/octet-stream',
           ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined),
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
         },
@@ -137,19 +140,6 @@ export interface PolicyBundleRetrieveParams {
 }
 
 export interface PolicyBundleUpdateParams {
-  /**
-   * Body param: tar+gzip Policy Bundle archive. `manifest.json` is **required** (see
-   * `PolicyBundleManifest`); `schema.cedarschema` is **optional and ignored** — the
-   * server validates against its attested schema for `manifest.schema.version`. The
-   * manifest's `policies[]` list is authoritative for the resulting set: each entry
-   * must have a matching `policies/<public_id>.cedar` (or, for a `new_policy` entry,
-   * `policies/<new_policy>.cedar`) member, and a member with no manifest entry is
-   * dropped. Only the `sha` fields are advisory and recomputed server-side.
-   * Duplicate or unrecognized entries are rejected with `bundle_invalid`. See the
-   * **PolicyBundle** tag for the layout.
-   */
-  body: Uploadable;
-
   /**
    * Header param: Optimistic concurrency ETag. When supplied, the server applies the
    * bundle only if the value matches the current bundle ETag; otherwise responds

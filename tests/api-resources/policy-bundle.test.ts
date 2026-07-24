@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import KeycardAPI, { toFile } from '@keycardai/api';
+import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
   apiKey: 'My API Key',
@@ -19,15 +19,6 @@ describe('resource policyBundle', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
-  });
-
-  // Mock server tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.policyBundle.update({
-      body: await toFile(Buffer.from('Example data'), 'README.md'),
-      'If-Match': 'If-Match',
-      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
   });
 
   // Mock server tests are disabled
