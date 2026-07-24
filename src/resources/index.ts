@@ -25,6 +25,12 @@ export {
   type OrganizationListRolesParams,
 } from './organizations/organizations';
 export {
+  PolicyBundle,
+  type PolicyBundleRetrieveParams,
+  type PolicyBundleUpdateParams,
+  type PolicyBundleResetParams,
+} from './policy-bundle';
+export {
   Zones,
   type EncryptionKeyAwsKmsConfig,
   type PageInfoPagination,
