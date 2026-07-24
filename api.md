@@ -384,5 +384,5 @@ Methods:
 Methods:
 
 - <code title="get /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">retrieve</a>({ ...params }) -> Response</code>
-- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>({ ...params }) -> Response</code>
+- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>(body, { ...params }) -> Response</code>
 - <code title="delete /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">reset</a>({ ...params }) -> void</code>
