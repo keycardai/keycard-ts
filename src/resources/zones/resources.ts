@@ -49,7 +49,8 @@ export class Resources extends APIResource {
    * Returns a list of resources in the specified zone. Filter by exact identifier
    * via `filter[identifier]` (repeatable, OR'd). Matching is exact: identifiers are
    * unique per zone, so a filter returns at most one resource per value and never
-   * performs URL prefix resolution.
+   * performs URL prefix resolution. Filter by trait via `traits[all]` (AND — has all
+   * listed traits) or `traits[]` (OR — has any), each repeatable.
    */
   list(
     zoneID: string,
@@ -270,6 +271,18 @@ export interface ResourceListParams {
   limit?: number;
 
   slug?: string;
+
+  /**
+   * Filter by traits (OR matching - returns resources with any of the specified
+   * traits)
+   */
+  traits?: Array<'external' | 'proxy' | 'mcp-server'>;
+
+  /**
+   * Filter by traits (AND matching - returns resources with all of the specified
+   * traits)
+   */
+  'traits[all]'?: Array<'external' | 'proxy' | 'mcp-server'>;
 }
 
 export interface ResourceDeleteParams {
