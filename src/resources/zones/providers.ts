@@ -123,7 +123,7 @@ export interface Provider {
   /**
    * Provider metadata
    */
-  metadata?: unknown | null;
+  metadata?: Provider.Metadata | null;
 
   /**
    * Protocol-specific configuration
@@ -134,6 +134,16 @@ export interface Provider {
 }
 
 export namespace Provider {
+  /**
+   * Provider metadata
+   */
+  export interface Metadata {
+    /**
+     * Icon URL
+     */
+    icon_url?: string;
+  }
+
   /**
    * Protocol-specific configuration
    */
@@ -303,7 +313,7 @@ export interface ProviderCreateParams {
   /**
    * Provider metadata
    */
-  metadata?: unknown;
+  metadata?: ProviderCreateParams.Metadata;
 
   /**
    * Protocol-specific configuration for provider creation
@@ -312,6 +322,16 @@ export interface ProviderCreateParams {
 }
 
 export namespace ProviderCreateParams {
+  /**
+   * Provider metadata
+   */
+  export interface Metadata {
+    /**
+     * Icon URL
+     */
+    icon_url?: string;
+  }
+
   /**
    * Protocol-specific configuration for provider creation
    */
@@ -449,7 +469,7 @@ export interface ProviderUpdateParams {
   /**
    * Body param: Provider metadata. Set to null to remove all metadata.
    */
-  metadata?: unknown | null;
+  metadata?: ProviderUpdateParams.Metadata | null;
 
   /**
    * Body param: Human-readable name. Must not contain HTML tags (e.g. `<script>`,
@@ -465,6 +485,16 @@ export interface ProviderUpdateParams {
 }
 
 export namespace ProviderUpdateParams {
+  /**
+   * Provider metadata. Set to null to remove all metadata.
+   */
+  export interface Metadata {
+    /**
+     * Icon URL (set to null to unset)
+     */
+    icon_url?: string | null;
+  }
+
   /**
    * Protocol-specific configuration. Set to null to remove all protocols.
    */

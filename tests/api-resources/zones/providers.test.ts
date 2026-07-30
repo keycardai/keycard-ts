@@ -30,7 +30,7 @@ describe('resource providers', () => {
       client_id: 'client_id',
       client_secret: 'client_secret',
       description: 'description',
-      metadata: {},
+      metadata: { icon_url: 'https://example.com' },
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
@@ -94,7 +94,7 @@ describe('resource providers', () => {
       client_secret: 'client_secret',
       description: 'description',
       identifier: 'x',
-      metadata: {},
+      metadata: { icon_url: 'https://example.com' },
       name: 'x',
       protocols: {
         oauth2: {
