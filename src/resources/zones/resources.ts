@@ -263,6 +263,11 @@ export interface ResourceListParams {
   'filter[identifier]'?: string | Array<string>;
 
   /**
+   * Filter by owner type: `platform` (Keycard-managed) or `customer` (org-created).
+   */
+  'filter[owner_type]'?: 'platform' | 'customer';
+
+  /**
    * Backward-compatible alias for `filter[identifier]`: exact match on a single
    * resource identifier.
    */
