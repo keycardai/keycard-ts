@@ -108,6 +108,7 @@ describe('resource resources', () => {
           credentialProviderId: 'credentialProviderId',
           'expand[]': 'total_count',
           'filter[identifier]': 'string',
+          'filter[owner_type]': 'platform',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
