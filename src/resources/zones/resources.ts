@@ -46,11 +46,13 @@ export class Resources extends APIResource {
   }
 
   /**
-   * Returns a list of resources in the specified zone. Filter by exact identifier
-   * via `filter[identifier]` (repeatable, OR'd). Matching is exact: identifiers are
-   * unique per zone, so a filter returns at most one resource per value and never
-   * performs URL prefix resolution. Filter by trait via `traits[all]` (AND — has all
-   * listed traits) or `traits[]` (OR — has any), each repeatable.
+   * Returns a paginated list of resources in the specified zone. Use cursor
+   * pagination via `after`/`before`, and `expand[]=total_count` to include the
+   * matching row count. Filter by exact identifier via `filter[identifier]`. Filter
+   * by trait via `traits[all]` (AND, all listed) or `traits[]` (OR, any), each
+   * repeatable. The scalar `identifier` query parameter is a backward-compatible
+   * alias for `filter[identifier]`: exact match on a single value, folded into the
+   * same exact-match identifier filter.
    */
   list(
     zoneID: string,
@@ -261,7 +263,8 @@ export interface ResourceListParams {
   'filter[identifier]'?: string | Array<string>;
 
   /**
-   * Filter resources by identifier
+   * Backward-compatible alias for `filter[identifier]`: exact match on a single
+   * resource identifier.
    */
   identifier?: string;
 
@@ -273,7 +276,7 @@ export interface ResourceListParams {
   slug?: string;
 
   /**
-   * Filter by traits (OR matching - returns resources with any of the specified
+   * Filter by traits (OR matching — returns resources with any of the specified
    * traits)
    */
   traits?: Array<'external' | 'proxy' | 'mcp-server'>;
