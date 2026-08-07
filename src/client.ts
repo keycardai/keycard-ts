@@ -33,7 +33,6 @@ import {
 import {
   Organization,
   OrganizationCreateParams,
-  OrganizationExchangeTokenParams,
   OrganizationListIdentitiesParams,
   OrganizationListIdentitiesResponse,
   OrganizationListParams,
@@ -943,7 +942,6 @@ export declare namespace KeycardAPI {
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
   };

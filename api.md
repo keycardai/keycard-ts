@@ -288,7 +288,6 @@ Methods:
 - <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
-- <code title="post /organizations/{organization_id}/token">client.organizations.<a href="./src/resources/organizations/organizations.ts">exchangeToken</a>(organizationID, { ...params }) -> TokenResponse</code>
 - <code title="get /organizations/{organization_id}/identities">client.organizations.<a href="./src/resources/organizations/organizations.ts">listIdentities</a>(organizationID, { ...params }) -> OrganizationListIdentitiesResponse</code>
 - <code title="get /organizations/{organization_id}/roles">client.organizations.<a href="./src/resources/organizations/organizations.ts">listRoles</a>(organizationID, { ...params }) -> OrganizationListRolesResponse</code>
 

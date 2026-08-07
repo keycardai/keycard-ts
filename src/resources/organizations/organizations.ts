@@ -130,24 +130,6 @@ export class Organizations extends APIResource {
   }
 
   /**
-   * Exchange user token for organization-scoped M2M token
-   */
-  exchangeToken(
-    organizationID: string,
-    params: OrganizationExchangeTokenParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<TokenResponse> {
-    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
-    return this._client.post(path`/organizations/${organizationID}/token`, {
-      ...options,
-      headers: buildHeaders([
-        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
-        options?.headers,
-      ]),
-    });
-  }
-
-  /**
    * List unified view of users and invitations in an organization
    */
   listIdentities(
@@ -526,14 +508,6 @@ export interface OrganizationListParams {
   'X-Client-Request-ID'?: string;
 }
 
-export interface OrganizationExchangeTokenParams {
-  /**
-   * Unique request identifier specified by the originating caller and passed along
-   * by proxies.
-   */
-  'X-Client-Request-ID'?: string;
-}
-
 export interface OrganizationListIdentitiesParams {
   /**
    * Query param: Cursor for forward pagination
@@ -616,7 +590,6 @@ export declare namespace Organizations {
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
   };
