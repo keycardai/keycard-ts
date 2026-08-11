@@ -180,14 +180,14 @@ export interface DependencyListResponse {
   items: Array<Resource>;
 
   /**
-   * Pagination information
-   */
-  page_info: ZonesAPI.PageInfoPagination;
-
-  /**
    * Cursor-based pagination metadata
    */
   pagination: DependencyListResponse.Pagination;
+
+  /**
+   * Pagination information
+   */
+  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace DependencyListResponse {
