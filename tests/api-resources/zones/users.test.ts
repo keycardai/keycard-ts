@@ -56,7 +56,7 @@ describe('resource users', () => {
           'query[]': 'x',
           'query[email]': 'x',
           'query[subject]': 'x',
-          sort: '-authenticated_at,\t\r\r \tauthenticated_at,\n\t\ncreated_at',
+          sort: '-authenticated_at,\t\r\r \tauthenticated_at,\n\t\nemail',
         },
         { path: '/_stainless_unknown_path' },
       ),

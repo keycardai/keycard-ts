@@ -359,8 +359,8 @@ export interface UserListParams {
   'query[subject]'?: string | Array<string>;
 
   /**
-   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
-   * email, authenticated_at
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: email,
+   * authenticated_at
    */
   sort?: string;
 }
