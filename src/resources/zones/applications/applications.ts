@@ -567,8 +567,8 @@ export interface ApplicationListParams {
   slug?: string;
 
   /**
-   * Comma-separated sort fields. Prefix with - for descending. Allowed: name,
-   * identifier
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * name, identifier
    */
   sort?: string;
 
