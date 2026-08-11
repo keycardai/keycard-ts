@@ -118,7 +118,7 @@ describe('resource applications', () => {
           'query[identifier]': 'x',
           'query[name]': 'x',
           slug: 'slug',
-          sort: '-identifier,\t\r\r \tidentifier,\n\t\nname',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
           traits: ['gateway'],
           'traits[all]': ['gateway'],
         },
