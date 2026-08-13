@@ -268,6 +268,12 @@ export interface ResourceListParams {
   'filter[owner_type]'?: 'platform' | 'customer';
 
   /**
+   * Filter by trait. Comma-separated values (`a,b`) are AND'd; repeated params are
+   * OR'd. Preferred over `traits[]`/`traits[all]`.
+   */
+  'filter[traits]'?: string | Array<string>;
+
+  /**
    * Backward-compatible alias for `filter[identifier]`: exact match on a single
    * resource identifier.
    */

@@ -109,6 +109,7 @@ describe('resource resources', () => {
           'expand[]': 'total_count',
           'filter[identifier]': 'string',
           'filter[owner_type]': 'platform',
+          'filter[traits]': 'string',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
