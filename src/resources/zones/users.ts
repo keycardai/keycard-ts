@@ -8,11 +8,14 @@ import { path } from '../../internal/utils/path';
 
 export class Users extends APIResource {
   /**
-   * Returns details of a specific user by user ID
+   * Returns details of a specific user by user ID. Use `expand[]=role-assignments`
+   * for the user's structured role grants and `expand[]=groups` for the user's group
+   * memberships. Role grants are direct only by default, each tagged with `source`;
+   * use `role_source=all` to also include group-inherited.
    */
   retrieve(id: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<User> {
-    const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/users/${id}`, options);
+    const { zoneId, ...query } = params;
+    return this._client.get(path`/zones/${zoneId}/users/${id}`, { query, ...options });
   }
 
   /**
@@ -29,18 +32,21 @@ export class Users extends APIResource {
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
    * matching row count, `expand[]=session_count` to include per-user session counts,
    * `expand[]=grant_count` to include per-user delegated-grant counts,
-   * `expand[]=role-assignments` to include each user's structured role grants,
-   * `expand[]=credentials` to include each user's authentication credentials (each
-   * with its `provider_id`), and `expand[]=credentials.provider` to additionally
-   * inline the full identity provider on each federation credential. Filter by exact
-   * email via `filter[email]` and by exact identifier via `filter[identifier]`;
-   * search via `query[email]` / `query[subject]` / `query[]` (substring match, OR'd
-   * across repeated values). `query[]` matches against email and federation
-   * credential subject. Pass `filter[id]` (repeatable, max 100) to restrict results
-   * to a known set of users — mutually exclusive with `after`/`before` (returns 400
-   * if combined). When `filter[id]` is set, `limit` is ignored and the response
-   * contains every requested user that exists in the zone, in a single page. IDs not
-   * in the zone are silently omitted.
+   * `expand[]=role-assignments` to include each user's structured role grants
+   * (direct grants only by default, each tagged with `source`; use `role_source=all`
+   * to also include group-inherited), `expand[]=groups` to include each user's group
+   * memberships, `expand[]=credentials` to include each user's authentication
+   * credentials (each with its `provider_id`), and `expand[]=credentials.provider`
+   * to additionally inline the full identity provider on each federation credential.
+   * Filter by exact email via `filter[email]` and by exact identifier via
+   * `filter[identifier]`; restrict to members of a group via `filter[groups]`
+   * (repeatable, OR'd across values); search via `query[email]` / `query[subject]` /
+   * `query[]` (substring match, OR'd across repeated values). `query[]` matches
+   * against email and federation credential subject. Pass `filter[id]` (repeatable,
+   * max 100) to restrict results to a known set of users — mutually exclusive with
+   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
+   * ignored and the response contains every requested user that exists in the zone,
+   * in a single page. IDs not in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -119,6 +125,12 @@ export interface User {
    * is set on the listing endpoint.
    */
   grant_count?: number;
+
+  /**
+   * Groups this user belongs to within the zone. Populated only when
+   * `expand[]=groups` is set on the listing endpoint.
+   */
+  groups?: Array<User.Group>;
 
   /**
    * Issuer identifier of the identity provider
@@ -208,6 +220,26 @@ export namespace User {
   }
 
   /**
+   * A group a user belongs to within a zone.
+   */
+  export interface Group {
+    /**
+     * Unique identifier of the group
+     */
+    id: string;
+
+    /**
+     * Zone-unique slug that policy rules match on.
+     */
+    identifier: string;
+
+    /**
+     * Human-readable group name
+     */
+    name: string;
+  }
+
+  /**
    * A role granted to a user within a zone.
    */
   export interface RoleAssignment {
@@ -235,6 +267,18 @@ export namespace User {
      * (applies to the owning zone itself).
      */
     scope: RoleAssignment.Scope | null;
+
+    /**
+     * The principal that holds this grant: `user` when assigned directly to the user,
+     * or `group` when inherited through group membership.
+     */
+    source: 'user' | 'group';
+
+    /**
+     * ID of the group this grant is inherited from. Present only when `source` is
+     * `group`.
+     */
+    group_id?: string;
   }
 
   export namespace RoleAssignment {
@@ -290,9 +334,22 @@ export namespace UserListResponse {
 
 export interface UserRetrieveParams {
   /**
-   * Zone ID
+   * Path param: Zone ID
    */
   zoneId: string;
+
+  /**
+   * Query param
+   */
+  'expand[]'?: 'role-assignments' | 'groups' | Array<'role-assignments' | 'groups'>;
+
+  /**
+   * Query param: Selects which grants `expand[]=role-assignments` returns, tagging
+   * each with `source`: `user` (direct only, the default), `group` (group-inherited
+   * only), or `all` (both direct and group-inherited). Requires
+   * `expand[]=role-assignments`.
+   */
+  role_source?: 'user' | 'group' | 'all';
 }
 
 export interface UserListParams {
@@ -311,6 +368,7 @@ export interface UserListParams {
     | 'session_count'
     | 'grant_count'
     | 'role-assignments'
+    | 'groups'
     | 'credentials'
     | 'credentials.provider'
     | Array<
@@ -318,6 +376,7 @@ export interface UserListParams {
         | 'session_count'
         | 'grant_count'
         | 'role-assignments'
+        | 'groups'
         | 'credentials'
         | 'credentials.provider'
       >;
@@ -326,6 +385,11 @@ export interface UserListParams {
    * Filter by exact email address
    */
   'filter[email]'?: string | Array<string>;
+
+  /**
+   * Restrict to members of this group (by group ID). Repeatable; OR'd across values.
+   */
+  'filter[groups]'?: string | Array<string>;
 
   /**
    * Restrict results to users with this publicId. Repeatable, max 100. Mutually
@@ -357,6 +421,13 @@ export interface UserListParams {
    * Search by federated credential subject (substring match)
    */
   'query[subject]'?: string | Array<string>;
+
+  /**
+   * Selects which grants `expand[]=role-assignments` returns, tagging each with
+   * `source`: `user` (direct only, the default), `group` (group-inherited only), or
+   * `all` (both direct and group-inherited). Requires `expand[]=role-assignments`.
+   */
+  role_source?: 'user' | 'group' | 'all';
 
   /**
    * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,

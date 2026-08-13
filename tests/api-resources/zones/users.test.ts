@@ -24,7 +24,11 @@ describe('resource users', () => {
 
   // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
-    const response = await client.zones.users.retrieve('id', { zoneId: 'zoneId' });
+    const response = await client.zones.users.retrieve('id', {
+      zoneId: 'zoneId',
+      'expand[]': 'role-assignments',
+      role_source: 'user',
+    });
   });
 
   // Mock server tests are disabled
@@ -50,12 +54,14 @@ describe('resource users', () => {
           before: 'x',
           'expand[]': 'total_count',
           'filter[email]': 'dev@stainless.com',
+          'filter[groups]': 'string',
           'filter[id]': 'string',
           'filter[identifier]': 'string',
           limit: 1,
           'query[]': 'x',
           'query[email]': 'x',
           'query[subject]': 'x',
+          role_source: 'user',
           sort: '-authenticated_at,\t\r\r \tauthenticated_at,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
