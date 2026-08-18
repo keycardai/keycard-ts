@@ -327,14 +327,14 @@ export interface ApplicationListResourcesResponse {
   items: Array<DependenciesAPI.Resource>;
 
   /**
-   * Pagination information
-   */
-  page_info: ZonesAPI.PageInfoPagination;
-
-  /**
    * Cursor-based pagination metadata
    */
   pagination: ApplicationListResourcesResponse.Pagination;
+
+  /**
+   * Pagination information
+   */
+  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace ApplicationListResourcesResponse {
