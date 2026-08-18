@@ -571,18 +571,6 @@ export interface ApplicationListParams {
    * name, identifier
    */
   sort?: string;
-
-  /**
-   * Filter by traits (OR matching - returns applications with any of the specified
-   * traits)
-   */
-  traits?: Array<ApplicationTrait>;
-
-  /**
-   * Filter by traits (AND matching - returns applications with all of the specified
-   * traits)
-   */
-  'traits[all]'?: Array<ApplicationTrait>;
 }
 
 export interface ApplicationDeleteParams {

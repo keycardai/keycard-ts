@@ -119,8 +119,6 @@ describe('resource applications', () => {
           'query[name]': 'x',
           slug: 'slug',
           sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
-          traits: ['gateway'],
-          'traits[all]': ['gateway'],
         },
         { path: '/_stainless_unknown_path' },
       ),

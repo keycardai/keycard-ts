@@ -113,8 +113,6 @@ describe('resource resources', () => {
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
-          traits: ['external'],
-          'traits[all]': ['external'],
         },
         { path: '/_stainless_unknown_path' },
       ),

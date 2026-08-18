@@ -49,10 +49,10 @@ export class Resources extends APIResource {
    * Returns a paginated list of resources in the specified zone. Use cursor
    * pagination via `after`/`before`, and `expand[]=total_count` to include the
    * matching row count. Filter by exact identifier via `filter[identifier]`. Filter
-   * by trait via `traits[all]` (AND, all listed) or `traits[]` (OR, any), each
-   * repeatable. The scalar `identifier` query parameter is a backward-compatible
-   * alias for `filter[identifier]`: exact match on a single value, folded into the
-   * same exact-match identifier filter.
+   * by trait via `filter[traits]`: comma-separated values are AND'd, repeated params
+   * are OR'd. The scalar `identifier` query parameter is a backward-compatible alias
+   * for `filter[identifier]`: exact match on a single value, folded into the same
+   * exact-match identifier filter.
    */
   list(
     zoneID: string,
@@ -269,7 +269,7 @@ export interface ResourceListParams {
 
   /**
    * Filter by trait. Comma-separated values (`a,b`) are AND'd; repeated params are
-   * OR'd. Preferred over `traits[]`/`traits[all]`.
+   * OR'd.
    */
   'filter[traits]'?: string | Array<string>;
 
@@ -285,18 +285,6 @@ export interface ResourceListParams {
   limit?: number;
 
   slug?: string;
-
-  /**
-   * Filter by traits (OR matching — returns resources with any of the specified
-   * traits)
-   */
-  traits?: Array<'external' | 'proxy' | 'mcp-server'>;
-
-  /**
-   * Filter by traits (AND matching - returns resources with all of the specified
-   * traits)
-   */
-  'traits[all]'?: Array<'external' | 'proxy' | 'mcp-server'>;
 }
 
 export interface ResourceDeleteParams {
