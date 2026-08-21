@@ -222,6 +222,13 @@ export namespace Provider {
      */
     export interface Openid {
       /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId.
+       */
+      external_id_claim?: string | null;
+
+      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
        */
@@ -411,6 +418,13 @@ export namespace ProviderCreateParams {
      */
     export interface Openid {
       /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId.
+       */
+      external_id_claim?: string;
+
+      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
        */
@@ -573,6 +587,14 @@ export namespace ProviderUpdateParams {
      * OpenID Connect protocol configuration. Set to null to remove all OpenID config.
      */
     export interface Openid {
+      /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId. Set to null to
+       * revert to default.
+       */
+      external_id_claim?: string | null;
+
       /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email). Set to null

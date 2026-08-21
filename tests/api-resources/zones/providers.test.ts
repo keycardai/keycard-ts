@@ -48,6 +48,7 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
+          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
@@ -113,6 +114,7 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
+          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
