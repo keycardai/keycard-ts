@@ -33,7 +33,9 @@ export class Providers extends APIResource {
   }
 
   /**
-   * Returns a list of providers in the specified zone
+   * Returns a list of providers in the specified zone. Pass `filter[id]`
+   * (repeatable, max 100) to restrict results to a known set of provider IDs;
+   * unknown or malformed IDs are silently omitted.
    */
   list(
     zoneID: string,
@@ -634,6 +636,11 @@ export interface ProviderListParams {
   cursor?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Restrict results to providers with this ID. Repeatable, max 100.
+   */
+  'filter[id]'?: string | Array<string>;
 
   identifier?: string;
 

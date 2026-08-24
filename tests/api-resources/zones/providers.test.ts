@@ -147,6 +147,7 @@ describe('resource providers', () => {
           before: 'x',
           cursor: 'cursor',
           'expand[]': 'total_count',
+          'filter[id]': 'string',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
