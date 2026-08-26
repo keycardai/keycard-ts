@@ -232,41 +232,6 @@ Methods:
 - <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
 
-## Packages
-
-Types:
-
-- <code><a href="./src/resources/zones/packages/packages.ts">InputState</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">Package</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageDraft</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageInputBinding</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageList</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageOutputBinding</a></code>
-- <code><a href="./src/resources/zones/packages/packages.ts">PackageSource</a></code>
-
-### Versions
-
-Types:
-
-- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersion</a></code>
-- <code><a href="./src/resources/zones/packages/versions.ts">PackageVersionList</a></code>
-
-## Installs
-
-Types:
-
-- <code><a href="./src/resources/zones/installs.ts">Install</a></code>
-- <code><a href="./src/resources/zones/installs.ts">InstallList</a></code>
-- <code><a href="./src/resources/zones/installs.ts">InstallStatus</a></code>
-
-## CatalogTasks
-
-Types:
-
-- <code><a href="./src/resources/zones/catalog-tasks.ts">Task</a></code>
-- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskOperation</a></code>
-- <code><a href="./src/resources/zones/catalog-tasks.ts">TaskStatus</a></code>
-
 ## PolicySets
 
 Types:
@@ -323,7 +288,6 @@ Methods:
 - <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
-- <code title="post /organizations/{organization_id}/token">client.organizations.<a href="./src/resources/organizations/organizations.ts">exchangeToken</a>(organizationID, { ...params }) -> TokenResponse</code>
 - <code title="get /organizations/{organization_id}/identities">client.organizations.<a href="./src/resources/organizations/organizations.ts">listIdentities</a>(organizationID, { ...params }) -> OrganizationListIdentitiesResponse</code>
 - <code title="get /organizations/{organization_id}/roles">client.organizations.<a href="./src/resources/organizations/organizations.ts">listRoles</a>(organizationID, { ...params }) -> OrganizationListRolesResponse</code>
 
@@ -413,3 +377,11 @@ Methods:
 
 - <code title="get /invitations/{token}">client.invitations.<a href="./src/resources/invitations.ts">retrieve</a>(token, { ...params }) -> InvitationRetrieveResponse</code>
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
+
+# PolicyBundle
+
+Methods:
+
+- <code title="get /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">retrieve</a>({ ...params }) -> Response</code>
+- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>(body, { ...params }) -> Response</code>
+- <code title="delete /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">reset</a>({ ...params }) -> void</code>

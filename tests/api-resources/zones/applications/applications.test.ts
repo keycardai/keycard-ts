@@ -3,6 +3,7 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
+  apiKey: 'My API Key',
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
@@ -118,8 +119,6 @@ describe('resource applications', () => {
           'query[name]': 'x',
           slug: 'slug',
           sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
-          traits: ['gateway'],
-          'traits[all]': ['gateway'],
         },
         { path: '/_stainless_unknown_path' },
       ),

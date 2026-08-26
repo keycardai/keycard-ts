@@ -25,9 +25,14 @@ import {
   Invitations,
 } from './resources/invitations';
 import {
+  PolicyBundle,
+  PolicyBundleResetParams,
+  PolicyBundleRetrieveParams,
+  PolicyBundleUpdateParams,
+} from './resources/policy-bundle';
+import {
   Organization,
   OrganizationCreateParams,
-  OrganizationExchangeTokenParams,
   OrganizationListIdentitiesParams,
   OrganizationListIdentitiesResponse,
   OrganizationListParams,
@@ -273,9 +278,19 @@ export class KeycardAPI {
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { oAuth2Auth?: boolean },
+    schemes: { bearerAuth?: boolean; oAuth2Auth?: boolean },
   ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([schemes.oAuth2Auth ? await this.oAuth2Auth(opts) : null]);
+    return buildHeaders([
+      schemes.bearerAuth ? await this.bearerAuth(opts) : null,
+      schemes.oAuth2Auth ? await this.oAuth2Auth(opts) : null,
+    ]);
+  }
+
+  protected async bearerAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (this.apiKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   private oAuth2AuthState:
@@ -776,7 +791,7 @@ export class KeycardAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options, options.__security ?? { oAuth2Auth: true }),
+      await this.authHeaders(options, options.__security ?? { bearerAuth: true, oAuth2Auth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -868,11 +883,36 @@ export class KeycardAPI {
   zones: API.Zones = new API.Zones(this);
   organizations: API.Organizations = new API.Organizations(this);
   invitations: API.Invitations = new API.Invitations(this);
+  /**
+   * Per-user Policy Bundle resource. Allows clients (typically the Keycard CLI)
+   * to GET, PUT, and DELETE the effective Policy Set for the calling user
+   * on a zone. The bundle is encoded with a content-negotiated codec (currently
+   * only `application/vnd.keycard.policy-bundle.v1+tar+gzip`).
+   *
+   * ## Archive layout
+   *
+   * The bundle is a gzip-compressed tar archive with this logical layout:
+   *
+   * | Entry | Required on PUT | Notes |
+   * |-------|-----------------|-------|
+   * | `manifest.json` | **Yes** | See `PolicyBundleManifest`. The only source of the authoritative `schema.version`. |
+   * | `schema.cedarschema` | No | Convenience snapshot of the Cedar schema. **Ignored on PUT** — the server validates policies against its own attested schema for `manifest.schema.version`. **Always present on GET.** |
+   * | `policies/<public_id>.cedar` | — | One Cedar policy per file; the filename stem is the policy's public ID. |
+   *
+   * Decode rules: duplicate entries and unrecognized/nested entries are
+   * rejected (`bundle_invalid`). On PUT the manifest's `sha` fields and
+   * `policies[]` list are advisory — the server recomputes every digest from
+   * the archived bytes and derives the policy set from the `policies/` files.
+   * On GET every digest is authoritative.
+   *
+   */
+  policyBundle: API.PolicyBundle = new API.PolicyBundle(this);
 }
 
 KeycardAPI.Zones = Zones;
 KeycardAPI.Organizations = Organizations;
 KeycardAPI.Invitations = Invitations;
+KeycardAPI.PolicyBundle = PolicyBundle;
 
 export declare namespace KeycardAPI {
   export type RequestOptions = Opts.RequestOptions;
@@ -902,7 +942,6 @@ export declare namespace KeycardAPI {
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationExchangeTokenParams as OrganizationExchangeTokenParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
   };
@@ -913,5 +952,12 @@ export declare namespace KeycardAPI {
     type InvitationAcceptResponse as InvitationAcceptResponse,
     type InvitationRetrieveParams as InvitationRetrieveParams,
     type InvitationAcceptParams as InvitationAcceptParams,
+  };
+
+  export {
+    PolicyBundle as PolicyBundle,
+    type PolicyBundleRetrieveParams as PolicyBundleRetrieveParams,
+    type PolicyBundleUpdateParams as PolicyBundleUpdateParams,
+    type PolicyBundleResetParams as PolicyBundleResetParams,
   };
 }

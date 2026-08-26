@@ -3,6 +3,7 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
+  apiKey: 'My API Key',
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
@@ -23,7 +24,11 @@ describe('resource users', () => {
 
   // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
-    const response = await client.zones.users.retrieve('id', { zoneId: 'zoneId' });
+    const response = await client.zones.users.retrieve('id', {
+      zoneId: 'zoneId',
+      'expand[]': 'role-assignments',
+      role_source: 'user',
+    });
   });
 
   // Mock server tests are disabled
@@ -49,11 +54,14 @@ describe('resource users', () => {
           before: 'x',
           'expand[]': 'total_count',
           'filter[email]': 'dev@stainless.com',
+          'filter[groups]': 'string',
           'filter[id]': 'string',
+          'filter[identifier]': 'string',
           limit: 1,
           'query[]': 'x',
           'query[email]': 'x',
           'query[subject]': 'x',
+          role_source: 'user',
           sort: '-authenticated_at,\t\r\r \tauthenticated_at,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },

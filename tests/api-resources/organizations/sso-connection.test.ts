@@ -3,6 +3,7 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
+  apiKey: 'My API Key',
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
@@ -93,13 +94,18 @@ describe('resource ssoConnection', () => {
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
+          authorization_parameters: { foo: 'string' },
           code_challenge_methods_supported: ['string'],
           jwks_uri: 'https://example.com',
           registration_endpoint: 'https://example.com',
           scopes_supported: ['string'],
           token_endpoint: 'https://example.com',
         },
-        openid: { userinfo_endpoint: 'https://example.com' },
+        openid: {
+          scopes: ['string'],
+          user_identifier_claim: 'user_identifier_claim',
+          userinfo_endpoint: 'https://example.com',
+        },
       },
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });

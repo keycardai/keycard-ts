@@ -201,9 +201,7 @@ export interface SecretCreateParams {
   metadata?: unknown;
 
   /**
-   * Body param: Optional zone ID. This field is provided for API compatibility but
-   * is ignored during processing. The zone ID is derived from the path parameter
-   * (/zones/{zone_id}/secrets) and takes precedence.
+   * Body param: A globally unique opaque identifier
    */
   zone_id?: string;
 

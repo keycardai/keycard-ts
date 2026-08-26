@@ -212,12 +212,22 @@ export interface PolicySetVersion {
   version: number;
 
   /**
-   * Whether this policy set version is currently bound with mode='active'
+   * Whether this policy set version is currently bound with mode='active'. Always
+   * populated in responses; clients must treat absence as unknown rather than
+   * inferring 'not bound'.
    */
   active?: boolean;
 
+  /**
+   * Timestamp when the version was archived. Non-null only for archived versions;
+   * null or absent means not archived.
+   */
   archived_at?: string | null;
 
+  /**
+   * Identifier of the actor that archived the version. Null or absent means not
+   * archived.
+   */
   archived_by?: string | null;
 
   /**

@@ -217,7 +217,7 @@ export namespace Application {
  * Traits ascribe behaviors and characteristics to an application, which may
  * activate trait-specific user experiences, workflows, or other system behaviors
  */
-export type ApplicationTrait = 'gateway' | 'mcp-provider';
+export type ApplicationTrait = 'gateway' | 'mcp-provider' | 'unified-gateway' | 'mcp-server';
 
 /**
  * Entity metadata
@@ -327,14 +327,14 @@ export interface ApplicationListResourcesResponse {
   items: Array<DependenciesAPI.Resource>;
 
   /**
-   * Pagination information
-   */
-  page_info: ZonesAPI.PageInfoPagination;
-
-  /**
    * Cursor-based pagination metadata
    */
   pagination: ApplicationListResourcesResponse.Pagination;
+
+  /**
+   * Pagination information
+   */
+  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace ApplicationListResourcesResponse {
@@ -571,18 +571,6 @@ export interface ApplicationListParams {
    * name, identifier
    */
   sort?: string;
-
-  /**
-   * Filter by traits (OR matching - returns applications with any of the specified
-   * traits)
-   */
-  traits?: Array<ApplicationTrait>;
-
-  /**
-   * Filter by traits (AND matching - returns applications with all of the specified
-   * traits)
-   */
-  'traits[all]'?: Array<ApplicationTrait>;
 }
 
 export interface ApplicationDeleteParams {

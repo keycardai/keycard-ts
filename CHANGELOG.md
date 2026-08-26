@@ -1,5 +1,52 @@
 # Changelog
 
+## 0.21.0 (2026-08-25)
+
+Full Changelog: [v0.20.0...v0.21.0](https://github.com/keycardai/keycard-ts/compare/v0.20.0...v0.21.0)
+
+### ⚠ BREAKING CHANGES
+
+* retire POST /organizations/{id}/token
+
+### Features
+
+* **ACC-709:** application assignees + expose role assignments ([30fc355](https://github.com/keycardai/keycard-ts/commit/30fc35560dc4b1edf728424a760d5869f34fba07))
+* add external_id_claim to provider openid protocol ([3082be6](https://github.com/keycardai/keycard-ts/commit/3082be678f515cf4612e79ee1bd8ca44bbfe64da))
+* **applications:** allow unified-gateway and mcp-server traits (ECO-128) ([05bcd77](https://github.com/keycardai/keycard-ts/commit/05bcd7757f6f483da43afa852971a6ab0d24baee))
+* **CX-782:** paginate + search application dependencies ([b317cce](https://github.com/keycardai/keycard-ts/commit/b317ccec5a90b2fbe66d01e10b813a9c2f84b7db))
+* **CX-860:** paginate application provided-resources endpoint ([c271a43](https://github.com/keycardai/keycard-ts/commit/c271a43a6b9831c1fe836958c763ad8f7b394b71))
+* **CX-862:** remove legacy traits[]/traits[all] aliases ([fb69e48](https://github.com/keycardai/keycard-ts/commit/fb69e48111f323ad81669c32b4cf8a55811807bb))
+* filter users by identifier in management list ([00974fb](https://github.com/keycardai/keycard-ts/commit/00974fb0dfa6ca902151cd6feab29ea2c11e977b))
+* **ID-365:** support additional SSO provider configuration options ([bacce21](https://github.com/keycardai/keycard-ts/commit/bacce216e01d54db219d64f47dd056a7a307c2b9))
+* **ID-456:** groups API create + get ([89bd2fa](https://github.com/keycardai/keycard-ts/commit/89bd2fa44f63aadff253428ffa45f674b1c977c9))
+* **ID-478:** zones.external_sync_enabled column and update API ([bb00c76](https://github.com/keycardai/keycard-ts/commit/bb00c76139a1f2633238df48806d2bf18b6ad579))
+* **ID-480:** external_sync_tokens table and management APIs ([cd7524f](https://github.com/keycardai/keycard-ts/commit/cd7524fbd10699c19f26d960d401262ac8fe706f))
+* **providers:** add filter[id] to list endpoint (ID-547) ([02d90ee](https://github.com/keycardai/keycard-ts/commit/02d90ee653c4661cfbb4c14516ed9941814259d2))
+* **providers:** store brand icon_url in provider metadata ([84f7f48](https://github.com/keycardai/keycard-ts/commit/84f7f4813b5b9e8364b9b89b68d86522d5b25c86))
+* **resources:** add filter[owner_type] to the resource list (ECO-225) ([b7f3a6a](https://github.com/keycardai/keycard-ts/commit/b7f3a6aee66e339c8b4951444c70433c67e4f958))
+* **resources:** add search, sort, and filter[id] to the paginated resource list ([5b817aa](https://github.com/keycardai/keycard-ts/commit/5b817aa5a4924b72a31063847853d1d44d400f58))
+* **resources:** filter the resource list by trait ([5147e5d](https://github.com/keycardai/keycard-ts/commit/5147e5d6bf1729245bd9a30f89c6aadb0ab6ccf4))
+* retire POST /organizations/{id}/token ([5b26bbb](https://github.com/keycardai/keycard-ts/commit/5b26bbb7501eab8e048dfb1bd88c84142e0e0730))
+* **sdk:** generate a client for the existing /policy/bundle endpoint ([15fd58e](https://github.com/keycardai/keycard-ts/commit/15fd58ee7005c3fb809005d33780e9959854add5))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([3bbfc2b](https://github.com/keycardai/keycard-ts/commit/3bbfc2beea01977b0f30a24153339100940aae1c))
+
+
+### Bug Fixes
+
+* **ACC-613:** preserve source order of policies in draft/convert cedar_json ([57c0208](https://github.com/keycardai/keycard-ts/commit/57c020869e372873dbff4fb2b43c59964db066a6))
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([5eff440](https://github.com/keycardai/keycard-ts/commit/5eff440eaa64a5155b7d322ccd882bf71611dde7))
+* **ci:** resolve Stainless error diagnostics and enforce fail_on: error ([5036b87](https://github.com/keycardai/keycard-ts/commit/5036b8780bad38489fccca797b1280b4d6aec3ca))
+* **deps:** close critical Dependabot alerts ([9948d6a](https://github.com/keycardai/keycard-ts/commit/9948d6a89a8f7bbf929181f4801c63b44e376042))
+* exact-match identifier filter on resources management list ([244635e](https://github.com/keycardai/keycard-ts/commit/244635e70cd3332bb9455c56c141602375920368))
+* **ID-448:** keyset cursor drops same-millisecond rows (precision mismatch) ([ede7863](https://github.com/keycardai/keycard-ts/commit/ede7863f651e23a6e9ec41207201f753621fa3a2))
+* **sdk:** generate /policy/bundle body as raw binary, not multipart ([e97e51b](https://github.com/keycardai/keycard-ts/commit/e97e51b3074828891ebdb55758bacc634bae6f75))
+
+
+### Chores
+
+* de-dup and align types across API specs ([84f4b53](https://github.com/keycardai/keycard-ts/commit/84f4b531e1cdc1801b52e72cafc191b75bdc1bff))
+* Fixes found during Terraform work ([5eac03f](https://github.com/keycardai/keycard-ts/commit/5eac03f870d7f4cb79a19811190d796b53404e8d))
+
 ## 0.20.0 (2026-06-30)
 
 Full Changelog: [v0.19.0...v0.20.0](https://github.com/keycardai/keycard-ts/compare/v0.19.0...v0.20.0)

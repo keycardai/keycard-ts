@@ -33,7 +33,9 @@ export class Providers extends APIResource {
   }
 
   /**
-   * Returns a list of providers in the specified zone
+   * Returns a list of providers in the specified zone. Pass `filter[id]`
+   * (repeatable, max 100) to restrict results to a known set of provider IDs;
+   * unknown or malformed IDs are silently omitted.
    */
   list(
     zoneID: string,
@@ -123,7 +125,7 @@ export interface Provider {
   /**
    * Provider metadata
    */
-  metadata?: unknown | null;
+  metadata?: Provider.Metadata | null;
 
   /**
    * Protocol-specific configuration
@@ -134,6 +136,16 @@ export interface Provider {
 }
 
 export namespace Provider {
+  /**
+   * Provider metadata
+   */
+  export interface Metadata {
+    /**
+     * Icon URL
+     */
+    icon_url?: string;
+  }
+
   /**
    * Protocol-specific configuration
    */
@@ -211,6 +223,13 @@ export namespace Provider {
      * OpenID Connect protocol configuration
      */
     export interface Openid {
+      /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId.
+       */
+      external_id_claim?: string | null;
+
       /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
@@ -303,7 +322,7 @@ export interface ProviderCreateParams {
   /**
    * Provider metadata
    */
-  metadata?: unknown;
+  metadata?: ProviderCreateParams.Metadata;
 
   /**
    * Protocol-specific configuration for provider creation
@@ -312,6 +331,16 @@ export interface ProviderCreateParams {
 }
 
 export namespace ProviderCreateParams {
+  /**
+   * Provider metadata
+   */
+  export interface Metadata {
+    /**
+     * Icon URL
+     */
+    icon_url?: string;
+  }
+
   /**
    * Protocol-specific configuration for provider creation
    */
@@ -391,6 +420,13 @@ export namespace ProviderCreateParams {
      */
     export interface Openid {
       /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId.
+       */
+      external_id_claim?: string;
+
+      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
        */
@@ -449,7 +485,7 @@ export interface ProviderUpdateParams {
   /**
    * Body param: Provider metadata. Set to null to remove all metadata.
    */
-  metadata?: unknown | null;
+  metadata?: ProviderUpdateParams.Metadata | null;
 
   /**
    * Body param: Human-readable name. Must not contain HTML tags (e.g. `<script>`,
@@ -465,6 +501,16 @@ export interface ProviderUpdateParams {
 }
 
 export namespace ProviderUpdateParams {
+  /**
+   * Provider metadata. Set to null to remove all metadata.
+   */
+  export interface Metadata {
+    /**
+     * Icon URL (set to null to unset)
+     */
+    icon_url?: string | null;
+  }
+
   /**
    * Protocol-specific configuration. Set to null to remove all protocols.
    */
@@ -544,6 +590,14 @@ export namespace ProviderUpdateParams {
      */
     export interface Openid {
       /**
+       * Name of the OIDC claim carrying the stable external id used to correlate logins
+       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
+       * Entra, whose pairwise "sub" differs from the SCIM externalId. Set to null to
+       * revert to default.
+       */
+      external_id_claim?: string | null;
+
+      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email). Set to null
        * to clear.
@@ -582,6 +636,11 @@ export interface ProviderListParams {
   cursor?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Restrict results to providers with this ID. Repeatable, max 100.
+   */
+  'filter[id]'?: string | Array<string>;
 
   identifier?: string;
 

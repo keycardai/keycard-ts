@@ -3,6 +3,7 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
+  apiKey: 'My API Key',
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
@@ -29,7 +30,7 @@ describe('resource providers', () => {
       client_id: 'client_id',
       client_secret: 'client_secret',
       description: 'description',
-      metadata: {},
+      metadata: { icon_url: 'https://example.com' },
       protocols: {
         oauth2: {
           authorization_endpoint: 'https://example.com',
@@ -47,6 +48,7 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
+          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
@@ -93,7 +95,7 @@ describe('resource providers', () => {
       client_secret: 'client_secret',
       description: 'description',
       identifier: 'x',
-      metadata: {},
+      metadata: { icon_url: 'https://example.com' },
       name: 'x',
       protocols: {
         oauth2: {
@@ -112,6 +114,7 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
+          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
@@ -144,6 +147,7 @@ describe('resource providers', () => {
           before: 'x',
           cursor: 'cursor',
           'expand[]': 'total_count',
+          'filter[id]': 'string',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',

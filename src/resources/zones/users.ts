@@ -1,43 +1,52 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as ProvidersAPI from './providers';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 export class Users extends APIResource {
   /**
-   * Returns details of a specific user by user ID
+   * Returns details of a specific user by user ID. Use `expand[]=role-assignments`
+   * for the user's structured role grants and `expand[]=groups` for the user's group
+   * memberships. Role grants are direct only by default, each tagged with `source`;
+   * use `role_source=all` to also include group-inherited.
    */
   retrieve(id: string, params: UserRetrieveParams, options?: RequestOptions): APIPromise<User> {
-    const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/users/${id}`, options);
+    const { zoneId, ...query } = params;
+    return this._client.get(path`/zones/${zoneId}/users/${id}`, { query, ...options });
   }
 
   /**
    * Returns a list of users in the specified zone.
    *
-   * **Rollout note:** the paginated/searchable/sortable behavior described below is
-   * gated behind the `user-pagination` feature flag and is currently disabled for
-   * most zones. While the flag is off, the response returns every user in the zone
-   * (capped at 100) in `items` and a fixed pagination envelope where `after_cursor`
-   * and `before_cursor` are `null` and `total_count` is `0`. The query parameters
-   * below are accepted but ignored. The flag is rolled out per-zone in Datadog and
-   * will become the default once Console adopts the paginated contract.
+   * Note: cursor pagination, search, and sort are not yet enabled for all zones.
+   * Where they are not enabled, the response returns all users in the zone (capped
+   * at 100) in `items`, with `after_cursor` and `before_cursor` set to `null` and
+   * `total_count` of `0`; `filter[email]` and `filter[identifier]` are still
+   * applied, while the pagination, search, and sort parameters below are accepted
+   * but ignored.
    *
    * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
    * matching row count, `expand[]=session_count` to include per-user session counts,
-   * `expand[]=grant_count` to include per-user delegated-grant counts, and
-   * `expand[]=role-assignments` to include each user's structured role grants.
-   * Filter by exact email via `filter[email]`; search via `query[email]` /
-   * `query[subject]` / `query[]` (substring match, OR'd across repeated values).
-   * `query[]` matches against email and federation credential subject. Pass
-   * `filter[id]` (repeatable, max 100) to restrict results to a known set of users —
-   * mutually exclusive with `after`/`before` (returns 400 if combined). When
-   * `filter[id]` is set, `limit` is ignored and the response contains every
-   * requested user that exists in the zone, in a single page. IDs not in the zone
-   * are silently omitted.
+   * `expand[]=grant_count` to include per-user delegated-grant counts,
+   * `expand[]=role-assignments` to include each user's structured role grants
+   * (direct grants only by default, each tagged with `source`; use `role_source=all`
+   * to also include group-inherited), `expand[]=groups` to include each user's group
+   * memberships, `expand[]=credentials` to include each user's authentication
+   * credentials (each with its `provider_id`), and `expand[]=credentials.provider`
+   * to additionally inline the full identity provider on each federation credential.
+   * Filter by exact email via `filter[email]` and by exact identifier via
+   * `filter[identifier]`; restrict to members of a group via `filter[groups]`
+   * (repeatable, OR'd across values); search via `query[email]` / `query[subject]` /
+   * `query[]` (substring match, OR'd across repeated values). `query[]` matches
+   * against email and federation credential subject. Pass `filter[id]` (repeatable,
+   * max 100) to restrict results to a known set of users — mutually exclusive with
+   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
+   * ignored and the response contains every requested user that exists in the zone,
+   * in a single page. IDs not in the zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -105,10 +114,23 @@ export interface User {
   authenticated_at?: string;
 
   /**
+   * Authentication credentials for this user, each carrying its identity provider
+   * for federation credentials. Populated only when `expand[]=credentials` is set on
+   * the listing endpoint.
+   */
+  credentials?: Array<User.IamUserCredentialFederation | User.IamUserCredentialPassword>;
+
+  /**
    * Delegated-grant count for this user. Populated only when `expand[]=grant_count`
    * is set on the listing endpoint.
    */
   grant_count?: number;
+
+  /**
+   * Groups this user belongs to within the zone. Populated only when
+   * `expand[]=groups` is set on the listing endpoint.
+   */
+  groups?: Array<User.Group>;
 
   /**
    * Issuer identifier of the identity provider
@@ -141,6 +163,83 @@ export interface User {
 
 export namespace User {
   /**
+   * Federation credential: the user authenticates through an identity provider.
+   */
+  export interface IamUserCredentialFederation {
+    /**
+     * Entity creation timestamp
+     */
+    created_at: string;
+
+    /**
+     * ID of the identity provider backing this credential. `null` when the source
+     * provider has been deleted.
+     */
+    provider_id: string | null;
+
+    type: 'federation';
+
+    /**
+     * Entity update timestamp
+     */
+    updated_at: string;
+
+    /**
+     * Issuer identifier of the identity provider.
+     */
+    issuer?: string;
+
+    /**
+     * A Provider is a system that supplies access to Resources and allows actors
+     * (Users or Applications) to authenticate.
+     */
+    provider?: ProvidersAPI.Provider;
+
+    /**
+     * Subject identifier from the identity provider.
+     */
+    subject?: string;
+  }
+
+  /**
+   * Password credential: the user authenticates with email and password. The email
+   * lives on the user.
+   */
+  export interface IamUserCredentialPassword {
+    /**
+     * Entity creation timestamp
+     */
+    created_at: string;
+
+    type: 'password';
+
+    /**
+     * Entity update timestamp
+     */
+    updated_at: string;
+  }
+
+  /**
+   * A group a user belongs to within a zone.
+   */
+  export interface Group {
+    /**
+     * Unique identifier of the group
+     */
+    id: string;
+
+    /**
+     * Zone-unique slug that policy rules match on.
+     */
+    identifier: string;
+
+    /**
+     * Human-readable group name
+     */
+    name: string;
+  }
+
+  /**
    * A role granted to a user within a zone.
    */
   export interface RoleAssignment {
@@ -150,16 +249,36 @@ export namespace User {
     role_id: string;
 
     /**
-     * Opaque role identifier. Treated as an opaque identifier by the API and unique
-     * within a zone.
+     * Role identifier: a lowercase slug (letters and digits separated by single
+     * hyphens or underscores), unique per owner type within a zone. Role identifiers
+     * surface in policy evaluation, so the slug restriction keeps them unambiguous in
+     * policy text.
      */
     role_identifier: string;
+
+    /**
+     * Owner type of the granted role. Disambiguates roles that share an identifier
+     * across owner types.
+     */
+    role_owner_type: 'platform' | 'customer';
 
     /**
      * The resource this grant is scoped to, or null when the grant is unscoped
      * (applies to the owning zone itself).
      */
     scope: RoleAssignment.Scope | null;
+
+    /**
+     * The principal that holds this grant: `user` when assigned directly to the user,
+     * or `group` when inherited through group membership.
+     */
+    source: 'user' | 'group';
+
+    /**
+     * ID of the group this grant is inherited from. Present only when `source` is
+     * `group`.
+     */
+    group_id?: string;
   }
 
   export namespace RoleAssignment {
@@ -215,9 +334,22 @@ export namespace UserListResponse {
 
 export interface UserRetrieveParams {
   /**
-   * Zone ID
+   * Path param: Zone ID
    */
   zoneId: string;
+
+  /**
+   * Query param
+   */
+  'expand[]'?: 'role-assignments' | 'groups' | Array<'role-assignments' | 'groups'>;
+
+  /**
+   * Query param: Selects which grants `expand[]=role-assignments` returns, tagging
+   * each with `source`: `user` (direct only, the default), `group` (group-inherited
+   * only), or `all` (both direct and group-inherited). Requires
+   * `expand[]=role-assignments`.
+   */
+  role_source?: 'user' | 'group' | 'all';
 }
 
 export interface UserListParams {
@@ -236,7 +368,18 @@ export interface UserListParams {
     | 'session_count'
     | 'grant_count'
     | 'role-assignments'
-    | Array<'total_count' | 'session_count' | 'grant_count' | 'role-assignments'>;
+    | 'groups'
+    | 'credentials'
+    | 'credentials.provider'
+    | Array<
+        | 'total_count'
+        | 'session_count'
+        | 'grant_count'
+        | 'role-assignments'
+        | 'groups'
+        | 'credentials'
+        | 'credentials.provider'
+      >;
 
   /**
    * Filter by exact email address
@@ -244,10 +387,20 @@ export interface UserListParams {
   'filter[email]'?: string | Array<string>;
 
   /**
+   * Restrict to members of this group (by group ID). Repeatable; OR'd across values.
+   */
+  'filter[groups]'?: string | Array<string>;
+
+  /**
    * Restrict results to users with this publicId. Repeatable, max 100. Mutually
    * exclusive with after/before.
    */
   'filter[id]'?: string | Array<string>;
+
+  /**
+   * Filter by exact user identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
 
   /**
    * Maximum number of items to return
@@ -268,6 +421,13 @@ export interface UserListParams {
    * Search by federated credential subject (substring match)
    */
   'query[subject]'?: string | Array<string>;
+
+  /**
+   * Selects which grants `expand[]=role-assignments` returns, tagging each with
+   * `source`: `user` (direct only, the default), `group` (group-inherited only), or
+   * `all` (both direct and group-inherited). Requires `expand[]=role-assignments`.
+   */
+  role_source?: 'user' | 'group' | 'all';
 
   /**
    * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,

@@ -46,7 +46,13 @@ export class Resources extends APIResource {
   }
 
   /**
-   * Returns a list of resources in the specified zone
+   * Returns a paginated list of resources in the specified zone. Use cursor
+   * pagination via `after`/`before`, and `expand[]=total_count` to include the
+   * matching row count. Filter by exact identifier via `filter[identifier]`. Filter
+   * by trait via `filter[traits]`: comma-separated values are AND'd, repeated params
+   * are OR'd. The scalar `identifier` query parameter is a backward-compatible alias
+   * for `filter[identifier]`: exact match on a single value, folded into the same
+   * exact-match identifier filter.
    */
   list(
     zoneID: string,
@@ -252,7 +258,24 @@ export interface ResourceListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
-   * Filter resources by identifier
+   * Filter by exact resource identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
+
+  /**
+   * Filter by owner type: `platform` (Keycard-managed) or `customer` (org-created).
+   */
+  'filter[owner_type]'?: 'platform' | 'customer';
+
+  /**
+   * Filter by trait. Comma-separated values (`a,b`) are AND'd; repeated params are
+   * OR'd.
+   */
+  'filter[traits]'?: string | Array<string>;
+
+  /**
+   * Backward-compatible alias for `filter[identifier]`: exact match on a single
+   * resource identifier.
    */
   identifier?: string;
 

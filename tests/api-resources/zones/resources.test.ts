@@ -3,6 +3,7 @@
 import KeycardAPI from '@keycardai/api';
 
 const client = new KeycardAPI({
+  apiKey: 'My API Key',
   clientID: 'My Client ID',
   clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
@@ -106,6 +107,9 @@ describe('resource resources', () => {
           before: 'x',
           credentialProviderId: 'credentialProviderId',
           'expand[]': 'total_count',
+          'filter[identifier]': 'string',
+          'filter[owner_type]': 'platform',
+          'filter[traits]': 'string',
           identifier: 'identifier',
           limit: 1,
           slug: 'slug',
