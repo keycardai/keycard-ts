@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.0 (2026-08-26)
+
+Full Changelog: [v0.21.0...v0.22.0](https://github.com/keycardai/keycard-ts/compare/v0.21.0...v0.22.0)
+
+### Features
+
+* **sdk:** expose zone roles, groups, and role assignments in Stainless config ([22519f6](https://github.com/keycardai/keycard-ts/commit/22519f617291fdb5028f24efcf66b5ca914ba532))
+
 ## 0.21.0 (2026-08-25)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/keycardai/keycard-ts/compare/v0.20.0...v0.21.0)
