@@ -130,6 +130,27 @@ export class Organizations extends APIResource {
   }
 
   /**
+   * Deletes the organization and all zones.
+   */
+  delete(
+    organizationID: string,
+    params: OrganizationDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { 'X-Client-Request-ID': xClientRequestID } = params ?? {};
+    return this._client.delete(path`/organizations/${organizationID}`, {
+      ...options,
+      headers: buildHeaders([
+        {
+          Accept: '*/*',
+          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
    * List unified view of users and invitations in an organization
    */
   listIdentities(
@@ -508,6 +529,14 @@ export interface OrganizationListParams {
   'X-Client-Request-ID'?: string;
 }
 
+export interface OrganizationDeleteParams {
+  /**
+   * Unique request identifier specified by the originating caller and passed along
+   * by proxies.
+   */
+  'X-Client-Request-ID'?: string;
+}
+
 export interface OrganizationListIdentitiesParams {
   /**
    * Query param: Cursor for forward pagination
@@ -590,6 +619,7 @@ export declare namespace Organizations {
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
+    type OrganizationDeleteParams as OrganizationDeleteParams,
     type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
     type OrganizationListRolesParams as OrganizationListRolesParams,
   };
