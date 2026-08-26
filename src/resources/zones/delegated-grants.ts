@@ -2,8 +2,8 @@
 
 import { APIResource } from '../../core/resource';
 import * as ProvidersAPI from './providers';
-import * as UsersAPI from './users';
 import * as DependenciesAPI from './applications/dependencies';
+import * as UsersAPI from './users/users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
