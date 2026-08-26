@@ -55,6 +55,21 @@ export class Providers extends APIResource {
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
   }
+
+  /**
+   * Runs on-demand OIDC connection checks (issuer reachability, metadata retrieval,
+   * endpoint consistency, authorization endpoint reachability, and a demonstration
+   * client_credentials exchange) against the provider and returns a per-check
+   * result. Results are not persisted.
+   */
+  validate(
+    id: string,
+    params: ProviderValidateParams,
+    options?: RequestOptions,
+  ): APIPromise<ValidationResult> {
+    const { zoneId } = params;
+    return this._client.post(path`/zones/${zoneId}/providers/${id}/validate`, options);
+  }
 }
 
 /**
@@ -250,6 +265,66 @@ export namespace Provider {
 
       userinfo_endpoint?: string | null;
     }
+  }
+}
+
+/**
+ * Result of running the provider OIDC connection checks on demand. Not persisted.
+ */
+export interface ValidationResult {
+  /**
+   * Per-check results, in execution order
+   */
+  checks: Array<ValidationResult.Check>;
+
+  /**
+   * Provider that was validated
+   */
+  provider_id: string;
+
+  /**
+   * Overall outcome. `fail` when any individual check failed; skipped checks do not
+   * fail the run.
+   */
+  status: 'pass' | 'fail';
+
+  /**
+   * When the validation run completed
+   */
+  validated_at: string;
+}
+
+export namespace ValidationResult {
+  /**
+   * Result of a single provider validation check
+   */
+  export interface Check {
+    /**
+     * Identifier of an individual provider validation check
+     */
+    check:
+      | 'issuer_reachability'
+      | 'metadata_retrieval'
+      | 'endpoint_consistency'
+      | 'authorization_endpoint_reachability'
+      | 'credential_exchange';
+
+    /**
+     * Outcome of a single check. `pass`/`fail` mean the check ran.
+     * `skipped_with_reason` means it could not run because a prerequisite is missing
+     * on our side (e.g. no credential stored). `not_applicable` means the check does
+     * not apply to this provider class (e.g. a login-flow-only provider that does not
+     * advertise the `client_credentials` grant) — render as a neutral state, distinct
+     * from a failure. Neither `skipped_with_reason` nor `not_applicable` fails the
+     * overall run.
+     */
+    status: 'pass' | 'fail' | 'skipped_with_reason' | 'not_applicable';
+
+    /**
+     * Human-readable explanation, present on `fail`, `skipped_with_reason`, and
+     * `not_applicable`.
+     */
+    detail?: string;
   }
 }
 
@@ -658,14 +733,20 @@ export interface ProviderDeleteParams {
   zoneId: string;
 }
 
+export interface ProviderValidateParams {
+  zoneId: string;
+}
+
 export declare namespace Providers {
   export {
     type Provider as Provider,
+    type ValidationResult as ValidationResult,
     type ProviderListResponse as ProviderListResponse,
     type ProviderCreateParams as ProviderCreateParams,
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
     type ProviderDeleteParams as ProviderDeleteParams,
+    type ProviderValidateParams as ProviderValidateParams,
   };
 }

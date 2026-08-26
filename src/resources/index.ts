@@ -20,6 +20,7 @@ export {
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
+  type OrganizationDeleteParams,
   type OrganizationListIdentitiesParams,
   type OrganizationListRolesParams,
 } from './organizations/organizations';
