@@ -1,0 +1,394 @@
+# Changelog
+
+## 0.21.0 (2026-08-25)
+
+Full Changelog: [v0.20.0...v0.21.0](https://github.com/keycardai/keycard-ts/compare/v0.20.0...v0.21.0)
+
+### ⚠ BREAKING CHANGES
+
+* retire POST /organizations/{id}/token
+
+### Features
+
+* **ACC-709:** application assignees + expose role assignments ([30fc355](https://github.com/keycardai/keycard-ts/commit/30fc35560dc4b1edf728424a760d5869f34fba07))
+* add external_id_claim to provider openid protocol ([3082be6](https://github.com/keycardai/keycard-ts/commit/3082be678f515cf4612e79ee1bd8ca44bbfe64da))
+* **applications:** allow unified-gateway and mcp-server traits (ECO-128) ([05bcd77](https://github.com/keycardai/keycard-ts/commit/05bcd7757f6f483da43afa852971a6ab0d24baee))
+* **CX-782:** paginate + search application dependencies ([b317cce](https://github.com/keycardai/keycard-ts/commit/b317ccec5a90b2fbe66d01e10b813a9c2f84b7db))
+* **CX-860:** paginate application provided-resources endpoint ([c271a43](https://github.com/keycardai/keycard-ts/commit/c271a43a6b9831c1fe836958c763ad8f7b394b71))
+* **CX-862:** remove legacy traits[]/traits[all] aliases ([fb69e48](https://github.com/keycardai/keycard-ts/commit/fb69e48111f323ad81669c32b4cf8a55811807bb))
+* filter users by identifier in management list ([00974fb](https://github.com/keycardai/keycard-ts/commit/00974fb0dfa6ca902151cd6feab29ea2c11e977b))
+* **ID-365:** support additional SSO provider configuration options ([bacce21](https://github.com/keycardai/keycard-ts/commit/bacce216e01d54db219d64f47dd056a7a307c2b9))
+* **ID-456:** groups API create + get ([89bd2fa](https://github.com/keycardai/keycard-ts/commit/89bd2fa44f63aadff253428ffa45f674b1c977c9))
+* **ID-478:** zones.external_sync_enabled column and update API ([bb00c76](https://github.com/keycardai/keycard-ts/commit/bb00c76139a1f2633238df48806d2bf18b6ad579))
+* **ID-480:** external_sync_tokens table and management APIs ([cd7524f](https://github.com/keycardai/keycard-ts/commit/cd7524fbd10699c19f26d960d401262ac8fe706f))
+* **providers:** add filter[id] to list endpoint (ID-547) ([02d90ee](https://github.com/keycardai/keycard-ts/commit/02d90ee653c4661cfbb4c14516ed9941814259d2))
+* **providers:** store brand icon_url in provider metadata ([84f7f48](https://github.com/keycardai/keycard-ts/commit/84f7f4813b5b9e8364b9b89b68d86522d5b25c86))
+* **resources:** add filter[owner_type] to the resource list (ECO-225) ([b7f3a6a](https://github.com/keycardai/keycard-ts/commit/b7f3a6aee66e339c8b4951444c70433c67e4f958))
+* **resources:** add search, sort, and filter[id] to the paginated resource list ([5b817aa](https://github.com/keycardai/keycard-ts/commit/5b817aa5a4924b72a31063847853d1d44d400f58))
+* **resources:** filter the resource list by trait ([5147e5d](https://github.com/keycardai/keycard-ts/commit/5147e5d6bf1729245bd9a30f89c6aadb0ab6ccf4))
+* retire POST /organizations/{id}/token ([5b26bbb](https://github.com/keycardai/keycard-ts/commit/5b26bbb7501eab8e048dfb1bd88c84142e0e0730))
+* **sdk:** generate a client for the existing /policy/bundle endpoint ([15fd58e](https://github.com/keycardai/keycard-ts/commit/15fd58ee7005c3fb809005d33780e9959854add5))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([3bbfc2b](https://github.com/keycardai/keycard-ts/commit/3bbfc2beea01977b0f30a24153339100940aae1c))
+
+
+### Bug Fixes
+
+* **ACC-613:** preserve source order of policies in draft/convert cedar_json ([57c0208](https://github.com/keycardai/keycard-ts/commit/57c020869e372873dbff4fb2b43c59964db066a6))
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([5eff440](https://github.com/keycardai/keycard-ts/commit/5eff440eaa64a5155b7d322ccd882bf71611dde7))
+* **ci:** resolve Stainless error diagnostics and enforce fail_on: error ([5036b87](https://github.com/keycardai/keycard-ts/commit/5036b8780bad38489fccca797b1280b4d6aec3ca))
+* **deps:** close critical Dependabot alerts ([9948d6a](https://github.com/keycardai/keycard-ts/commit/9948d6a89a8f7bbf929181f4801c63b44e376042))
+* exact-match identifier filter on resources management list ([244635e](https://github.com/keycardai/keycard-ts/commit/244635e70cd3332bb9455c56c141602375920368))
+* **ID-448:** keyset cursor drops same-millisecond rows (precision mismatch) ([ede7863](https://github.com/keycardai/keycard-ts/commit/ede7863f651e23a6e9ec41207201f753621fa3a2))
+* **sdk:** generate /policy/bundle body as raw binary, not multipart ([e97e51b](https://github.com/keycardai/keycard-ts/commit/e97e51b3074828891ebdb55758bacc634bae6f75))
+
+
+### Chores
+
+* de-dup and align types across API specs ([84f4b53](https://github.com/keycardai/keycard-ts/commit/84f4b531e1cdc1801b52e72cafc191b75bdc1bff))
+* Fixes found during Terraform work ([5eac03f](https://github.com/keycardai/keycard-ts/commit/5eac03f870d7f4cb79a19811190d796b53404e8d))
+
+## 0.20.0 (2026-06-30)
+
+Full Changelog: [v0.19.0...v0.20.0](https://github.com/keycardai/keycard-ts/compare/v0.19.0...v0.20.0)
+
+### Features
+
+* **ID-328:** add single_logout_enabled provider config ([a2b9f7b](https://github.com/keycardai/keycard-ts/commit/a2b9f7b1988ff303be0d776f24ead6bef79ed026))
+
+
+### Bug Fixes
+
+* align create/update schema validations ([ba7c767](https://github.com/keycardai/keycard-ts/commit/ba7c7672b447d16f9ed0d4744553747f24badf20))
+
+## 0.19.0 (2026-06-16)
+
+Full Changelog: [v0.18.0...v0.19.0](https://github.com/keycardai/keycard-ts/compare/v0.18.0...v0.19.0)
+
+### Features
+
+* **ACC-513:** reduced scope implementation ([4aeaefb](https://github.com/keycardai/keycard-ts/commit/4aeaefbe7b0da47e8dbf3c9cd4cd3f74b975859d))
+* **catalog:** add published flag to gate package visibility ([e216dfb](https://github.com/keycardai/keycard-ts/commit/e216dfb7c3c32c76f0c85aa85757ad189a174ead))
+* **ID-185:** Disable Zone Users ([d6d0a2a](https://github.com/keycardai/keycard-ts/commit/d6d0a2a58f75f6baef4f6bbae6207c152bd1a4b1))
+
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([e312607](https://github.com/keycardai/keycard-ts/commit/e312607ad3cc70b754224fd85eb054ee60ba9762))
+* Hide non-GA Catalog endpoints from docs and SDKs ([979cc7e](https://github.com/keycardai/keycard-ts/commit/979cc7e790f45f483b9d7c3c840353f6bb2cc7f9))
+* mark package get x-internal ([338ad4e](https://github.com/keycardai/keycard-ts/commit/338ad4e092b5b9d0855a190ae25c557e1bb5872c))
+
+## 0.18.0 (2026-06-09)
+
+Full Changelog: [v0.17.0...v0.18.0](https://github.com/keycardai/keycard-ts/compare/v0.17.0...v0.18.0)
+
+### Features
+
+* **ACC-441:** add roles and role assignments to the management api ([0cc5751](https://github.com/keycardai/keycard-ts/commit/0cc57517bc9066a3de9682706139661e13f1fd2f))
+* **iam:** ACC-441 add management api role and assignment routes ([a296ff1](https://github.com/keycardai/keycard-ts/commit/a296ff1247731970c5ae268427f75e3236723f7e))
+* **ID-269:** Add owner_type: platform | customer to zones ([06ee747](https://github.com/keycardai/keycard-ts/commit/06ee7478c5e74c4a9d07a9eee7a32e7f236aac69))
+* **ID-270:** gate owner_type and federation.keycard to platform-owned entities ([7771db3](https://github.com/keycardai/keycard-ts/commit/7771db3404cc08c8a749c34d926776df38c1b3c2))
+
+## 0.17.0 (2026-05-28)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/keycardai/keycard-ts/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* add openapi tags ([04b6c22](https://github.com/keycardai/keycard-ts/commit/04b6c22d8278b54a63e67125c05447503f9d43aa))
+* add svc-catalog resources to Stainless SDK config ([576b5a4](https://github.com/keycardai/keycard-ts/commit/576b5a495a7322cb0e30e0eb9329dd54cc1f43df))
+* **ID-229:** paginate listApplications behind application-pagination flag ([9cf11cb](https://github.com/keycardai/keycard-ts/commit/9cf11cba932a931c3e7da6659a4447ffd4cda292))
+
+## 0.16.0 (2026-05-21)
+
+Full Changelog: [v0.15.0...v0.16.0](https://github.com/keycardai/keycard-ts/compare/v0.15.0...v0.16.0)
+
+### Features
+
+* add scopes to provider openid protocol schemas (ACC-354) ([48fde35](https://github.com/keycardai/keycard-ts/commit/48fde3589316bb7ee080fb6a8b4fd0abe5bf3221))
+
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([b2337ed](https://github.com/keycardai/keycard-ts/commit/b2337ed6c1542a195741765d2211792358b48977))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([131d475](https://github.com/keycardai/keycard-ts/commit/131d47531426233018da30d3b29c12ce7f817c5e))
+
+## 0.15.0 (2026-05-15)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/keycardai/keycard-ts/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **ACC-277:** list policy versions pinned by a policy-set draft ([52afceb](https://github.com/keycardai/keycard-ts/commit/52afceb15924a8320c12d6dc2513086c90963847))
+* accept ID Zone platform principals in management API ([19dc1d7](https://github.com/keycardai/keycard-ts/commit/19dc1d7594e708995ce8dadbd3d07ce2b3d05503))
+* add jwt_lifetime_seconds to resources ([f481ad4](https://github.com/keycardai/keycard-ts/commit/f481ad4ae9416299a09ec14be3d8c4c555549b71))
+
+
+### Bug Fixes
+
+* housekeeping ([c1a374f](https://github.com/keycardai/keycard-ts/commit/c1a374f477600baf7fd496e041877e483fb60e7f))
+
+## 0.14.0 (2026-05-11)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/keycardai/keycard-ts/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* **ID-177:** make invitations.last_sent_at non-nullable ([6f26fe8](https://github.com/keycardai/keycard-ts/commit/6f26fe8b63bc5c74632b8d5a0d69cd8b6e59c70d))
+
+## 0.13.0 (2026-05-07)
+
+Full Changelog: [v0.12.1...v0.13.0](https://github.com/keycardai/keycard-ts/compare/v0.12.1...v0.13.0)
+
+### Features
+
+* **ACC-255:** active-first sort on listPolicySets (multi-key sort MVP) ([054d393](https://github.com/keycardai/keycard-ts/commit/054d393f0bc17cb576dc94e75b7939c98f8b4d9e))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([c5f5f32](https://github.com/keycardai/keycard-ts/commit/c5f5f32abefb541d433f8de3800d0dfa248ef7d2))
+
+## 0.12.1 (2026-05-06)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/keycardai/keycard-ts/compare/v0.12.0...v0.12.1)
+
+### Bug Fixes
+
+* **stainless config:** follow stainless docs for npm publish config ([250cdb5](https://github.com/keycardai/keycard-ts/commit/250cdb59569852e37b8fa32e5e385ccfe76dea01))
+
+## 0.12.0 (2026-05-06)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/keycardai/keycard-ts/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* **ACC-225:** return both cedar_json and cedar_raw on policy version fetch ([f82299f](https://github.com/keycardai/keycard-ts/commit/f82299f7a7b9900f071389b1a7bdbab95827b646))
+* **api:** add latest_schema_version to the Policy entity (ACC-251) ([8e4d6ba](https://github.com/keycardai/keycard-ts/commit/8e4d6ba913c8d097a85f07a937e87b52d926f1ed))
+* **mgmt api:** cursor pagination works with sort on listInvitations ([6504111](https://github.com/keycardai/keycard-ts/commit/6504111863b5579985b0b7a784244d699bef0052))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([171fd59](https://github.com/keycardai/keycard-ts/commit/171fd59d9e4732c21389e425d5aa137034230c4d))
+
+## 0.11.0 (2026-04-27)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/keycardai/keycard-ts/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* support setting headers via env ([475bba6](https://github.com/keycardai/keycard-ts/commit/475bba6cfdb404bbf37f21613945f4141ed5eae3))
+
+
+### Chores
+
+* **internal:** codegen related update ([74906be](https://github.com/keycardai/keycard-ts/commit/74906be80a94ad638c14dffea5f44026d1232adb))
+
+## 0.10.0 (2026-04-25)
+
+Full Changelog: [v0.9.1...v0.10.0](https://github.com/keycardai/keycard-ts/compare/v0.9.1...v0.10.0)
+
+### Features
+
+* Matte/revert in progress commits ([96ae331](https://github.com/keycardai/keycard-ts/commit/96ae331200531490075c3a4b327d48b6ba338881))
+* **mgmt api:** add list Users pagination, querying, filtering ([15477bc](https://github.com/keycardai/keycard-ts/commit/15477bc71eb39212c7df08d78e321caab269c3ec))
+* store all evaluation requests for replay and impact (ACC-134) ([cf69edc](https://github.com/keycardai/keycard-ts/commit/cf69edc92f5069af2ec55ba13a737b3582dec309))
+
+
+### Chores
+
+* **formatter:** run prettier and eslint separately ([9428a4a](https://github.com/keycardai/keycard-ts/commit/9428a4ad9fdeea02b4dbf9ce66a14d1d305f0306))
+* update SDK settings ([668af37](https://github.com/keycardai/keycard-ts/commit/668af377fd46a57e7c33b4dc707a864ef9ed1e25))
+
+## 0.9.1 (2026-04-24)
+
+Full Changelog: [v0.9.0...v0.9.1](https://github.com/keycardai/keycard-ts/compare/v0.9.0...v0.9.1)
+
+### Chores
+
+* **formatter:** run prettier and eslint separately ([7d92f97](https://github.com/keycardai/keycard-ts/commit/7d92f97f6fa74aea78045caef261ce53f50ab704))
+
+## 0.9.0 (2026-04-23)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/keycardai/keycard-ts/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* add filter/query to policy (set) queries (ACC-147) ([150e40b](https://github.com/keycardai/keycard-ts/commit/150e40b670337a55b5188145dc7ee1c369ffeeca))
+* add standard pagination/filter/search definitions ([746f849](https://github.com/keycardai/keycard-ts/commit/746f849e1031e0ff56017fec2f2eeb9f216a5337))
+* resource prefix flag ([f0e1275](https://github.com/keycardai/keycard-ts/commit/f0e1275b97adcc49084bd03b1fd9b391c82b5219))
+
+
+### Bug Fixes
+
+* **deps:** upgrade dependancies for vulnerabilties found by socket ([#13](https://github.com/keycardai/keycard-ts/issues/13)) ([b7e85cc](https://github.com/keycardai/keycard-ts/commit/b7e85cc43ba28a827508aff225c59dfdff5c8751))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([37402aa](https://github.com/keycardai/keycard-ts/commit/37402aab5bcce1af2b9c1a516ba07131724fd2df))
+
+## 0.8.0 (2026-04-09)
+
+Full Changelog: [v0.7.1...v0.8.0](https://github.com/keycardai/keycard-ts/compare/v0.7.1...v0.8.0)
+
+### Features
+
+* add openapi-yaml command ([d9b8b14](https://github.com/keycardai/keycard-ts/commit/d9b8b14815c7f56572e117784003f572b0dd621c))
+* Draft Lenient Schema Validation with Warnings (ACC-66) ([9defbd8](https://github.com/keycardai/keycard-ts/commit/9defbd85cec830374f2362bf9bcfcf2ae32448b9))
+* improved identities pagination ([126f94e](https://github.com/keycardai/keycard-ts/commit/126f94e5759c63f586074fd866de7783d8cc2f83))
+* normalize and validate user input (ACC-107) ([42691f7](https://github.com/keycardai/keycard-ts/commit/42691f707fe12b2fd33720eac3c158ea420a3c30))
+* shadow testing (ACC-14) ([b0f8563](https://github.com/keycardai/keycard-ts/commit/b0f85636c7a6635da8229c592504a213ee7dca43))
+
+
+### Chores
+
+* **internal:** codegen related update ([1112c61](https://github.com/keycardai/keycard-ts/commit/1112c6132cf7a60bd6e4270c15d3fec97cca2f9a))
+
+## 0.7.1 (2026-04-02)
+
+Full Changelog: [v0.7.0...v0.7.1](https://github.com/keycardai/keycard-ts/compare/v0.7.0...v0.7.1)
+
+### Chores
+
+* update SDK settings ([f865298](https://github.com/keycardai/keycard-ts/commit/f865298278cfae6034831ee5df36ea4f4c6a68ec))
+* update SDK settings ([3689395](https://github.com/keycardai/keycard-ts/commit/3689395e288c8a1fc7c7c7a8bbf22cacef8cc631))
+* update SDK settings ([9592071](https://github.com/keycardai/keycard-ts/commit/95920717b0837de7d558c10ed9900d0f2ba2a18d))
+
+## 0.7.0 (2026-04-01)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/keycardai/keycard-ts/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* add email search to list organization identities endpoint ([6cfdbe6](https://github.com/keycardai/keycard-ts/commit/6cfdbe68c087501ee80246f11fa826b8f388deb8))
+* add owner_type and enforce protection for platform-owned versions (ACC-29) ([15072d6](https://github.com/keycardai/keycard-ts/commit/15072d6973c4b05015f5b1ab65adaf49878122ee))
+* add PRM discovery to MCP gateway endpoint ([b7607db](https://github.com/keycardai/keycard-ts/commit/b7607dbacfdfd99e96f58364e8e12ed327617628))
+* draft policy sets ([0afd777](https://github.com/keycardai/keycard-ts/commit/0afd777a3808a0f9b45a6def931aeff98fd33645))
+* provide more context for policy schema ([50bb2cf](https://github.com/keycardai/keycard-ts/commit/50bb2cf3f386da8030d76acd620e7e0c5a262db5))
+* Support for user identifier and provider user identifier claim ([6d679b9](https://github.com/keycardai/keycard-ts/commit/6d679b9a98838d15f1a7d5b79053436f0e24e32e))
+* support raw cedar ([c01c0d6](https://github.com/keycardai/keycard-ts/commit/c01c0d60e870965d83a6584d3d759a3ad07fe7b0))
+* use common bearerAuth and OAuth2 security schemes ([7420a7e](https://github.com/keycardai/keycard-ts/commit/7420a7e103f81562ee97afb05433925690262fdd))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([3a7dc8d](https://github.com/keycardai/keycard-ts/commit/3a7dc8d9241cc533582b126cfbbcf9bd5f27fffc))
+* configure new SDK language ([8071a68](https://github.com/keycardai/keycard-ts/commit/8071a688f6130ccd6e471ec9406b1b5e92303443))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([2d1a742](https://github.com/keycardai/keycard-ts/commit/2d1a742617b1f55e576b82eb8ce0f65471fca6c6))
+* **internal:** tweak CI branches ([b385a90](https://github.com/keycardai/keycard-ts/commit/b385a90b711b399770f347c0b245a26410e10d2d))
+* **internal:** update gitignore ([e3bd6d4](https://github.com/keycardai/keycard-ts/commit/e3bd6d4aa5367ffad3222d8c4934e7a362d42748))
+
+## 0.6.0 (2026-03-16)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/keycardai/keycard-ts/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* add OAuth2 as alternative auth on management API endpoints ([c2c973b](https://github.com/keycardai/keycard-ts/commit/c2c973b1aee8ea129ecf657cf80665809931865c))
+* add OAuth2 client credentials security scheme from common spec ([28caaba](https://github.com/keycardai/keycard-ts/commit/28caaba8ed5acb25aed81273a3913f432994f221))
+* add OAuth2 client_credentials auth to SDK config ([6d93dfb](https://github.com/keycardai/keycard-ts/commit/6d93dfb7dfb2eefe1bddf0e644b6e36c479fa1bb))
+* consolidate prefixed security schemes into canonical names ([9a52ec6](https://github.com/keycardai/keycard-ts/commit/9a52ec61a4068c5536f8ff7ad6947ec2d6b7bac6))
+* Include `array_format: brackets` settings ([7a0d42f](https://github.com/keycardai/keycard-ts/commit/7a0d42faee627735525ef3e2ca8f40a7cabc77e3))
+* remove unused security schemes from joined spec ([99b0a72](https://github.com/keycardai/keycard-ts/commit/99b0a72a6e062dde86ddea1d03b85b1334ad30c3))
+* support HTTP Basic Auth for service account token endpoint (RFC 6749 2.3.1) ([8d67678](https://github.com/keycardai/keycard-ts/commit/8d6767836bfe99808d2f2c450995a93eb7973dc8))
+* update pkg-oapi-common and add OAuth2 security scheme ([8449686](https://github.com/keycardai/keycard-ts/commit/8449686490cde9285e555bcdd2309f1ae24423c1))
+
+
+### Bug Fixes
+
+* **tests:** correct setup of OAuth 2 Client Credentials tests ([1b9a2b8](https://github.com/keycardai/keycard-ts/commit/1b9a2b879bed3d905cdfe9d63c118b5abb62cf58))
+
+
+### Chores
+
+* hide unstable mcp features from api documentation ([f22bdfc](https://github.com/keycardai/keycard-ts/commit/f22bdfc3282ff99da9154e4ff21ca4a2b96ff7ea))
+
+
+### Documentation
+
+* remove MCP endpoints ([30f3426](https://github.com/keycardai/keycard-ts/commit/30f34267c8cbd16febaef1cccc8108c2740d0fa4))
+
+## 0.5.1 (2026-03-10)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/keycardai/keycard-ts/compare/v0.5.0...v0.5.1)
+
+### Chores
+
+* update SDK settings ([aa1913e](https://github.com/keycardai/keycard-ts/commit/aa1913ed0280b3b6a63a077968c07a2594ca1af7))
+
+## 0.5.0 (2026-03-10)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/keycardai/keycard-ts/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* Correct TS package name ([1ed62b0](https://github.com/keycardai/keycard-ts/commit/1ed62b09476d3b90cf265dffb972b5517133effd))
+
+## 0.4.0 (2026-03-10)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/keycardai/keycard-ts/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* Typescript package name @keycardai/api ([99293f2](https://github.com/keycardai/keycard-ts/commit/99293f272a4f6beaea644218cf1de94bd358dca5))
+
+## 0.3.0 (2026-03-10)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/keycardai/keycard-ts/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* jelmer/stainless keycardai configuration ([22ecb83](https://github.com/keycardai/keycard-ts/commit/22ecb833f684818a9a85a306b12ce0ccdfa56c70))
+
+
+### Chores
+
+* sync repo ([940643a](https://github.com/keycardai/keycard-ts/commit/940643a8445a3a0a8366d6d9aada48e05eb1b43f))
+
+## 0.2.0 (2026-03-09)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/keycardlabs/keycard-ts/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* configure SDK packages ([57344fc](https://github.com/keycardlabs/keycard-ts/commit/57344fc927bde3f1a6564bb92baeaae62a498476))
+
+## 0.1.0 (2026-03-07)
+
+Full Changelog: [v0.0.1...v0.1.0](https://github.com/keycardlabs/keycard-ts/compare/v0.0.1...v0.1.0)
+
+### Features
+
+* Add application_type property to url credential ([16040e6](https://github.com/keycardlabs/keycard-ts/commit/16040e668ddb3bd76e920fab2bdd180092ae805c))
+* add is_system_managed property to resources and applications ([4be8496](https://github.com/keycardlabs/keycard-ts/commit/4be849688f538eea5cc8632ae5263b75c800c85f))
+* filter, search, sort for invitations (COR-577) ([4a072d6](https://github.com/keycardlabs/keycard-ts/commit/4a072d68763f557cc86c42231c3c85fea61b5765))
+* internal endpoint to re-send verification email ([08a5baf](https://github.com/keycardlabs/keycard-ts/commit/08a5baf575e0ece5a3e4d91d6ce1e1713bf9a9c6))
+* PREVIEW: sync svc-iam.yaml from svc-iam/jelmer/updated-openapi-sync-workflow ([b73ba49](https://github.com/keycardlabs/keycard-ts/commit/b73ba49c830fb0545a755596c6e5e80b1baccd28))
+* PREVIEW: sync svc-vault-api.yaml from svc-vault-api/jelmer/cor-298-add-openapi-sync ([d705ffd](https://github.com/keycardlabs/keycard-ts/commit/d705ffdd6989e7fd6a4a93b9f1ac8e332544d64d))
+* switch zone setting for email/password support (COR-543) ([c162c5f](https://github.com/keycardlabs/keycard-ts/commit/c162c5fea206d057166e75e21e1f2bc6c6c4c35c))
+
+
+### Bug Fixes
+
+* **client:** avoid removing abort listener too early ([8da0476](https://github.com/keycardlabs/keycard-ts/commit/8da04761ebc69b15dbf8f8db0f981c9008d71cfb))
+* **client:** improve parameter names ([f33562b](https://github.com/keycardlabs/keycard-ts/commit/f33562bfd43e2f82979cb931dca4d5d716134251))
+* **client:** preserve URL params already embedded in path ([3b4dac8](https://github.com/keycardlabs/keycard-ts/commit/3b4dac89d3f106c11f1781546ccf186526af3a10))
+* fix request delays for retrying to be more respectful of high requested delays ([38321c4](https://github.com/keycardlabs/keycard-ts/commit/38321c40018634fef21f4590790b25fd8d88afd7))
+* remove refs to internal components when stripping x-internal ([4db0911](https://github.com/keycardlabs/keycard-ts/commit/4db09115cfb9eb0b0e4840684977f6b1f4c5a616))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([214da9c](https://github.com/keycardlabs/keycard-ts/commit/214da9c6f8ba2879c40a507eb93fdf510734545e))
+* **client:** restructure abort controller binding ([0ad19b6](https://github.com/keycardlabs/keycard-ts/commit/0ad19b61b780d0fa52a4e6c9f38706b1f59bc500))
+* configure new SDK language ([86f7819](https://github.com/keycardlabs/keycard-ts/commit/86f7819ff9c02bb90ff3d33ee1b357751325e6b5))
+* **internal:** avoid type checking errors with ts-reset ([994871a](https://github.com/keycardlabs/keycard-ts/commit/994871a539f93ec6c7231845b7a40759e352c2f9))
+* **internal:** move stringifyQuery implementation to internal function ([8d747ba](https://github.com/keycardlabs/keycard-ts/commit/8d747ba3b48e6d57632e705be50690af2d541a50))
+* **internal:** upgrade pnpm ([a3a09bc](https://github.com/keycardlabs/keycard-ts/commit/a3a09bc803263a502a1d46394e22878cd47596dc))
+* sync repo ([61d1cc5](https://github.com/keycardlabs/keycard-ts/commit/61d1cc51ec7f3d393ce9d2fb71848484f96ed0ee))
+* update SDK settings ([fa7ea12](https://github.com/keycardlabs/keycard-ts/commit/fa7ea1233615b2f8224036be82ec2aaaf36cacbe))
