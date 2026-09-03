@@ -174,21 +174,4 @@ describe('resource providers', () => {
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.providers.delete('id', { zoneId: 'zoneId' });
   });
-
-  // Mock server tests are disabled
-  test.skip('validate: only required params', async () => {
-    const responsePromise = client.zones.providers.validate('id', { zoneId: 'zoneId' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('validate: required and optional params', async () => {
-    const response = await client.zones.providers.validate('id', { zoneId: 'zoneId' });
-  });
 });
