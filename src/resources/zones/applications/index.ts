@@ -26,10 +26,3 @@ export {
   type DependencyAddParams,
   type DependencyRemoveParams,
 } from './dependencies';
-export {
-  Roles,
-  type RoleListResponse,
-  type RoleListParams,
-  type RoleAssignParams,
-  type RoleRevokeParams,
-} from './roles';
