@@ -44,18 +44,6 @@ export {
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
 export {
-  Groups,
-  type Group,
-  type GroupCreate,
-  type GroupUpdate,
-  type GroupListResponse,
-  type GroupCreateParams,
-  type GroupRetrieveParams,
-  type GroupUpdateParams,
-  type GroupListParams,
-  type GroupDeleteParams,
-} from './groups/index';
-export {
   Members,
   type ZoneMember,
   type ZoneRole,
@@ -105,14 +93,12 @@ export {
 export {
   Providers,
   type Provider,
-  type ValidationResult,
   type ProviderListResponse,
   type ProviderCreateParams,
   type ProviderRetrieveParams,
   type ProviderUpdateParams,
   type ProviderListParams,
   type ProviderDeleteParams,
-  type ProviderValidateParams,
 } from './providers';
 export {
   Resources,
@@ -123,18 +109,6 @@ export {
   type ResourceListParams,
   type ResourceDeleteParams,
 } from './resources';
-export {
-  Roles,
-  type Role,
-  type RoleCreate,
-  type RoleUpdate,
-  type RoleListResponse,
-  type RoleCreateParams,
-  type RoleRetrieveParams,
-  type RoleUpdateParams,
-  type RoleListParams,
-  type RoleDeleteParams,
-} from './roles';
 export {
   Secrets,
   type Secret,
@@ -169,10 +143,8 @@ export {
   type User,
   type UserListResponse,
   type UserRetrieveParams,
-  type UserUpdateParams,
   type UserListParams,
-  type UserDeleteParams,
-} from './users/index';
+} from './users';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,
