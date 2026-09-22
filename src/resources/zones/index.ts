@@ -43,17 +43,7 @@ export {
   type DelegatedGrantListParams,
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
-export {
-  Members,
-  type ZoneMember,
-  type ZoneRole,
-  type MemberListResponse,
-  type MemberRetrieveParams,
-  type MemberUpdateParams,
-  type MemberListParams,
-  type MemberDeleteParams,
-  type MemberAddParams,
-} from './members';
+export { Members } from './members';
 export {
   Policies,
   type Policy,
