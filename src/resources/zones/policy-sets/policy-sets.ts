@@ -26,8 +26,27 @@ export class PolicySets extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
 
   /**
-   * Creates an unbound policy set. Bind it by activating a policy set version or via
-   * setPolicyBinding.
+   * Creates a policy set. Supply `manifest` to create its first version and any new
+   * policies in the same transaction. A failure rolls back every write. Without
+   * `manifest`, creates a versionless set and preserves the existing response body.
+   *
+   * Entries use manifest apply semantics with no predecessor: bare pins use each
+   * policy's latest version; supplied content reuses that version when its SHA and
+   * schema match. Omitted `schema_version` uses the zone default. This operation
+   * supports neither `dry_run` nor `If-Match`. Set `manifest.activate: true` to bind
+   * v1 to the zone's active slot in the same transaction. Requires
+   * `target_type: zone` (the default) and the `activate` permission on
+   * `policy_set_bindings`, in addition to the route's `create` permission. Omitted
+   * or false leaves the set unbound.
+   *
+   * The `ETag` header is the set revision, as on `GET`. The manifest digest is
+   * `policy_set_version.manifest_sha` and the `ETag` of `GET .../manifest`.
+   *
+   * Domain error codes: `policy_set_name_conflict`, `policy_name_conflict`,
+   * `policy_not_found`, `policy_archived`, `policy_version_not_found`,
+   * `version_archived`, `schema_version_mismatch`, `manifest_duplicate_policy`,
+   * `missing_cedar_content`, `invalid_cedar`, `schema_version_unsupported`,
+   * `activate_requires_zone_target`.
    */
   create(
     zoneID: string,
@@ -477,7 +496,22 @@ export interface PolicySetWithBinding extends PolicySet {
    */
   active_version_id?: string | null;
 
+  /**
+   * Active zone binding, present when created with `manifest.activate` set to true.
+   */
+  binding?: PolicySetWithBinding.Binding;
+
+  /**
+   * Per-policy outcomes, present only when created with a manifest.
+   */
+  changes?: Array<PolicySetWithBinding.Change>;
+
   mode?: 'active' | 'shadow' | null;
+
+  /**
+   * First version, present only when created with a manifest.
+   */
+  policy_set_version?: VersionsAPI.PolicySetVersion;
 
   /**
    * @deprecated **Deprecated.** Use `target_id` instead. Carries the active
@@ -501,6 +535,90 @@ export interface PolicySetWithBinding extends PolicySet {
    * predate target tracking.
    */
   target_id?: string | null;
+
+  /**
+   * Non-fatal findings, present only when non-empty on create.
+   */
+  warnings?: Array<PolicySetWithBinding.Warning>;
+}
+
+export namespace PolicySetWithBinding {
+  /**
+   * Active zone binding, present when created with `manifest.activate` set to true.
+   */
+  export interface Binding {
+    /**
+     * Binding identifier (stable per slot)
+     */
+    id: string;
+
+    created_at: string;
+
+    /**
+     * Binding mode
+     */
+    mode: 'active' | 'shadow';
+
+    /**
+     * Public ID of the bound policy set
+     */
+    policy_set_id: string;
+
+    /**
+     * Public ID of the bound policy set version
+     */
+    policy_set_version_id: string;
+
+    /**
+     * @deprecated **Deprecated.** Use `target_id` instead. Carries the same value.
+     */
+    scope_target_id: string;
+
+    /**
+     * @deprecated **Deprecated.** Use `target_type` instead. Carries the same value.
+     */
+    scope_type: 'zone';
+
+    /**
+     * Target entity ID. Equals zone_id for zone-targeted bindings.
+     */
+    target_id: string;
+
+    /**
+     * What this binding targets
+     */
+    target_type: 'zone' | 'user';
+  }
+
+  export interface Change {
+    /**
+     * `repinned`: an explicit `policy_version_id` replaced a different version the set
+     * already pinned for that policy; no version minted.
+     */
+    action: 'created_policy' | 'created_version' | 'reused' | 'repinned' | 'dropped';
+
+    /**
+     * The policy's name. Lets a caller correlate a `created_policy` row with its
+     * `new_policy` request entry without a re-list.
+     */
+    name: string;
+
+    policy_id: string;
+
+    /**
+     * Absent when action is dropped.
+     */
+    policy_version_id?: string;
+  }
+
+  export interface Warning {
+    /**
+     * Machine-readable warning code, e.g. unknown_actions.
+     */
+    code: string;
+
+    message: string;
+  }
 }
 
 export interface PolicySetListResponse {
@@ -542,6 +660,11 @@ export interface PolicySetCreateParams {
   name: string;
 
   /**
+   * Body param: Content for the first version, created atomically with the set.
+   */
+  manifest?: PolicySetCreateParams.Manifest;
+
+  /**
    * @deprecated Body param: **Deprecated.** Use `target_type` instead. Only `zone`
    * is accepted; use `target_type` for `user` targets.
    */
@@ -565,6 +688,98 @@ export interface PolicySetCreateParams {
    * passed along by proxies.
    */
   'X-Client-Request-ID'?: string;
+}
+
+export namespace PolicySetCreateParams {
+  /**
+   * Content for the first version, created atomically with the set.
+   */
+  export interface Manifest {
+    /**
+     * Initial manifest entries, in request order.
+     */
+    entries: Array<Manifest.PdpExistingPolicyEntry | Manifest.PdpNewPolicyEntry>;
+
+    /**
+     * Bind the first version to the zone's active slot in the same transaction.
+     * Requires a zone-targeted set and the activate permission on policy_set_bindings.
+     */
+    activate?: boolean;
+
+    /**
+     * Schema to validate and pin v1 against. Defaults to the zone default.
+     */
+    schema_version?: string;
+  }
+
+  export namespace Manifest {
+    /**
+     * Reference to an existing (non-archived) policy in the zone — not limited to
+     * policies already in this set. With `cedar_raw`/`cedar_json` (mutually
+     * exclusive): the server diffs by content SHA; unchanged content under the
+     * resolved schema reuses the pinned policy version, changed content mints a new
+     * one. Without content ("pin as-is"): reuses the version pinned in the latest
+     * manifest, or the policy's latest version when the policy is newly added to this
+     * set. Bare pins are re-versioned when the resolved schema differs from the pinned
+     * version's schema. With `policy_version_id`: pins exactly that existing version
+     * and mints nothing. Mutually exclusive with `cedar_raw`/`cedar_json` (a version
+     * is content; 400 when both are supplied). The version must belong to `policy_id`,
+     * must not be archived (`version_archived`), and must have been validated against
+     * the resolved schema (`schema_version_mismatch`; no re-versioning). Reported as
+     * `repinned` when the set already pins a different version of the policy,
+     * otherwise `reused`. Platform-owned policies accept bare pins and
+     * `policy_version_id` (customers cannot mint versions of those).
+     */
+    export interface PdpExistingPolicyEntry {
+      /**
+       * Public ID of an existing policy in the zone.
+       */
+      policy_id: string;
+
+      /**
+       * Cedar policy JSON. Mutually exclusive with cedar_raw.
+       */
+      cedar_json?: unknown;
+
+      /**
+       * Cedar policy text. Mutually exclusive with cedar_json.
+       */
+      cedar_raw?: string;
+
+      /**
+       * Public ID of an existing version of `policy_id` to pin. Mutually exclusive with
+       * cedar_raw and cedar_json.
+       */
+      policy_version_id?: string;
+    }
+
+    /**
+     * Mints a new customer-owned policy with the requested name (409
+     * `policy_name_conflict` on collision) plus its first version from the supplied
+     * content. Exactly one of `cedar_raw`/`cedar_json` is required.
+     */
+    export interface PdpNewPolicyEntry {
+      new_policy: PdpNewPolicyEntry.NewPolicy;
+
+      /**
+       * Cedar policy JSON. Mutually exclusive with cedar_raw.
+       */
+      cedar_json?: unknown;
+
+      /**
+       * Cedar policy text. Mutually exclusive with cedar_json.
+       */
+      cedar_raw?: string;
+    }
+
+    export namespace PdpNewPolicyEntry {
+      export interface NewPolicy {
+        name: string;
+
+        description?: string;
+      }
+    }
+  }
 }
 
 export interface PolicySetRetrieveParams {
