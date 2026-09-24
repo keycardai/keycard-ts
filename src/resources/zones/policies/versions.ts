@@ -151,6 +151,12 @@ export interface PolicyVersion {
   archived_by?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  archived_by_user?: PolicyVersion.ArchivedByUser;
+
+  /**
    * Cedar policy in JSON representation. Populated by default and when `format=json`
    * is passed; null when `format=cedar` narrows the response to the text
    * representation only. Serialized verbatim from the stored Cedar so the order of
@@ -164,6 +170,60 @@ export interface PolicyVersion {
    * JSON representation only.
    */
   cedar_raw?: string | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  created_by_user?: PolicyVersion.CreatedByUser;
+}
+
+export namespace PolicyVersion {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface ArchivedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface CreatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface VersionListResponse {
@@ -246,6 +306,12 @@ export interface VersionRetrieveParams {
   policy_id: string;
 
   /**
+   * Query param: Opt-in to additional response fields on a single resource (`user`).
+   * Repeatable.
+   */
+  expand?: Array<'user'>;
+
+  /**
    * Query param: Narrows which Cedar representation the response includes. When
    * omitted, both `cedar_json` and `cedar_raw` are populated. Pass `json` to receive
    * only `cedar_json`, or `cedar` to receive only `cedar_raw`. Callers that don't
@@ -290,7 +356,7 @@ export interface VersionListParams {
    * supplying both `expand` and `expand[]` with disagreeing values returns
    * `400 Bad Request`.
    */
-  expand?: Array<'total_count'>;
+  expand?: Array<'total_count' | 'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When
