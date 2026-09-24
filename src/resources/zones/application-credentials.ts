@@ -46,7 +46,10 @@ export class ApplicationCredentials extends APIResource {
   }
 
   /**
-   * Returns a list of application credentials in the specified zone
+   * Returns a paginated list of application credentials in the specified zone. Use
+   * cursor pagination via `after`/`before`. Use `expand[]=total_count` to include
+   * the matching row count. Search by identifier via `query[identifier]` (substring
+   * match, OR'd across repeated values).
    */
   list(
     zoneID: string,
@@ -218,7 +221,7 @@ export interface ApplicationCredentialListResponse {
   items: Array<Credential>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
 
@@ -446,8 +449,6 @@ export interface ApplicationCredentialListParams {
    * Cursor for backward pagination
    */
   before?: string;
-
-  cursor?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
