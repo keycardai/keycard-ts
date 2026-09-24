@@ -111,6 +111,8 @@ describe('resource applications', () => {
           'expand[]': 'total_count',
           'filter[id]': 'string',
           'filter[identifier]': 'string',
+          'filter[owner_type]': 'platform',
+          'filter[owner_type][ne]': 'platform',
           'filter[slug]': 'string',
           identifier: 'identifier',
           limit: 1,

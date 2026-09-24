@@ -18,12 +18,7 @@ export {
   type OrganizationUpdateParams,
   type OrganizationListParams,
 } from './organizations/organizations';
-export {
-  PolicyBundle,
-  type PolicyBundleRetrieveParams,
-  type PolicyBundleUpdateParams,
-  type PolicyBundleResetParams,
-} from './policy-bundle';
+export { PolicyBundle } from './policy-bundle';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,
