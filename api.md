@@ -156,20 +156,6 @@ Methods:
 
 ## Members
 
-Types:
-
-- <code><a href="./src/resources/zones/members.ts">ZoneMember</a></code>
-- <code><a href="./src/resources/zones/members.ts">ZoneRole</a></code>
-- <code><a href="./src/resources/zones/members.ts">MemberListResponse</a></code>
-
-Methods:
-
-- <code title="get /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">retrieve</a>(organizationUserID, { ...params }) -> ZoneMember</code>
-- <code title="patch /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">update</a>(organizationUserID, { ...params }) -> ZoneMember</code>
-- <code title="get /zones/{zoneId}/members">client.zones.members.<a href="./src/resources/zones/members.ts">list</a>(zoneID, { ...params }) -> MemberListResponse</code>
-- <code title="delete /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">delete</a>(organizationUserID, { ...params }) -> void</code>
-- <code title="post /zones/{zoneId}/members">client.zones.members.<a href="./src/resources/zones/members.ts">add</a>(zoneID, { ...params }) -> ZoneMember</code>
-
 ## Secrets
 
 Types:
@@ -276,11 +262,8 @@ Types:
 
 - <code><a href="./src/resources/organizations/organizations.ts">Organization</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">PageInfoCursor</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">RoleScope</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">TokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationListIdentitiesResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationListRolesResponse</a></code>
 
 Methods:
 
@@ -288,8 +271,6 @@ Methods:
 - <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
-- <code title="get /organizations/{organization_id}/identities">client.organizations.<a href="./src/resources/organizations/organizations.ts">listIdentities</a>(organizationID, { ...params }) -> OrganizationListIdentitiesResponse</code>
-- <code title="get /organizations/{organization_id}/roles">client.organizations.<a href="./src/resources/organizations/organizations.ts">listRoles</a>(organizationID, { ...params }) -> OrganizationListRolesResponse</code>
 
 ## Users
 
@@ -298,14 +279,6 @@ Types:
 - <code><a href="./src/resources/organizations/users.ts">OrganizationRole</a></code>
 - <code><a href="./src/resources/organizations/users.ts">OrganizationStatus</a></code>
 - <code><a href="./src/resources/organizations/users.ts">OrganizationUser</a></code>
-- <code><a href="./src/resources/organizations/users.ts">UserListResponse</a></code>
-
-Methods:
-
-- <code title="get /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">retrieve</a>(userID, { ...params }) -> OrganizationUser</code>
-- <code title="patch /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">update</a>(userID, { ...params }) -> OrganizationUser</code>
-- <code title="get /organizations/{organization_id}/users">client.organizations.users.<a href="./src/resources/organizations/users.ts">list</a>(organizationID, { ...params }) -> UserListResponse</code>
-- <code title="delete /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">delete</a>(userID, { ...params }) -> void</code>
 
 ## Invitations
 
@@ -379,9 +352,3 @@ Methods:
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
 
 # PolicyBundle
-
-Methods:
-
-- <code title="get /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">retrieve</a>({ ...params }) -> Response</code>
-- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>(body, { ...params }) -> Response</code>
-- <code title="delete /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">reset</a>({ ...params }) -> void</code>
