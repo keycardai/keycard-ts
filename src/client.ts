@@ -33,17 +33,12 @@ import {
 import {
   Organization,
   OrganizationCreateParams,
-  OrganizationListIdentitiesParams,
-  OrganizationListIdentitiesResponse,
   OrganizationListParams,
   OrganizationListResponse,
-  OrganizationListRolesParams,
-  OrganizationListRolesResponse,
   OrganizationRetrieveParams,
   OrganizationUpdateParams,
   Organizations,
   PageInfoCursor,
-  RoleScope,
   TokenResponse,
 } from './resources/organizations/organizations';
 import {
@@ -933,17 +928,12 @@ export declare namespace KeycardAPI {
     Organizations as Organizations,
     type Organization as Organization,
     type PageInfoCursor as PageInfoCursor,
-    type RoleScope as RoleScope,
     type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,
-    type OrganizationListIdentitiesResponse as OrganizationListIdentitiesResponse,
-    type OrganizationListRolesResponse as OrganizationListRolesResponse,
     type OrganizationCreateParams as OrganizationCreateParams,
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
-    type OrganizationListIdentitiesParams as OrganizationListIdentitiesParams,
-    type OrganizationListRolesParams as OrganizationListRolesParams,
   };
 
   export {
