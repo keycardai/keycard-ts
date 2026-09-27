@@ -49,6 +49,7 @@ describe('resource policySets', () => {
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.policySets.retrieve('policy_set_id', {
       zone_id: 'zone_id',
+      expand: ['user'],
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
