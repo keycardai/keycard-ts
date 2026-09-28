@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/keycardai/keycard-ts/compare/v0.22.0...v0.23.0) (2026-09-22)
+
+
+### Features
+
+* Sync current openapi state of all repos ([#38](https://github.com/keycardai/keycard-ts/issues/38)) ([29bcf09](https://github.com/keycardai/keycard-ts/commit/29bcf0950571012044d89922ac40ccfcacc592ca))
+
 ## 0.22.0 (2026-08-26)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/keycardai/keycard-ts/compare/v0.21.0...v0.22.0)
