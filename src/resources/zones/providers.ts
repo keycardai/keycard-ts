@@ -33,9 +33,18 @@ export class Providers extends APIResource {
   }
 
   /**
-   * Returns a list of providers in the specified zone. Pass `filter[id]`
-   * (repeatable, max 100) to restrict results to a known set of provider IDs;
-   * unknown or malformed IDs are silently omitted.
+   * Returns a paginated list of providers in the specified zone. Use cursor
+   * pagination via `after`/`before`. Sort: comma-separated field list; prefix with
+   * `-` for descending. Use `expand[]=total_count` to include the matching row
+   * count. Filter by exact slug via `filter[slug]`, exact identifier via
+   * `filter[identifier]` and provider type via `filter[type]`. Search via
+   * `query[name]` / `query[identifier]` / `query[]` (substring match, OR'd across
+   * repeated values). `query[]` matches against name and identifier. Pass
+   * `filter[id]` (repeatable, max 100) to restrict results to a known set of
+   * provider IDs — mutually exclusive with `after`/`before` (returns 400 if
+   * combined). When `filter[id]` is set, `limit` is ignored and the response
+   * contains every requested provider that exists in the zone, in a single page.
+   * Unknown or malformed IDs are silently omitted.
    */
   list(
     zoneID: string,
@@ -224,13 +233,6 @@ export namespace Provider {
      */
     export interface Openid {
       /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId.
-       */
-      external_id_claim?: string | null;
-
-      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
        */
@@ -257,7 +259,7 @@ export interface ProviderListResponse {
   items: Array<Provider>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
 
@@ -419,13 +421,6 @@ export namespace ProviderCreateParams {
      * OpenID Connect protocol configuration for provider creation
      */
     export interface Openid {
-      /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId.
-       */
-      external_id_claim?: string;
-
       /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
@@ -590,14 +585,6 @@ export namespace ProviderUpdateParams {
      */
     export interface Openid {
       /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId. Set to null to
-       * revert to default.
-       */
-      external_id_claim?: string | null;
-
-      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email). Set to null
        * to clear.
@@ -638,9 +625,29 @@ export interface ProviderListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
-   * Restrict results to providers with this ID. Repeatable, max 100.
+   * Restrict results to providers with this ID. Repeatable, max 100. Mutually
+   * exclusive with after/before.
    */
   'filter[id]'?: string | Array<string>;
+
+  /**
+   * Filter by exact provider identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
+
+  /**
+   * Filter by exact provider slug
+   */
+  'filter[slug]'?: string | Array<string>;
+
+  /**
+   * Filter by provider type
+   */
+  'filter[type]'?:
+    | 'external'
+    | 'keycard-vault'
+    | 'keycard-sts'
+    | Array<'external' | 'keycard-vault' | 'keycard-sts'>;
 
   identifier?: string;
 
@@ -649,7 +656,28 @@ export interface ProviderListParams {
    */
   limit?: number;
 
+  /**
+   * Search across name and identifier (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by identifier (substring match)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by name (substring match)
+   */
+  'query[name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * name, identifier
+   */
+  sort?: string;
 
   type?: 'external' | 'keycard-vault' | 'keycard-sts';
 }

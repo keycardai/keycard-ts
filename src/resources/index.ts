@@ -11,17 +11,12 @@ export {
   Organizations,
   type Organization,
   type PageInfoCursor,
-  type RoleScope,
   type TokenResponse,
   type OrganizationListResponse,
-  type OrganizationListIdentitiesResponse,
-  type OrganizationListRolesResponse,
   type OrganizationCreateParams,
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
-  type OrganizationListIdentitiesParams,
-  type OrganizationListRolesParams,
 } from './organizations/organizations';
 export {
   PolicyBundle,
