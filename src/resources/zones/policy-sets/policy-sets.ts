@@ -26,8 +26,8 @@ export class PolicySets extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
 
   /**
-   * Creates an unbound policy set. Use updatePolicySet to bind after creating a
-   * version.
+   * Creates an unbound policy set. Bind it by activating a policy set version or via
+   * setPolicyBinding.
    */
   create(
     zoneID: string,
@@ -56,8 +56,14 @@ export class PolicySets extends APIResource {
     params: PolicySetRetrieveParams,
     options?: RequestOptions,
   ): APIPromise<PolicySetWithBinding> {
-    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params;
+    const {
+      zone_id,
+      'X-API-Version': xAPIVersion,
+      'X-Client-Request-ID': xClientRequestID,
+      ...query
+    } = params;
     return this._client.get(path`/zones/${zone_id}/policy-sets/${policySetID}`, {
+      query,
       ...options,
       headers: buildHeaders([
         {
@@ -70,8 +76,8 @@ export class PolicySets extends APIResource {
   }
 
   /**
-   * Update metadata or manage binding. Set active=true to bind, active=false to
-   * unbind.
+   * Update policy set metadata (name). Binding is managed by activating a policy set
+   * version or via the policy-bindings API.
    */
   update(
     policySetID: string,
@@ -270,6 +276,12 @@ export interface PolicySet {
   archived_at?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  created_by_user?: PolicySet.CreatedByUser;
+
+  /**
    * Human-readable version number of the latest version (e.g., 1, 2, 3)
    */
   latest_version?: number | null;
@@ -277,6 +289,60 @@ export interface PolicySet {
   latest_version_id?: string | null;
 
   updated_by?: string | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: PolicySet.UpdatedByUser;
+}
+
+export namespace PolicySet {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface CreatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface PolicySetDraft {
@@ -303,6 +369,12 @@ export interface PolicySetDraft {
   name?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: PolicySetDraft.UpdatedByUser;
+
+  /**
    * Warnings about manifest entries that would prevent creating a version from this
    * draft. Present only when there are warnings; omitted when empty.
    */
@@ -310,6 +382,29 @@ export interface PolicySetDraft {
 }
 
 export namespace PolicySetDraft {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
   export interface Warning {
     /**
      * Human-readable description of the warning, e.g. 'validated against schema
@@ -324,18 +419,16 @@ export namespace PolicySetDraft {
     type: 'policy_version_archived' | 'schema_version_mismatch';
 
     /**
-     * Structured detail payload. Present for warning types that carry additional
-     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
-     * when the type alone is sufficient (e.g. policy_version_archived).
+     * Additional structured context for a manifest warning. The shape depends on the
+     * warning type.
      */
     detail?: Warning.Detail;
   }
 
   export namespace Warning {
     /**
-     * Structured detail payload. Present for warning types that carry additional
-     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
-     * when the type alone is sufficient (e.g. policy_version_archived).
+     * Additional structured context for a manifest warning. The shape depends on the
+     * warning type.
      */
     export interface Detail {
       /**
@@ -481,6 +574,12 @@ export interface PolicySetRetrieveParams {
   zone_id: string;
 
   /**
+   * Query param: Opt-in to additional response fields on a single resource (`user`).
+   * Repeatable.
+   */
+  expand?: Array<'user'>;
+
+  /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
    */
   'X-API-Version'?: string;
@@ -554,7 +653,7 @@ export interface PolicySetListParams {
    * supplying both `expand` and `expand[]` with disagreeing values returns
    * `400 Bad Request`.
    */
-  expand?: Array<'total_count'>;
+  expand?: Array<'total_count' | 'user'>;
 
   /**
    * Query param: Filter by active binding status. When `true`, returns only policy
