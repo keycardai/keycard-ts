@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.1](https://github.com/keycardai/keycard-ts/compare/v0.23.0...v0.23.1) (2026-09-28)
+
+
+### Chores
+
+* **stainless:** refresh openapi.yml from api/openapi.yaml ([#41](https://github.com/keycardai/keycard-ts/issues/41)) ([14b4b19](https://github.com/keycardai/keycard-ts/commit/14b4b199c7f3c6fe80da9267ddfd909e61b704cf))
+
 ## [0.23.0](https://github.com/keycardai/keycard-ts/compare/v0.22.0...v0.23.0) (2026-09-22)
 
 
