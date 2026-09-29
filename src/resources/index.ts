@@ -11,24 +11,14 @@ export {
   Organizations,
   type Organization,
   type PageInfoCursor,
-  type RoleScope,
   type TokenResponse,
   type OrganizationListResponse,
-  type OrganizationListIdentitiesResponse,
-  type OrganizationListRolesResponse,
   type OrganizationCreateParams,
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
-  type OrganizationListIdentitiesParams,
-  type OrganizationListRolesParams,
 } from './organizations/organizations';
-export {
-  PolicyBundle,
-  type PolicyBundleRetrieveParams,
-  type PolicyBundleUpdateParams,
-  type PolicyBundleResetParams,
-} from './policy-bundle';
+export { PolicyBundle } from './policy-bundle';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,
