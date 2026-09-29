@@ -258,6 +258,12 @@ export interface ResourceListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
+   * Resources that are not a dependency of this application. Repeatable (none of),
+   * max 100.
+   */
+  'filter[dependency_of_application_id][ne]'?: string | Array<string>;
+
+  /**
    * Restrict results to resources with this publicId. Repeatable, max 100. Mutually
    * exclusive with after/before.
    */

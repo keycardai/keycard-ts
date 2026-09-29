@@ -607,11 +607,6 @@ export interface ApplicationListCredentialsParams {
   /**
    * Query param
    */
-  cursor?: string;
-
-  /**
-   * Query param
-   */
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**

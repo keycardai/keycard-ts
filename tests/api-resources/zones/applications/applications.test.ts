@@ -162,7 +162,6 @@ describe('resource applications', () => {
       zoneId: 'zoneId',
       after: 'x',
       before: 'x',
-      cursor: 'cursor',
       'expand[]': 'total_count',
       limit: 1,
     });

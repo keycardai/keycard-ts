@@ -454,11 +454,61 @@ export interface ApplicationCredentialListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
+   * Exclude credentials whose owning application has this owner type, e.g.
+   * `filter[owner_type][ne]=platform` returns only credentials of org-created
+   * applications.
+   */
+  'filter[owner_type][ne]'?: 'platform' | 'customer';
+
+  /**
+   * Exclude credentials whose owning application has this trait. A single value
+   * excludes that trait; repeated params accumulate into a not-in set (max 100), so
+   * a credential matches when its application's traits contain none of them. Each
+   * value is a single literal trait; a comma is a literal character in the value,
+   * not a delimiter.
+   */
+  'filter[traits][ne]'?: string | Array<string>;
+
+  /**
+   * Filter by credential type; repeated values are OR'd, e.g.
+   * `filter[type]=token&filter[type]=password`.
+   */
+  'filter[type]'?:
+    | 'token'
+    | 'password'
+    | 'public-key'
+    | 'url'
+    | 'public'
+    | Array<'token' | 'password' | 'public-key' | 'url' | 'public'>;
+
+  /**
    * Maximum number of items to return
    */
   limit?: number;
 
+  /**
+   * Search across credential identifier and linked provider name (substring match,
+   * OR'd across repeated values)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by credential identifier (substring match, OR'd across repeated values)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by the linked provider's name (substring match, OR'd across repeated
+   * values)
+   */
+  'query[provider_name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at
+   */
+  sort?: string;
 }
 
 export interface ApplicationCredentialDeleteParams {

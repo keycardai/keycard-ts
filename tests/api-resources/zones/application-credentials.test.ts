@@ -97,8 +97,15 @@ describe('resource applicationCredentials', () => {
           applicationId: 'applicationId',
           before: 'x',
           'expand[]': 'total_count',
+          'filter[owner_type][ne]': 'platform',
+          'filter[traits][ne]': 'string',
+          'filter[type]': 'token',
           limit: 1,
+          'query[]': 'x',
+          'query[identifier]': 'x',
+          'query[provider_name]': 'x',
           slug: 'slug',
+          sort: '-created_at, -created_at,\r\r \t\n\r-created_at,\n\n\t-created_at,\n\r \rcreated_at,\n\t\t\n\t\ncreated_at,\n  \n\r\r -created_at, \t\n\n -created_at',
         },
         { path: '/_stainless_unknown_path' },
       ),
