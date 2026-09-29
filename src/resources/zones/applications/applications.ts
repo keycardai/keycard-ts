@@ -538,6 +538,17 @@ export interface ApplicationListParams {
   'filter[identifier]'?: string | Array<string>;
 
   /**
+   * Filter by owner type: `platform` (Keycard-managed) or `customer` (org-created).
+   */
+  'filter[owner_type]'?: 'platform' | 'customer';
+
+  /**
+   * Exclude applications with this owner type, e.g.
+   * `filter[owner_type][ne]=platform` returns only org-created applications.
+   */
+  'filter[owner_type][ne]'?: 'platform' | 'customer';
+
+  /**
    * Filter by exact application slug
    */
   'filter[slug]'?: string | Array<string>;
@@ -592,11 +603,6 @@ export interface ApplicationListCredentialsParams {
    * Query param: Cursor for backward pagination
    */
   before?: string;
-
-  /**
-   * Query param
-   */
-  cursor?: string;
 
   /**
    * Query param
