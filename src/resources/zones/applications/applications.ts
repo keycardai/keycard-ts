@@ -330,11 +330,6 @@ export interface ApplicationListResourcesResponse {
    * Cursor-based pagination metadata
    */
   pagination: ApplicationListResourcesResponse.Pagination;
-
-  /**
-   * Pagination information
-   */
-  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace ApplicationListResourcesResponse {
