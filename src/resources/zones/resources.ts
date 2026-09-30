@@ -258,6 +258,12 @@ export interface ResourceListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
+   * Restrict results to resources with this publicId. Repeatable, max 100. Mutually
+   * exclusive with after/before.
+   */
+  'filter[id]'?: string | Array<string>;
+
+  /**
    * Filter by exact resource identifier
    */
   'filter[identifier]'?: string | Array<string>;
@@ -266,6 +272,11 @@ export interface ResourceListParams {
    * Filter by owner type: `platform` (Keycard-managed) or `customer` (org-created).
    */
   'filter[owner_type]'?: 'platform' | 'customer';
+
+  /**
+   * Filter by exact resource slug
+   */
+  'filter[slug]'?: string | Array<string>;
 
   /**
    * Filter by trait. Comma-separated values (`a,b`) are AND'd; repeated params are
@@ -284,7 +295,28 @@ export interface ResourceListParams {
    */
   limit?: number;
 
+  /**
+   * Search across name and identifier (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by identifier (substring match)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by name (substring match)
+   */
+  'query[name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * name, identifier
+   */
+  sort?: string;
 }
 
 export interface ResourceDeleteParams {
