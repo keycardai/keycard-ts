@@ -19,14 +19,7 @@ export class Users extends APIResource {
   }
 
   /**
-   * Returns a list of users in the specified zone.
-   *
-   * Note: cursor pagination, search, and sort are not yet enabled for all zones.
-   * Where they are not enabled, the response returns all users in the zone (capped
-   * at 100) in `items`, with `after_cursor` and `before_cursor` set to `null` and
-   * `total_count` of `0`; `filter[email]` and `filter[identifier]` are still
-   * applied, while the pagination, search, and sort parameters below are accepted
-   * but ignored.
+   * Returns a paginated list of users in the specified zone.
    *
    * Use cursor pagination via `after`/`before`. Sort: comma-separated field list;
    * prefix with `-` for descending. Use `expand[]=total_count` to include the
@@ -40,13 +33,20 @@ export class Users extends APIResource {
    * to additionally inline the full identity provider on each federation credential.
    * Filter by exact email via `filter[email]` and by exact identifier via
    * `filter[identifier]`; restrict to members of a group via `filter[groups]`
-   * (repeatable, OR'd across values); search via `query[email]` / `query[subject]` /
-   * `query[]` (substring match, OR'd across repeated values). `query[]` matches
-   * against email and federation credential subject. Pass `filter[id]` (repeatable,
-   * max 100) to restrict results to a known set of users — mutually exclusive with
-   * `after`/`before` (returns 400 if combined). When `filter[id]` is set, `limit` is
-   * ignored and the response contains every requested user that exists in the zone,
-   * in a single page. IDs not in the zone are silently omitted.
+   * (repeatable, OR'd across values); restrict to users directly granted a role via
+   * `filter[role]` (role identifier, repeatable up to 100, OR'd across values;
+   * group-inherited grants do not match); pass `filter[external]=false` for only
+   * users managed in Keycard or `filter[external]=true` for only users provisioned
+   * by an external directory (omit to list both); match exactly on the user's
+   * `subject` and `issuer` via `filter[subject]` and `filter[issuer]` (each
+   * repeatable and OR'd across values; AND'd with each other); search via
+   * `query[email]` / `query[subject]` / `query[]` (substring match, OR'd across
+   * repeated values). `query[]` matches against email and the user's `subject`. Pass
+   * `filter[id]` (repeatable, max 100) to restrict results to a known set of users —
+   * mutually exclusive with `after`/`before` (returns 400 if combined). When
+   * `filter[id]` is set, `limit` is ignored and the response contains every
+   * requested user that exists in the zone, in a single page. IDs not in the zone
+   * are silently omitted.
    */
   list(
     zoneID: string,
@@ -80,6 +80,13 @@ export interface User {
    * Whether the email address has been verified
    */
   email_verified: boolean;
+
+  /**
+   * Whether the user is synced from an external directory over SCIM. When true the
+   * user is directory-owned: `status` cannot be changed and the user cannot be
+   * deleted through this API while the zone has `external_sync_enabled` set.
+   */
+  external: boolean;
 
   /**
    * Zone-scoped user identifier. Defaults to the user's Keycard ID. When the
@@ -227,6 +234,19 @@ export namespace User {
      * Unique identifier of the group
      */
     id: string;
+
+    /**
+     * Whether the group is synced from an external directory. When true the group is
+     * directory-owned and its membership is read-only; when false it is managed in
+     * Keycard.
+     */
+    external: boolean;
+
+    /**
+     * Issuer of the external directory the group was synced from. `null` for groups
+     * managed in Keycard. Read-only: set by external sync, never by the caller.
+     */
+    external_issuer: string | null;
 
     /**
      * Zone-unique slug that policy rules match on.
@@ -387,6 +407,12 @@ export interface UserListParams {
   'filter[email]'?: string | Array<string>;
 
   /**
+   * Filter by source: `false` for users managed in Keycard, `true` for users
+   * provisioned by an external directory. Omit to list both.
+   */
+  'filter[external]'?: boolean;
+
+  /**
    * Restrict to members of this group (by group ID). Repeatable; OR'd across values.
    */
   'filter[groups]'?: string | Array<string>;
@@ -403,12 +429,28 @@ export interface UserListParams {
   'filter[identifier]'?: string | Array<string>;
 
   /**
+   * Filter by exact `issuer`. Repeatable; OR'd across values.
+   */
+  'filter[issuer]'?: string | Array<string>;
+
+  /**
+   * Restrict to users directly granted this role (by role identifier). Repeatable,
+   * max 100; OR'd across values. Group-inherited grants do not match.
+   */
+  'filter[role]'?: string | Array<string>;
+
+  /**
+   * Filter by exact `subject`. Repeatable; OR'd across values.
+   */
+  'filter[subject]'?: string | Array<string>;
+
+  /**
    * Maximum number of items to return
    */
   limit?: number;
 
   /**
-   * Search across email and credential subject (substring match)
+   * Search across email and the user's `subject` (substring match)
    */
   'query[]'?: string | Array<string>;
 
@@ -418,7 +460,7 @@ export interface UserListParams {
   'query[email]'?: string | Array<string>;
 
   /**
-   * Search by federated credential subject (substring match)
+   * Search by the user's `subject` (substring match)
    */
   'query[subject]'?: string | Array<string>;
 

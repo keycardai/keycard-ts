@@ -96,7 +96,6 @@ describe('resource applicationCredentials', () => {
           after: 'x',
           applicationId: 'applicationId',
           before: 'x',
-          cursor: 'cursor',
           'expand[]': 'total_count',
           limit: 1,
           slug: 'slug',
