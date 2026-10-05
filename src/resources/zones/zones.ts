@@ -30,17 +30,7 @@ import {
   Grant,
 } from './delegated-grants';
 import * as MembersAPI from './members';
-import {
-  MemberAddParams,
-  MemberDeleteParams,
-  MemberListParams,
-  MemberListResponse,
-  MemberRetrieveParams,
-  MemberUpdateParams,
-  Members,
-  ZoneMember,
-  ZoneRole,
-} from './members';
+import { Members } from './members';
 import * as PolicySchemasAPI from './policy-schemas';
 import {
   PolicySchemaListParams,
@@ -205,7 +195,10 @@ export class Zones extends APIResource {
   }
 
   /**
-   * Returns a list of zones for the authenticated organization
+   * Returns a list of zones for the authenticated organization. Cursor pagination
+   * via `after`/`before` and `limit`, plus `expand[]=total_count`, name substring
+   * search, and `sort`, are honored only when the `zone-pagination` flag is enabled;
+   * the default response is the unbounded legacy shape.
    */
   list(
     query: ZoneListParams | null | undefined = {},
@@ -276,6 +269,12 @@ export interface Zone {
    * Entity creation timestamp
    */
   created_at: string;
+
+  /**
+   * Whether external directory sync (SCIM) is enabled for this zone. Required to
+   * create external sync tokens.
+   */
+  external_sync_enabled: boolean;
 
   /**
    * Human-readable name
@@ -462,7 +461,7 @@ export interface ZoneListResponse {
   items: Array<Zone>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: PageInfoPagination;
 
@@ -620,6 +619,12 @@ export interface ZoneUpdateParams {
    * customer-managed key and revert to default)
    */
   encryption_key?: ZoneUpdateParams.EncryptionKey | null;
+
+  /**
+   * Turns external directory sync (SCIM) on or off for this zone. Required to create
+   * external sync tokens.
+   */
+  external_sync_enabled?: boolean;
 
   /**
    * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
@@ -855,17 +860,7 @@ export declare namespace Zones {
     type UserListParams as UserListParams,
   };
 
-  export {
-    Members as Members,
-    type ZoneMember as ZoneMember,
-    type ZoneRole as ZoneRole,
-    type MemberListResponse as MemberListResponse,
-    type MemberRetrieveParams as MemberRetrieveParams,
-    type MemberUpdateParams as MemberUpdateParams,
-    type MemberListParams as MemberListParams,
-    type MemberDeleteParams as MemberDeleteParams,
-    type MemberAddParams as MemberAddParams,
-  };
+  export { Members as Members };
 
   export {
     Secrets as Secrets,
