@@ -51,7 +51,7 @@ describe('resource organizations', () => {
     await expect(
       client.organizations.retrieve(
         'x',
-        { expand: ['permissions'], 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { 'expand[]': 'permissions', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
@@ -89,7 +89,7 @@ describe('resource organizations', () => {
         {
           after: 'x',
           before: 'x',
-          expand: ['permissions'],
+          'expand[]': 'permissions',
           limit: 1,
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
