@@ -60,7 +60,7 @@ describe('resource credentials', () => {
       {
         organization_id: 'x',
         service_account_id: 'ab3def8hij2klm9opq5rst7uvw',
-        expand: ['permissions'],
+        'expand[]': 'permissions',
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
@@ -118,8 +118,9 @@ describe('resource credentials', () => {
         organization_id: 'x',
         after: 'x',
         before: 'x',
-        expand: ['permissions'],
+        'expand[]': 'permissions',
         limit: 1,
+        query: ['x'],
         'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     );
