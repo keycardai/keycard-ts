@@ -107,6 +107,7 @@ describe('resource resources', () => {
           before: 'x',
           credentialProviderId: 'credentialProviderId',
           'expand[]': 'total_count',
+          'filter[dependency_of_application_id][ne]': 'string',
           'filter[id]': 'string',
           'filter[identifier]': 'string',
           'filter[owner_type]': 'platform',
