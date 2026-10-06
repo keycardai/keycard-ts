@@ -55,7 +55,8 @@ describe('resource invitations', () => {
         {
           after: 'x',
           before: 'x',
-          expand: ['permissions'],
+          'expand[]': 'permissions',
+          'filter[status]': ['pending'],
           limit: 1,
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },

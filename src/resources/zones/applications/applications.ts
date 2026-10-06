@@ -330,11 +330,6 @@ export interface ApplicationListResourcesResponse {
    * Cursor-based pagination metadata
    */
   pagination: ApplicationListResourcesResponse.Pagination;
-
-  /**
-   * Pagination information
-   */
-  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace ApplicationListResourcesResponse {
@@ -603,11 +598,6 @@ export interface ApplicationListCredentialsParams {
    * Query param: Cursor for backward pagination
    */
   before?: string;
-
-  /**
-   * Query param
-   */
-  cursor?: string;
 
   /**
    * Query param
