@@ -9,10 +9,10 @@ const client = new KeycardAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource ssoConnection', () => {
+describe('resource roles', () => {
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.organizations.ssoConnection.retrieve('x');
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.zones.roles.create('zoneId', { identifier: 'identifier' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,20 +23,83 @@ describe('resource ssoConnection', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
+  test.skip('create: required and optional params', async () => {
+    const response = await client.zones.roles.create('zoneId', {
+      identifier: 'identifier',
+      description: 'description',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('retrieve: only required params', async () => {
+    const responsePromise = client.zones.roles.retrieve('roleId', { zoneId: 'zoneId' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('retrieve: required and optional params', async () => {
+    const response = await client.zones.roles.retrieve('roleId', { zoneId: 'zoneId' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.zones.roles.update('roleId', { zoneId: 'zoneId' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.zones.roles.update('roleId', {
+      zoneId: 'zoneId',
+      description: 'description',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('list', async () => {
+    const responsePromise = client.zones.roles.list('zoneId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.organizations.ssoConnection.retrieve(
-        'x',
-        { 'expand[]': 'permissions', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+      client.zones.roles.list(
+        'zoneId',
+        {
+          after: 'x',
+          before: 'x',
+          'expand[]': 'total_count',
+          identifier: 'identifier',
+          limit: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
   });
 
   // Mock server tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.organizations.ssoConnection.update('x', {});
+  test.skip('delete: only required params', async () => {
+    const responsePromise = client.zones.roles.delete('roleId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -47,67 +110,7 @@ describe('resource ssoConnection', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('disable', async () => {
-    const responsePromise = client.organizations.ssoConnection.disable('x');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('disable: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.organizations.ssoConnection.disable(
-        'x',
-        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
-  });
-
-  // Mock server tests are disabled
-  test.skip('enable: only required params', async () => {
-    const responsePromise = client.organizations.ssoConnection.enable('x', {
-      client_id: 'client_id',
-      identifier: 'x',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('enable: required and optional params', async () => {
-    const response = await client.organizations.ssoConnection.enable('x', {
-      client_id: 'client_id',
-      identifier: 'x',
-      client_secret: 'client_secret',
-      protocols: {
-        oauth2: {
-          authorization_endpoint: 'https://example.com',
-          authorization_parameters: { foo: 'string' },
-          code_challenge_methods_supported: ['string'],
-          jwks_uri: 'https://example.com',
-          registration_endpoint: 'https://example.com',
-          scopes_supported: ['string'],
-          token_endpoint: 'https://example.com',
-        },
-        openid: {
-          scopes: ['string'],
-          user_identifier_claim: 'user_identifier_claim',
-          userinfo_endpoint: 'https://example.com',
-        },
-      },
-      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
+  test.skip('delete: required and optional params', async () => {
+    const response = await client.zones.roles.delete('roleId', { zoneId: 'zoneId' });
   });
 });

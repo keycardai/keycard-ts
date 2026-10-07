@@ -9,13 +9,10 @@ const client = new KeycardAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource invitations', () => {
+describe('resource roles', () => {
   // Mock server tests are disabled
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.organizations.invitations.create('x', {
-      email: 'dev@stainless.com',
-      role: 'org_admin',
-    });
+  test.skip('list: only required params', async () => {
+    const responsePromise = client.zones.users.roles.list('userId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -26,17 +23,21 @@ describe('resource invitations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('create: required and optional params', async () => {
-    const response = await client.organizations.invitations.create('x', {
-      email: 'dev@stainless.com',
-      role: 'org_admin',
-      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  test.skip('list: required and optional params', async () => {
+    const response = await client.zones.users.roles.list('userId', {
+      zoneId: 'zoneId',
+      after: 'x',
+      before: 'x',
+      'expand[]': 'total_count',
+      'filter[scope_id]': 'string',
+      'filter[scoped]': true,
+      limit: 1,
     });
   });
 
   // Mock server tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.organizations.invitations.list('x');
+  test.skip('assign: only required params', async () => {
+    const responsePromise = client.zones.users.roles.assign('userId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -47,29 +48,20 @@ describe('resource invitations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.organizations.invitations.list(
-        'x',
-        {
-          after: 'x',
-          before: 'x',
-          'expand[]': 'permissions',
-          'filter[status]': ['pending'],
-          limit: 1,
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  test.skip('assign: required and optional params', async () => {
+    const response = await client.zones.users.roles.assign('userId', {
+      zoneId: 'zoneId',
+      owner_type: 'platform',
+      role_id: 'role_id',
+      role_identifier: 'role_identifier',
+      scope_id: 'x',
+      scope_type: 'x',
+    });
   });
 
   // Mock server tests are disabled
-  test.skip('delete: only required params', async () => {
-    const responsePromise = client.organizations.invitations.delete('ab3def8hij2klm9opq5rst7uvw', {
-      organization_id: 'x',
-    });
+  test.skip('revoke: only required params', async () => {
+    const responsePromise = client.zones.users.roles.revoke('roleId', { zoneId: 'zoneId', userId: 'userId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -80,10 +72,12 @@ describe('resource invitations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('delete: required and optional params', async () => {
-    const response = await client.organizations.invitations.delete('ab3def8hij2klm9opq5rst7uvw', {
-      organization_id: 'x',
-      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  test.skip('revoke: required and optional params', async () => {
+    const response = await client.zones.users.roles.revoke('roleId', {
+      zoneId: 'zoneId',
+      userId: 'userId',
+      scope_id: 'x',
+      scope_type: 'x',
     });
   });
 });
