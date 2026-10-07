@@ -9,10 +9,10 @@ const client = new KeycardAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource organizations', () => {
+describe('resource groups', () => {
   // Mock server tests are disabled
-  test.skip('create', async () => {
-    const responsePromise = client.organizations.create();
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.zones.groups.create('zoneId', { name: 'x' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,19 +23,13 @@ describe('resource organizations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('create: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.organizations.create(
-        { name: 'name', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  test.skip('create: required and optional params', async () => {
+    const response = await client.zones.groups.create('zoneId', { name: 'x', identifier: 'x' });
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.organizations.retrieve('x');
+  test.skip('retrieve: only required params', async () => {
+    const responsePromise = client.zones.groups.retrieve('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -46,20 +40,16 @@ describe('resource organizations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.organizations.retrieve(
-        'x',
-        { 'expand[]': 'permissions', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  test.skip('retrieve: required and optional params', async () => {
+    const response = await client.zones.groups.retrieve('groupId', {
+      zoneId: 'zoneId',
+      'expand[]': 'member_count',
+    });
   });
 
   // Mock server tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.organizations.update('x', {});
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.zones.groups.update('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -67,11 +57,20 @@ describe('resource organizations', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.zones.groups.update('groupId', {
+      zoneId: 'zoneId',
+      identifier: 'x',
+      name: 'x',
+    });
   });
 
   // Mock server tests are disabled
   test.skip('list', async () => {
-    const responsePromise = client.organizations.list();
+    const responsePromise = client.zones.groups.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -85,13 +84,19 @@ describe('resource organizations', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.organizations.list(
+      client.zones.groups.list(
+        'zoneId',
         {
           after: 'x',
           before: 'x',
-          'expand[]': 'permissions',
+          'expand[]': 'total_count',
+          'filter[external_issuer]': 'string',
+          'filter[external]': true,
+          'filter[id]': 'string',
+          'filter[identifier]': 'string',
           limit: 1,
-          'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          'query[]': 'x',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -99,8 +104,8 @@ describe('resource organizations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('delete', async () => {
-    const responsePromise = client.organizations.delete('x');
+  test.skip('delete: only required params', async () => {
+    const responsePromise = client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -111,14 +116,7 @@ describe('resource organizations', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('delete: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.organizations.delete(
-        'x',
-        { 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  test.skip('delete: required and optional params', async () => {
+    const response = await client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
   });
 });
