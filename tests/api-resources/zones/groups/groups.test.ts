@@ -9,10 +9,10 @@ const client = new KeycardAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource applications', () => {
+describe('resource groups', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.zones.applications.create('zoneId', { identifier: 'x', name: 'x' });
+    const responsePromise = client.zones.groups.create('zoneId', { name: 'x' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,25 +24,12 @@ describe('resource applications', () => {
 
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.zones.applications.create('zoneId', {
-      identifier: 'x',
-      name: 'x',
-      consent: 'implicit',
-      dependencies: [{ id: 'id', type: 'type' }],
-      description: 'description',
-      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
-      protocols: {
-        oauth2: {
-          post_logout_redirect_uris: ['https://example.com'],
-          redirect_uris: ['https://example.com'],
-        },
-      },
-    });
+    const response = await client.zones.groups.create('zoneId', { name: 'x', identifier: 'x' });
   });
 
   // Mock server tests are disabled
   test.skip('retrieve: only required params', async () => {
-    const responsePromise = client.zones.applications.retrieve('id', { zoneId: 'zoneId' });
+    const responsePromise = client.zones.groups.retrieve('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -54,12 +41,15 @@ describe('resource applications', () => {
 
   // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
-    const response = await client.zones.applications.retrieve('id', { zoneId: 'zoneId' });
+    const response = await client.zones.groups.retrieve('groupId', {
+      zoneId: 'zoneId',
+      'expand[]': 'member_count',
+    });
   });
 
   // Mock server tests are disabled
   test.skip('update: only required params', async () => {
-    const responsePromise = client.zones.applications.update('id', { zoneId: 'zoneId' });
+    const responsePromise = client.zones.groups.update('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -71,25 +61,16 @@ describe('resource applications', () => {
 
   // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
-    const response = await client.zones.applications.update('id', {
+    const response = await client.zones.groups.update('groupId', {
       zoneId: 'zoneId',
-      consent: 'implicit',
-      description: 'description',
       identifier: 'x',
-      metadata: { docs_url: 'https://example.com', icon_url: 'https://example.com' },
       name: 'x',
-      protocols: {
-        oauth2: {
-          post_logout_redirect_uris: ['https://example.com'],
-          redirect_uris: ['https://example.com'],
-        },
-      },
     });
   });
 
   // Mock server tests are disabled
   test.skip('list', async () => {
-    const responsePromise = client.zones.applications.list('zoneId');
+    const responsePromise = client.zones.groups.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -103,23 +84,18 @@ describe('resource applications', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.zones.applications.list(
+      client.zones.groups.list(
         'zoneId',
         {
           after: 'x',
           before: 'x',
           'expand[]': 'total_count',
+          'filter[external_issuer]': 'string',
+          'filter[external]': true,
           'filter[id]': 'string',
           'filter[identifier]': 'string',
-          'filter[owner_type]': 'platform',
-          'filter[owner_type][ne]': 'platform',
-          'filter[slug]': 'string',
-          identifier: 'identifier',
           limit: 1,
           'query[]': 'x',
-          'query[identifier]': 'x',
-          'query[name]': 'x',
-          slug: 'slug',
           sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
@@ -129,7 +105,7 @@ describe('resource applications', () => {
 
   // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
-    const responsePromise = client.zones.applications.delete('id', { zoneId: 'zoneId' });
+    const responsePromise = client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -141,53 +117,6 @@ describe('resource applications', () => {
 
   // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
-    const response = await client.zones.applications.delete('id', { zoneId: 'zoneId' });
-  });
-
-  // Mock server tests are disabled
-  test.skip('listCredentials: only required params', async () => {
-    const responsePromise = client.zones.applications.listCredentials('id', { zoneId: 'zoneId' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listCredentials: required and optional params', async () => {
-    const response = await client.zones.applications.listCredentials('id', {
-      zoneId: 'zoneId',
-      after: 'x',
-      before: 'x',
-      'expand[]': 'total_count',
-      limit: 1,
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('listResources: only required params', async () => {
-    const responsePromise = client.zones.applications.listResources('id', { zoneId: 'zoneId' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('listResources: required and optional params', async () => {
-    const response = await client.zones.applications.listResources('id', {
-      zoneId: 'zoneId',
-      after: 'x',
-      before: 'x',
-      cursor: 'cursor',
-      'expand[]': 'total_count',
-      limit: 1,
-    });
+    const response = await client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
   });
 });

@@ -19,6 +19,7 @@ export {
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
+  type OrganizationDeleteParams,
 } from './organizations';
 export {
   SSOConnectionResource,

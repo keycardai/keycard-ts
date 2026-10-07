@@ -17,6 +17,7 @@ export {
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
+  type OrganizationDeleteParams,
 } from './organizations/organizations';
 export { PolicyBundle } from './policy-bundle';
 export {
