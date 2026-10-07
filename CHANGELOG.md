@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.24.0](https://github.com/keycardai/keycard-ts/compare/v0.23.0...v0.24.0) (2026-10-07)
+
+
+### Features
+
+* **ID-604:** filter[dependency_of_application_id][ne] on list resources ([#43](https://github.com/keycardai/keycard-ts/issues/43)) ([6b7d67b](https://github.com/keycardai/keycard-ts/commit/6b7d67baecf87343dabc38085eb2e35d39d96c4b))
+
+
+### Chores
+
+* **stainless:** refresh openapi.yml from api/openapi.yaml ([#41](https://github.com/keycardai/keycard-ts/issues/41)) ([14b4b19](https://github.com/keycardai/keycard-ts/commit/14b4b199c7f3c6fe80da9267ddfd909e61b704cf))
+
 ## [0.23.0](https://github.com/keycardai/keycard-ts/compare/v0.22.0...v0.23.0) (2026-09-22)
 
 
