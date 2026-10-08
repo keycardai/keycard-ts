@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../../core/resource';
 import * as ProvidersAPI from '../providers';
-import * as ZonesAPI from '../zones';
 import * as ApplicationsAPI from './applications';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
@@ -183,11 +182,6 @@ export interface DependencyListResponse {
    * Cursor-based pagination metadata
    */
   pagination: DependencyListResponse.Pagination;
-
-  /**
-   * Pagination information
-   */
-  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace DependencyListResponse {

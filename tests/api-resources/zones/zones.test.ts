@@ -84,6 +84,7 @@ describe('resource zones', () => {
           default_resource_id: 'default_resource_id',
           description: 'description',
           encryption_key: { arn: 'x', type: 'aws' },
+          external_sync_enabled: true,
           name: 'x',
           protocols: {
             oauth2: {
@@ -123,6 +124,7 @@ describe('resource zones', () => {
           cursor: 'cursor',
           'expand[]': 'total_count',
           'filter[organization_id]': 'filter[organization_id]',
+          'filter[permission][in]': 'string',
           limit: 1,
           slug: 'slug',
         },
