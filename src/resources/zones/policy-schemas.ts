@@ -228,7 +228,7 @@ export interface PolicySchemaListParams {
    * supplying both `expand` and `expand[]` with disagreeing values returns
    * `400 Bad Request`.
    */
-  expand?: Array<'total_count'>;
+  expand?: Array<'total_count' | 'user'>;
 
   /**
    * Query param: Filter schemas by default status. When `true`, returns only the
