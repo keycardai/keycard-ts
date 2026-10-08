@@ -9,10 +9,10 @@ const client = new KeycardAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource zones', () => {
+describe('resource groups', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.zones.create({ name: 'x' });
+    const responsePromise = client.zones.groups.create('zoneId', { name: 'x' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,26 +24,32 @@ describe('resource zones', () => {
 
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.zones.create({
-      name: 'x',
-      default_mcp_gateway_application: true,
-      description: 'description',
-      encryption_key: { arn: 'x', type: 'aws' },
-      organization_id: 'organization_id',
-      protocols: {
-        oauth2: {
-          cimd: { allowed_client_ids: ['string'], enabled: true },
-          dcr_enabled: true,
-          pkce_required: true,
-        },
-      },
-      requires_invitation: true,
+    const response = await client.zones.groups.create('zoneId', { name: 'x', identifier: 'x' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('retrieve: only required params', async () => {
+    const responsePromise = client.zones.groups.retrieve('groupId', { zoneId: 'zoneId' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('retrieve: required and optional params', async () => {
+    const response = await client.zones.groups.retrieve('groupId', {
+      zoneId: 'zoneId',
+      'expand[]': 'member_count',
     });
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve', async () => {
-    const responsePromise = client.zones.retrieve('zoneId');
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.zones.groups.update('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -54,56 +60,17 @@ describe('resource zones', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.zones.retrieve('zoneId', { 'expand[]': 'permissions' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
-  });
-
-  // Mock server tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.zones.update('zoneId');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('update: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.zones.update(
-        'zoneId',
-        {
-          default_mcp_gateway_application_id: 'default_mcp_gateway_application_id',
-          default_resource_id: 'default_resource_id',
-          description: 'description',
-          encryption_key: { arn: 'x', type: 'aws' },
-          external_sync_enabled: true,
-          name: 'x',
-          protocols: {
-            oauth2: {
-              cimd: { allowed_client_ids: ['string'], enabled: true },
-              dcr_enabled: true,
-              pkce_required: true,
-            },
-          },
-          requires_invitation: true,
-          user_identity_provider_id: 'user_identity_provider_id',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(KeycardAPI.NotFoundError);
+  test.skip('update: required and optional params', async () => {
+    const response = await client.zones.groups.update('groupId', {
+      zoneId: 'zoneId',
+      identifier: 'x',
+      name: 'x',
+    });
   });
 
   // Mock server tests are disabled
   test.skip('list', async () => {
-    const responsePromise = client.zones.list();
+    const responsePromise = client.zones.groups.list('zoneId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -117,16 +84,19 @@ describe('resource zones', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.zones.list(
+      client.zones.groups.list(
+        'zoneId',
         {
           after: 'x',
           before: 'x',
-          cursor: 'cursor',
           'expand[]': 'total_count',
-          'filter[organization_id]': 'filter[organization_id]',
-          'filter[permission][in]': 'string',
+          'filter[external_issuer]': 'string',
+          'filter[external]': true,
+          'filter[id]': 'string',
+          'filter[identifier]': 'string',
           limit: 1,
-          slug: 'slug',
+          'query[]': 'x',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -134,8 +104,8 @@ describe('resource zones', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('delete', async () => {
-    const responsePromise = client.zones.delete('zoneId');
+  test.skip('delete: only required params', async () => {
+    const responsePromise = client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -143,5 +113,10 @@ describe('resource zones', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('delete: required and optional params', async () => {
+    const response = await client.zones.groups.delete('groupId', { zoneId: 'zoneId' });
   });
 });

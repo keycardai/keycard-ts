@@ -182,6 +182,15 @@ export interface InvitationListParams {
   'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
 
   /**
+   * Query param: Return only invitations with these statuses. Repeat the parameter
+   * to match any of several statuses
+   * (`?filter[status]=pending&filter[status]=accepted`). Expired invitations are
+   * never listed, so `expired` matches nothing. When absent, no status filter is
+   * applied.
+   */
+  'filter[status]'?: Array<InvitationStatus>;
+
+  /**
    * Query param: Maximum number of invitations to return
    */
   limit?: number;

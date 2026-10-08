@@ -28,6 +28,7 @@ import { PolicyBundle } from './resources/policy-bundle';
 import {
   Organization,
   OrganizationCreateParams,
+  OrganizationDeleteParams,
   OrganizationListParams,
   OrganizationListResponse,
   OrganizationRetrieveParams,
@@ -906,6 +907,7 @@ export declare namespace KeycardAPI {
     type OrganizationRetrieveParams as OrganizationRetrieveParams,
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
+    type OrganizationDeleteParams as OrganizationDeleteParams,
   };
 
   export {
