@@ -111,6 +111,8 @@ describe('resource applications', () => {
           'expand[]': 'total_count',
           'filter[id]': 'string',
           'filter[identifier]': 'string',
+          'filter[owner_type]': 'platform',
+          'filter[owner_type][ne]': 'platform',
           'filter[slug]': 'string',
           identifier: 'identifier',
           limit: 1,
@@ -160,7 +162,6 @@ describe('resource applications', () => {
       zoneId: 'zoneId',
       after: 'x',
       before: 'x',
-      cursor: 'cursor',
       'expand[]': 'total_count',
       limit: 1,
     });
