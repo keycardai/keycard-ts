@@ -320,7 +320,7 @@ export interface ResourceListParams {
 
   /**
    * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
-   * name, identifier
+   * updated_at, name, identifier
    */
   sort?: string;
 }
