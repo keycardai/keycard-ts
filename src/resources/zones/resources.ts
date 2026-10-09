@@ -49,10 +49,10 @@ export class Resources extends APIResource {
    * Returns a paginated list of resources in the specified zone. Use cursor
    * pagination via `after`/`before`, and `expand[]=total_count` to include the
    * matching row count. Filter by exact identifier via `filter[identifier]`. Filter
-   * by trait via `filter[traits]`: comma-separated values are AND'd, repeated params
-   * are OR'd. The scalar `identifier` query parameter is a backward-compatible alias
-   * for `filter[identifier]`: exact match on a single value, folded into the same
-   * exact-match identifier filter.
+   * by trait via `filter[traits]` (repeated params are OR'd) or
+   * `filter[traits][all]` (contains-all). The scalar `identifier` query parameter is
+   * a backward-compatible alias for `filter[identifier]`: exact match on a single
+   * value, folded into the same exact-match identifier filter.
    */
   list(
     zoneID: string,
@@ -258,6 +258,18 @@ export interface ResourceListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
+   * Resources that are not a dependency of this application. Repeatable (none of),
+   * max 100.
+   */
+  'filter[dependency_of_application_id][ne]'?: string | Array<string>;
+
+  /**
+   * Restrict results to resources with this publicId. Repeatable, max 100. Mutually
+   * exclusive with after/before.
+   */
+  'filter[id]'?: string | Array<string>;
+
+  /**
    * Filter by exact resource identifier
    */
   'filter[identifier]'?: string | Array<string>;
@@ -268,8 +280,13 @@ export interface ResourceListParams {
   'filter[owner_type]'?: 'platform' | 'customer';
 
   /**
-   * Filter by trait. Comma-separated values (`a,b`) are AND'd; repeated params are
-   * OR'd.
+   * Filter by exact resource slug
+   */
+  'filter[slug]'?: string | Array<string>;
+
+  /**
+   * Filter by trait. Repeated params are OR'd; each value is a single literal trait
+   * (a comma is a literal character). Use `filter[traits][all]` for contains-all.
    */
   'filter[traits]'?: string | Array<string>;
 
@@ -284,7 +301,28 @@ export interface ResourceListParams {
    */
   limit?: number;
 
+  /**
+   * Search across name and identifier (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by identifier (substring match)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by name (substring match)
+   */
+  'query[name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * updated_at, name, identifier
+   */
+  sort?: string;
 }
 
 export interface ResourceDeleteParams {
