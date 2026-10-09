@@ -13,17 +13,13 @@ export {
   Organizations,
   type Organization,
   type PageInfoCursor,
-  type RoleScope,
   type TokenResponse,
   type OrganizationListResponse,
-  type OrganizationListIdentitiesResponse,
-  type OrganizationListRolesResponse,
   type OrganizationCreateParams,
   type OrganizationRetrieveParams,
   type OrganizationUpdateParams,
   type OrganizationListParams,
-  type OrganizationListIdentitiesParams,
-  type OrganizationListRolesParams,
+  type OrganizationDeleteParams,
 } from './organizations';
 export {
   SSOConnectionResource,
@@ -44,14 +40,4 @@ export {
   type ServiceAccountListParams,
   type ServiceAccountDeleteParams,
 } from './service-accounts/index';
-export {
-  Users,
-  type OrganizationRole,
-  type OrganizationStatus,
-  type OrganizationUser,
-  type UserListResponse,
-  type UserRetrieveParams,
-  type UserUpdateParams,
-  type UserListParams,
-  type UserDeleteParams,
-} from './users';
+export { Users, type OrganizationRole, type OrganizationStatus, type OrganizationUser } from './users';
