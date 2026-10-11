@@ -159,9 +159,14 @@ export interface ServiceAccountListResponse {
   items: Array<ServiceAccount>;
 
   /**
-   * Pagination information using cursor-based pagination
+   * @deprecated Pagination information using cursor-based pagination
    */
   page_info: OrganizationsAPI.PageInfoCursor;
+
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
+  pagination: ServiceAccountListResponse.Pagination;
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only
@@ -170,6 +175,29 @@ export interface ServiceAccountListResponse {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
+}
+
+export namespace ServiceAccountListResponse {
+  /**
+   * Cursor-based pagination metadata returned alongside a list of results
+   */
+  export interface Pagination {
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    after_cursor: string | null;
+
+    /**
+     * An opaque cursor used for paginating through a list of results
+     */
+    before_cursor: string | null;
+
+    /**
+     * Total number of items across all pages. Only present when the request includes
+     * ?expand[]=total_count.
+     */
+    total_count?: number;
+  }
 }
 
 export interface ServiceAccountCreateParams {
@@ -198,12 +226,13 @@ export interface ServiceAccountRetrieveParams {
 
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -248,17 +277,25 @@ export interface ServiceAccountListParams {
 
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
 
   /**
    * Query param: Maximum number of service accounts to return
    */
   limit?: number;
+
+  /**
+   * Query param: Search service accounts by name or description (case-insensitive
+   * substring match). When multiple values are provided, a service account matches
+   * if it matches any of them.
+   */
+  query?: Array<string>;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
