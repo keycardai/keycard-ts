@@ -28,7 +28,7 @@ describe('resource ssoConnection', () => {
     await expect(
       client.organizations.ssoConnection.retrieve(
         'x',
-        { expand: ['permissions'], 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { 'expand[]': 'permissions', 'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(KeycardAPI.NotFoundError);
