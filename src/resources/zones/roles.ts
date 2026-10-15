@@ -33,10 +33,8 @@ export class Roles extends APIResource {
   }
 
   /**
-   * Returns the roles defined in the specified zone. The full result set is
-   * currently returned in a single page; the `after`/`before`/`limit` cursor
-   * parameters are reserved and not yet enforced, and `pagination` cursors are
-   * always null.
+   * Returns the roles defined in the specified zone, cursor-paginated. Ordered by
+   * identifier.
    */
   list(
     zoneID: string,

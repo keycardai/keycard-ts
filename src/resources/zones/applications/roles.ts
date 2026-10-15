@@ -9,10 +9,9 @@ import { path } from '../../../internal/utils/path';
 
 export class Roles extends APIResource {
   /**
-   * Returns the roles assigned to the specified application within the zone. The
-   * full result set is currently returned in a single page; the
-   * `after`/`before`/`limit` cursor parameters are reserved and not yet enforced,
-   * and `pagination` cursors are always null.
+   * Returns the roles assigned to the specified application within the zone. Use
+   * cursor pagination via `after`/`before`; pass `expand[]=total_count` to include
+   * the matching row count.
    */
   list(
     applicationID: string,
