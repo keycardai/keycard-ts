@@ -5,6 +5,7 @@ import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestIni
 import { uuid4 } from './internal/utils/uuid';
 import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
+import { retryAfterMillis } from './lib/retry-after';
 export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
 import type { APIResponseProps } from './internal/parse';
@@ -681,27 +682,7 @@ export class KeycardAPI {
     requestLogID: string,
     responseHeaders?: Headers | undefined,
   ): Promise<APIResponseProps> {
-    let timeoutMillis: number | undefined;
-
-    // Note the `retry-after-ms` header may not be standard, but is a good idea and we'd like proactive support for it.
-    const retryAfterMillisHeader = responseHeaders?.get('retry-after-ms');
-    if (retryAfterMillisHeader) {
-      const timeoutMs = parseFloat(retryAfterMillisHeader);
-      if (!Number.isNaN(timeoutMs)) {
-        timeoutMillis = timeoutMs;
-      }
-    }
-
-    // About the Retry-After header: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
-    const retryAfterHeader = responseHeaders?.get('retry-after');
-    if (retryAfterHeader && !timeoutMillis) {
-      const timeoutSeconds = parseFloat(retryAfterHeader);
-      if (!Number.isNaN(timeoutSeconds)) {
-        timeoutMillis = timeoutSeconds * 1000;
-      } else {
-        timeoutMillis = Date.parse(retryAfterHeader) - Date.now();
-      }
-    }
+    let timeoutMillis = retryAfterMillis(responseHeaders);
 
     // If the API asks us to wait a certain amount of time, just do what it
     // says, but otherwise calculate a default
