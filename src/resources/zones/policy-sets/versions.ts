@@ -52,8 +52,10 @@ export class Versions extends APIResource {
       policy_set_id,
       'X-API-Version': xAPIVersion,
       'X-Client-Request-ID': xClientRequestID,
+      ...query
     } = params;
     return this._client.get(path`/zones/${zone_id}/policy-sets/${policy_set_id}/versions/${versionID}`, {
+      query,
       ...options,
       headers: buildHeaders([
         {
@@ -231,11 +233,71 @@ export interface PolicySetVersion {
   archived_by?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  archived_by_user?: PolicySetVersion.ArchivedByUser;
+
+  /**
    * Decoded content of an Attestation JWS payload. Describes the exact policy set
    * version composition at attestation time. This schema defines what consumers see
    * after base64url-decoding the Attestation.payload field.
    */
   attestation?: PolicySetsAPI.AttestationStatement | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  created_by_user?: PolicySetVersion.CreatedByUser;
+}
+
+export namespace PolicySetVersion {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface ArchivedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface CreatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface VersionListResponse {
@@ -342,6 +404,12 @@ export interface VersionRetrieveParams {
   policy_set_id: string;
 
   /**
+   * Query param: Opt-in to additional response fields on a single resource (`user`).
+   * Repeatable.
+   */
+  expand?: Array<'user'>;
+
+  /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
    */
   'X-API-Version'?: string;
@@ -406,7 +474,7 @@ export interface VersionListParams {
    * supplying both `expand` and `expand[]` with disagreeing values returns
    * `400 Bad Request`.
    */
-  expand?: Array<'total_count'>;
+  expand?: Array<'total_count' | 'user'>;
 
   /**
    * Query param: Maximum number of items to return per page.
@@ -488,7 +556,7 @@ export interface VersionListPoliciesParams {
    * supplying both `expand` and `expand[]` with disagreeing values returns
    * `400 Bad Request`.
    */
-  expand?: Array<'total_count'>;
+  expand?: Array<'total_count' | 'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When
