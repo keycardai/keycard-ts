@@ -374,12 +374,6 @@ export interface Zone {
   permissions?: { [key: string]: { [key: string]: boolean } };
 
   /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
-
-  /**
    * Provider ID configured for user login
    */
   user_identity_provider_id?: string;
@@ -568,12 +562,6 @@ export interface ZoneCreateParams {
    * Protocol configuration for zone creation
    */
   protocols?: ZoneCreateParams.Protocols;
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set. Defaults to true.
-   */
-  requires_invitation?: boolean;
 }
 
 export namespace ZoneCreateParams {
@@ -675,12 +663,6 @@ export interface ZoneUpdateParams {
    * Protocol configuration update for a zone (partial update)
    */
   protocols?: ZoneUpdateParams.Protocols | null;
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
 
   /**
    * Provider ID to configure for user login (set to null to unset)

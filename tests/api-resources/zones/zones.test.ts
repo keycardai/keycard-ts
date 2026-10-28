@@ -37,7 +37,6 @@ describe('resource zones', () => {
           pkce_required: true,
         },
       },
-      requires_invitation: true,
     });
   });
 
@@ -93,7 +92,6 @@ describe('resource zones', () => {
               pkce_required: true,
             },
           },
-          requires_invitation: true,
           user_identity_provider_id: 'user_identity_provider_id',
         },
         { path: '/_stainless_unknown_path' },
