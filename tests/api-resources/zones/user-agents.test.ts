@@ -49,6 +49,8 @@ describe('resource userAgents', () => {
           after: 'x',
           before: 'x',
           'expand[]': 'total_count',
+          'filter[id]': 'string',
+          'filter[identifier]': 'string',
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },
