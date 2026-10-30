@@ -26,6 +26,18 @@ describe('resource policySets', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.policySets.create('zone_id', {
       name: 'name',
+      manifest: {
+        entries: [
+          {
+            policy_id: 'policy_id',
+            cedar_json: {},
+            cedar_raw: 'cedar_raw',
+            policy_version_id: 'policy_version_id',
+          },
+        ],
+        activate: true,
+        schema_version: 'schema_version',
+      },
       scope_type: 'zone',
       target_type: 'zone',
       'X-API-Version': 'X-API-Version',
@@ -49,6 +61,7 @@ describe('resource policySets', () => {
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.policySets.retrieve('policy_set_id', {
       zone_id: 'zone_id',
+      expand: ['user'],
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
