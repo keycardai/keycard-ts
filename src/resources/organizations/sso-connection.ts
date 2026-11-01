@@ -217,12 +217,13 @@ export namespace SSOConnectionProtocol {
 export interface SSOConnectionRetrieveParams {
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
