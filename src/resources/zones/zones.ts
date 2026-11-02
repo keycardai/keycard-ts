@@ -30,17 +30,7 @@ import {
   Grant,
 } from './delegated-grants';
 import * as MembersAPI from './members';
-import {
-  MemberAddParams,
-  MemberDeleteParams,
-  MemberListParams,
-  MemberListResponse,
-  MemberRetrieveParams,
-  MemberUpdateParams,
-  Members,
-  ZoneMember,
-  ZoneRole,
-} from './members';
+import { Members } from './members';
 import * as PolicySchemasAPI from './policy-schemas';
 import {
   PolicySchemaListParams,
@@ -60,7 +50,9 @@ import {
   ProviderListResponse,
   ProviderRetrieveParams,
   ProviderUpdateParams,
+  ProviderValidateParams,
   Providers,
+  ValidationResult,
 } from './providers';
 import * as ResourcesAPI from './resources';
 import {
@@ -72,6 +64,19 @@ import {
   ResourceUpdateParams,
   Resources,
 } from './resources';
+import * as RolesAPI from './roles';
+import {
+  Role,
+  RoleCreate,
+  RoleCreateParams,
+  RoleDeleteParams,
+  RoleListParams,
+  RoleListResponse,
+  RoleRetrieveParams,
+  RoleUpdate,
+  RoleUpdateParams,
+  Roles,
+} from './roles';
 import * as SecretsAPI from './secrets';
 import {
   Secret,
@@ -104,8 +109,6 @@ import {
   UserAgentRetrieveParams,
   UserAgents,
 } from './user-agents';
-import * as UsersAPI from './users';
-import { User, UserListParams, UserListResponse, UserRetrieveParams, Users } from './users';
 import * as ApplicationsAPI from './applications/applications';
 import {
   Application,
@@ -124,6 +127,19 @@ import {
   Metadata,
   MetadataUpdate,
 } from './applications/applications';
+import * as GroupsAPI from './groups/groups';
+import {
+  Group,
+  GroupCreate,
+  GroupCreateParams,
+  GroupDeleteParams,
+  GroupListParams,
+  GroupListResponse,
+  GroupRetrieveParams,
+  GroupUpdate,
+  GroupUpdateParams,
+  Groups,
+} from './groups/groups';
 import * as PoliciesAPI from './policies/policies';
 import {
   Policies,
@@ -153,6 +169,16 @@ import {
   PolicySetWithBinding,
   PolicySets,
 } from './policy-sets/policy-sets';
+import * as UsersAPI from './users/users';
+import {
+  User,
+  UserDeleteParams,
+  UserListParams,
+  UserListResponse,
+  UserRetrieveParams,
+  UserUpdateParams,
+  Users,
+} from './users/users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -169,6 +195,8 @@ export class Zones extends APIResource {
   userAgents: UserAgentsAPI.UserAgents = new UserAgentsAPI.UserAgents(this._client);
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
+  roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
+  groups: GroupsAPI.Groups = new GroupsAPI.Groups(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
   policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
@@ -205,7 +233,10 @@ export class Zones extends APIResource {
   }
 
   /**
-   * Returns a list of zones for the authenticated organization
+   * Returns a list of zones for the authenticated organization. Cursor pagination
+   * via `after`/`before` and `limit`, plus `expand[]=total_count`, name substring
+   * search, and `sort`, are honored only when the `zone-pagination` flag is enabled;
+   * the default response is the unbounded legacy shape.
    */
   list(
     query: ZoneListParams | null | undefined = {},
@@ -276,6 +307,12 @@ export interface Zone {
    * Entity creation timestamp
    */
   created_at: string;
+
+  /**
+   * Whether external directory sync (SCIM) is enabled for this zone. Required to
+   * create external sync tokens.
+   */
+  external_sync_enabled: boolean;
 
   /**
    * Human-readable name
@@ -462,7 +499,7 @@ export interface ZoneListResponse {
   items: Array<Zone>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: PageInfoPagination;
 
@@ -622,6 +659,12 @@ export interface ZoneUpdateParams {
   encryption_key?: ZoneUpdateParams.EncryptionKey | null;
 
   /**
+   * Turns external directory sync (SCIM) on or off for this zone. Required to create
+   * external sync tokens.
+   */
+  external_sync_enabled?: boolean;
+
+  /**
    * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
    * control characters.
    */
@@ -745,6 +788,8 @@ Zones.Sessions = Sessions;
 Zones.UserAgents = UserAgents;
 Zones.Users = Users;
 Zones.Members = Members;
+Zones.Roles = Roles;
+Zones.Groups = Groups;
 Zones.Secrets = Secrets;
 Zones.PolicySchemas = PolicySchemas;
 Zones.Policies = Policies;
@@ -811,12 +856,14 @@ export declare namespace Zones {
   export {
     Providers as Providers,
     type Provider as Provider,
+    type ValidationResult as ValidationResult,
     type ProviderListResponse as ProviderListResponse,
     type ProviderCreateParams as ProviderCreateParams,
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
     type ProviderDeleteParams as ProviderDeleteParams,
+    type ProviderValidateParams as ProviderValidateParams,
   };
 
   export {
@@ -852,19 +899,37 @@ export declare namespace Zones {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
+    type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
+    type UserDeleteParams as UserDeleteParams,
+  };
+
+  export { Members as Members };
+
+  export {
+    Roles as Roles,
+    type Role as Role,
+    type RoleCreate as RoleCreate,
+    type RoleUpdate as RoleUpdate,
+    type RoleListResponse as RoleListResponse,
+    type RoleCreateParams as RoleCreateParams,
+    type RoleRetrieveParams as RoleRetrieveParams,
+    type RoleUpdateParams as RoleUpdateParams,
+    type RoleListParams as RoleListParams,
+    type RoleDeleteParams as RoleDeleteParams,
   };
 
   export {
-    Members as Members,
-    type ZoneMember as ZoneMember,
-    type ZoneRole as ZoneRole,
-    type MemberListResponse as MemberListResponse,
-    type MemberRetrieveParams as MemberRetrieveParams,
-    type MemberUpdateParams as MemberUpdateParams,
-    type MemberListParams as MemberListParams,
-    type MemberDeleteParams as MemberDeleteParams,
-    type MemberAddParams as MemberAddParams,
+    Groups as Groups,
+    type Group as Group,
+    type GroupCreate as GroupCreate,
+    type GroupUpdate as GroupUpdate,
+    type GroupListResponse as GroupListResponse,
+    type GroupCreateParams as GroupCreateParams,
+    type GroupRetrieveParams as GroupRetrieveParams,
+    type GroupUpdateParams as GroupUpdateParams,
+    type GroupListParams as GroupListParams,
+    type GroupDeleteParams as GroupDeleteParams,
   };
 
   export {
