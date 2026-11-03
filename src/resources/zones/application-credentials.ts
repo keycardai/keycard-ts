@@ -34,7 +34,8 @@ export class ApplicationCredentials extends APIResource {
   }
 
   /**
-   * Updates an application credential's configuration
+   * Updates an application credential's configuration. A field the credential type
+   * cannot change returns 400, unless it matches the stored value.
    */
   update(
     id: string,
@@ -396,6 +397,11 @@ export declare namespace ApplicationCredentialUpdateParams {
      * Path param
      */
     zoneId: string;
+
+    /**
+     * Body param: JWKS URI to retrieve public keys from
+     */
+    jwks_uri?: string;
 
     /**
      * Body param

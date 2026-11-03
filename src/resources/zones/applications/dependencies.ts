@@ -143,8 +143,8 @@ export interface Resource {
   credential_lifetime_seconds?: number | null;
 
   /**
-   * @deprecated A Provider is a system that supplies access to Resources and allows
-   * actors (Users or Applications) to authenticate.
+   * A Provider is a system that supplies access to Resources and allows actors
+   * (Users or Applications) to authenticate.
    */
   credential_provider?: ProvidersAPI.Provider;
 
@@ -237,7 +237,7 @@ export interface DependencyListParams {
   /**
    * Query param
    */
-  'expand[]'?: 'total_count' | Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'credential_provider' | Array<'total_count' | 'credential_provider'>;
 
   /**
    * Query param: Maximum number of items to return

@@ -22,15 +22,16 @@ export class Resources extends APIResource {
   }
 
   /**
-   * Returns details of a specific Resource by ID
+   * Returns details of a specific Resource by ID. Pass
+   * `expand[]=credential_provider` to include its credential provider.
    */
   retrieve(
     id: string,
     params: ResourceRetrieveParams,
     options?: RequestOptions,
   ): APIPromise<DependenciesAPI.Resource> {
-    const { zoneId } = params;
-    return this._client.get(path`/zones/${zoneId}/resources/${id}`, options);
+    const { zoneId, ...query } = params;
+    return this._client.get(path`/zones/${zoneId}/resources/${id}`, { query, ...options });
   }
 
   /**
@@ -48,11 +49,12 @@ export class Resources extends APIResource {
   /**
    * Returns a paginated list of resources in the specified zone. Use cursor
    * pagination via `after`/`before`, and `expand[]=total_count` to include the
-   * matching row count. Filter by exact identifier via `filter[identifier]`. Filter
-   * by trait via `filter[traits]` (repeated params are OR'd) or
-   * `filter[traits][all]` (contains-all). The scalar `identifier` query parameter is
-   * a backward-compatible alias for `filter[identifier]`: exact match on a single
-   * value, folded into the same exact-match identifier filter.
+   * matching row count. Pass `expand[]=credential_provider` to include each
+   * resource's credential provider. Filter by exact identifier via
+   * `filter[identifier]`. Filter by trait via `filter[traits]` (repeated params are
+   * OR'd) or `filter[traits][all]` (contains-all). The scalar `identifier` query
+   * parameter is a backward-compatible alias for `filter[identifier]`: exact match
+   * on a single value, folded into the same exact-match identifier filter.
    */
   list(
     zoneID: string,
@@ -168,9 +170,14 @@ export interface ResourceCreateParams {
 
 export interface ResourceRetrieveParams {
   /**
-   * Zone ID
+   * Path param: Zone ID
    */
   zoneId: string;
+
+  /**
+   * Query param
+   */
+  'expand[]'?: 'credential_provider' | Array<'credential_provider'>;
 }
 
 export interface ResourceUpdateParams {
@@ -255,7 +262,7 @@ export interface ResourceListParams {
    */
   credentialProviderId?: string;
 
-  'expand[]'?: 'total_count' | Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'credential_provider' | Array<'total_count' | 'credential_provider'>;
 
   /**
    * Resources that are not a dependency of this application. Repeatable (none of),
