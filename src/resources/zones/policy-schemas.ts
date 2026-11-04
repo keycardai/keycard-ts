@@ -222,12 +222,6 @@ export interface PolicySchemaListParams {
   before?: string;
 
   /**
-   * Query param: Opt-in to additional response fields (`total_count`, `user`).
-   * Repeatable; matches the `expand[]` convention used across the Keycard API.
-   */
-  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
-
-  /**
    * Query param: Filter schemas by default status. When `true`, returns only the
    * zone's default schema. When `false`, returns only non-default schemas. Omit to
    * return all schemas.

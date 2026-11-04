@@ -350,12 +350,6 @@ export interface VersionListParams {
   before?: string;
 
   /**
-   * Query param: Opt-in to additional response fields (`total_count`, `user`).
-   * Repeatable; matches the `expand[]` convention used across the Keycard API.
-   */
-  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
-
-  /**
    * Query param: Narrows which Cedar representation the response includes. When
    * omitted, both `cedar_json` and `cedar_raw` are populated. Pass `json` to receive
    * only `cedar_json`, or `cedar` to receive only `cedar_raw`. Callers that don't

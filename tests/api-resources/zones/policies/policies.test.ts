@@ -99,12 +99,10 @@ describe('resource policies', () => {
         {
           after: 'x',
           before: 'x',
-          'expand[]': 'total_count',
           'filter[id]': ['string'],
           'filter[owner_type]': ['string'],
           limit: 1,
           order: 'asc',
-          'query[]': 'string',
           'query[description]': ['x'],
           'query[name]': ['x'],
           sort: 'created_at',

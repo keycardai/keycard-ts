@@ -53,7 +53,6 @@ describe('resource policySchemas', () => {
         {
           after: 'x',
           before: 'x',
-          'expand[]': 'total_count',
           'filter[default]': true,
           format: 'cedar',
           is_default: true,

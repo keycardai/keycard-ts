@@ -431,12 +431,6 @@ export interface PolicyListParams {
   before?: string;
 
   /**
-   * Query param: Opt-in to additional response fields (`total_count`, `user`).
-   * Repeatable; matches the `expand[]` convention used across the Keycard API.
-   */
-  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
-
-  /**
    * Query param: Filter by policy ID. Repeatable; multiple values are OR-ed (e.g.
    * `?filter[id]=p1&filter[id]=p2`). Capped at 100 IDs per request — over-cap
    * returns 400.
@@ -478,13 +472,6 @@ export interface PolicyListParams {
    * Query param: Sort direction. Default is desc (newest first).
    */
   order?: 'asc' | 'desc';
-
-  /**
-   * Query param: Case-insensitive substring search across all searchable fields of
-   * the resource. For policies that is `name` and `description`; for policy sets
-   * that is `name`. Repeatable; if multiple terms are supplied they are OR-ed.
-   */
-  'query[]'?: string | Array<string>;
 
   /**
    * Query param: Case-insensitive substring search on `description` (policies only).
