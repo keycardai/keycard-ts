@@ -235,8 +235,9 @@ export class Zones extends APIResource {
   /**
    * Returns a list of zones for the authenticated organization. Cursor pagination
    * via `after`/`before` and `limit`, plus `expand[]=total_count`, name substring
-   * search, and `sort`, are honored only when the `zone-pagination` flag is enabled;
-   * the default response is the unbounded legacy shape.
+   * search, and `sort`, are supported on every request. `filter[permission][in]`
+   * narrows the list to zones where the caller holds at least one of the given
+   * permissions.
    */
   list(
     query: ZoneListParams | null | undefined = {},
@@ -371,12 +372,6 @@ export interface Zone {
    * values are objects mapping action names to boolean values.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
 
   /**
    * Provider ID configured for user login
@@ -567,12 +562,6 @@ export interface ZoneCreateParams {
    * Protocol configuration for zone creation
    */
   protocols?: ZoneCreateParams.Protocols;
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set. Defaults to true.
-   */
-  requires_invitation?: boolean;
 }
 
 export namespace ZoneCreateParams {
@@ -676,12 +665,6 @@ export interface ZoneUpdateParams {
   protocols?: ZoneUpdateParams.Protocols | null;
 
   /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
-
-  /**
    * Provider ID to configure for user login (set to null to unset)
    */
   user_identity_provider_id?: string | null;
@@ -770,6 +753,16 @@ export interface ZoneListParams {
   'expand[]'?: 'total_count' | 'permissions' | Array<'total_count' | 'permissions'>;
 
   'filter[organization_id]'?: string;
+
+  /**
+   * Only return zones where the caller is allowed ANY of these permissions
+   * (`<resource_type>:<action>`, e.g. `applications:list`). Repeatable (one
+   * permission per occurrence); values are unioned, max 20 (a stricter cap than the
+   * authorization service's 50). The accessible zone set is resolved by the
+   * authorization service and composes with cursor pagination, search, sort and
+   * `expand[]=total_count`. Malformed values are a 400.
+   */
+  'filter[permission][in]'?: string | Array<string>;
 
   /**
    * Maximum number of items to return
