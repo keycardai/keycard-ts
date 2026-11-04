@@ -468,11 +468,8 @@ export interface VersionListParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
   expand?: Array<'total_count' | 'user'>;
 
@@ -550,11 +547,8 @@ export interface VersionListPoliciesParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
   expand?: Array<'total_count' | 'user'>;
 

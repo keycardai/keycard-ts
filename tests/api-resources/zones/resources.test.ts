@@ -52,7 +52,10 @@ describe('resource resources', () => {
 
   // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
-    const response = await client.zones.resources.retrieve('id', { zoneId: 'zoneId' });
+    const response = await client.zones.resources.retrieve('id', {
+      zoneId: 'zoneId',
+      'expand[]': 'credential_provider',
+    });
   });
 
   // Mock server tests are disabled
