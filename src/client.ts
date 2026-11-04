@@ -5,7 +5,6 @@ import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestIni
 import { uuid4 } from './internal/utils/uuid';
 import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
-import { retryAfterMillis } from './lib/retry-after';
 export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
 import type { APIResponseProps } from './internal/parse';
@@ -25,7 +24,6 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
-import { PolicyBundle } from './resources/policy-bundle';
 import {
   Organization,
   OrganizationCreateParams,
@@ -33,6 +31,7 @@ import {
   OrganizationListParams,
   OrganizationListResponse,
   OrganizationRetrieveParams,
+  OrganizationRole,
   OrganizationUpdateParams,
   Organizations,
   PageInfoCursor,
@@ -682,7 +681,27 @@ export class KeycardAPI {
     requestLogID: string,
     responseHeaders?: Headers | undefined,
   ): Promise<APIResponseProps> {
-    let timeoutMillis = retryAfterMillis(responseHeaders);
+    let timeoutMillis: number | undefined;
+
+    // Note the `retry-after-ms` header may not be standard, but is a good idea and we'd like proactive support for it.
+    const retryAfterMillisHeader = responseHeaders?.get('retry-after-ms');
+    if (retryAfterMillisHeader) {
+      const timeoutMs = parseFloat(retryAfterMillisHeader);
+      if (!Number.isNaN(timeoutMs)) {
+        timeoutMillis = timeoutMs;
+      }
+    }
+
+    // About the Retry-After header: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
+    const retryAfterHeader = responseHeaders?.get('retry-after');
+    if (retryAfterHeader && !timeoutMillis) {
+      const timeoutSeconds = parseFloat(retryAfterHeader);
+      if (!Number.isNaN(timeoutSeconds)) {
+        timeoutMillis = timeoutSeconds * 1000;
+      } else {
+        timeoutMillis = Date.parse(retryAfterHeader) - Date.now();
+      }
+    }
 
     // If the API asks us to wait a certain amount of time, just do what it
     // says, but otherwise calculate a default
@@ -855,13 +874,11 @@ export class KeycardAPI {
   zones: API.Zones = new API.Zones(this);
   organizations: API.Organizations = new API.Organizations(this);
   invitations: API.Invitations = new API.Invitations(this);
-  policyBundle: API.PolicyBundle = new API.PolicyBundle(this);
 }
 
 KeycardAPI.Zones = Zones;
 KeycardAPI.Organizations = Organizations;
 KeycardAPI.Invitations = Invitations;
-KeycardAPI.PolicyBundle = PolicyBundle;
 
 export declare namespace KeycardAPI {
   export type RequestOptions = Opts.RequestOptions;
@@ -881,6 +898,7 @@ export declare namespace KeycardAPI {
   export {
     Organizations as Organizations,
     type Organization as Organization,
+    type OrganizationRole as OrganizationRole,
     type PageInfoCursor as PageInfoCursor,
     type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,
@@ -898,6 +916,4 @@ export declare namespace KeycardAPI {
     type InvitationRetrieveParams as InvitationRetrieveParams,
     type InvitationAcceptParams as InvitationAcceptParams,
   };
-
-  export { PolicyBundle as PolicyBundle };
 }

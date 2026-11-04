@@ -55,7 +55,6 @@ export {
   type GroupListParams,
   type GroupDeleteParams,
 } from './groups/index';
-export { Members } from './members';
 export {
   Policies,
   type Policy,

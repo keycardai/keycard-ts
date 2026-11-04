@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../core/resource';
 import * as OrganizationsAPI from './organizations';
-import * as UsersAPI from './users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -99,7 +98,7 @@ export interface Invitation {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: OrganizationsAPI.OrganizationRole;
 
   /**
    * Status of an invitation
@@ -151,7 +150,7 @@ export interface InvitationCreateParams {
   /**
    * Body param: Role to assign when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: OrganizationsAPI.OrganizationRole;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and

@@ -12,6 +12,7 @@ export {
 export {
   Organizations,
   type Organization,
+  type OrganizationRole,
   type PageInfoCursor,
   type TokenResponse,
   type OrganizationListResponse,
@@ -40,4 +41,3 @@ export {
   type ServiceAccountListParams,
   type ServiceAccountDeleteParams,
 } from './service-accounts/index';
-export { Users, type OrganizationRole, type OrganizationStatus, type OrganizationUser } from './users';

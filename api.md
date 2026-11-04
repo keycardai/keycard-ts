@@ -184,8 +184,6 @@ Methods:
 - <code title="post /zones/{zoneId}/users/{userId}/roles">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">assign</a>(userID, { ...params }) -> RoleAssignment</code>
 - <code title="delete /zones/{zoneId}/users/{userId}/roles/{roleId}">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">revoke</a>(roleID, { ...params }) -> void</code>
 
-## Members
-
 ## Roles
 
 Types:
@@ -351,6 +349,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/organizations/organizations.ts">Organization</a></code>
+- <code><a href="./src/resources/organizations/organizations.ts">OrganizationRole</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">PageInfoCursor</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">TokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListResponse</a></code>
@@ -362,14 +361,6 @@ Methods:
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
 - <code title="delete /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">delete</a>(organizationID, { ...params }) -> void</code>
-
-## Users
-
-Types:
-
-- <code><a href="./src/resources/organizations/users.ts">OrganizationRole</a></code>
-- <code><a href="./src/resources/organizations/users.ts">OrganizationStatus</a></code>
-- <code><a href="./src/resources/organizations/users.ts">OrganizationUser</a></code>
 
 ## Invitations
 
@@ -441,5 +432,3 @@ Methods:
 
 - <code title="get /invitations/{token}">client.invitations.<a href="./src/resources/invitations.ts">retrieve</a>(token, { ...params }) -> InvitationRetrieveResponse</code>
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
-
-# PolicyBundle

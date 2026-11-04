@@ -10,6 +10,7 @@ export {
 export {
   Organizations,
   type Organization,
+  type OrganizationRole,
   type PageInfoCursor,
   type TokenResponse,
   type OrganizationListResponse,
@@ -19,7 +20,6 @@ export {
   type OrganizationListParams,
   type OrganizationDeleteParams,
 } from './organizations/organizations';
-export { PolicyBundle } from './policy-bundle';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,

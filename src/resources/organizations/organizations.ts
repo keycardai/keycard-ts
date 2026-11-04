@@ -21,8 +21,6 @@ import {
   SSOConnectionRetrieveParams,
   SSOConnectionUpdateParams,
 } from './sso-connection';
-import * as UsersAPI from './users';
-import { OrganizationRole, OrganizationStatus, OrganizationUser, Users } from './users';
 import * as ServiceAccountsAPI from './service-accounts/service-accounts';
 import {
   ServiceAccount,
@@ -40,7 +38,6 @@ import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 export class Organizations extends APIResource {
-  users: UsersAPI.Users = new UsersAPI.Users(this._client);
   invitations: InvitationsAPI.Invitations = new InvitationsAPI.Invitations(this._client);
   serviceAccounts: ServiceAccountsAPI.ServiceAccounts = new ServiceAccountsAPI.ServiceAccounts(this._client);
   ssoConnection: SSOConnectionAPI.SSOConnectionResource = new SSOConnectionAPI.SSOConnectionResource(
@@ -185,6 +182,11 @@ export interface Organization {
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
 }
+
+/**
+ * User's role in the organization
+ */
+export type OrganizationRole = 'org_admin' | 'org_member' | 'org_viewer';
 
 /**
  * Pagination information using cursor-based pagination
@@ -361,7 +363,6 @@ export interface OrganizationDeleteParams {
   'X-Client-Request-ID'?: string;
 }
 
-Organizations.Users = Users;
 Organizations.Invitations = Invitations;
 Organizations.ServiceAccounts = ServiceAccounts;
 Organizations.SSOConnectionResource = SSOConnectionResource;
@@ -369,6 +370,7 @@ Organizations.SSOConnectionResource = SSOConnectionResource;
 export declare namespace Organizations {
   export {
     type Organization as Organization,
+    type OrganizationRole as OrganizationRole,
     type PageInfoCursor as PageInfoCursor,
     type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,
@@ -377,13 +379,6 @@ export declare namespace Organizations {
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
     type OrganizationDeleteParams as OrganizationDeleteParams,
-  };
-
-  export {
-    Users as Users,
-    type OrganizationRole as OrganizationRole,
-    type OrganizationStatus as OrganizationStatus,
-    type OrganizationUser as OrganizationUser,
   };
 
   export {
