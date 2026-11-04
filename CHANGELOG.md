@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0](https://github.com/keycardai/keycard-ts/compare/v0.24.0...v0.25.0) (2026-11-04)
+
+
+### Features
+
+* **pdp:** send expand[] / query[] on policy list and get params (CX-1590) ([85b7fd2](https://github.com/keycardai/keycard-ts/commit/85b7fd2e06da614f2fb8e5ca653ab2ee6ac5a52e))
+
 ## [0.24.0](https://github.com/keycardai/keycard-ts/compare/v0.23.0...v0.24.0) (2026-10-23)
 
 
