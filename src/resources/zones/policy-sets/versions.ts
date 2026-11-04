@@ -471,7 +471,7 @@ export interface VersionListParams {
    * Query param: Opt-in to additional response fields (`total_count`, `user`).
    * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
-  expand?: Array<'total_count' | 'user'>;
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Maximum number of items to return per page.
@@ -550,7 +550,7 @@ export interface VersionListPoliciesParams {
    * Query param: Opt-in to additional response fields (`total_count`, `user`).
    * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
-  expand?: Array<'total_count' | 'user'>;
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When

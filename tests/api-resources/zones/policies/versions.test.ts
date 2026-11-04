@@ -82,7 +82,7 @@ describe('resource versions', () => {
       zone_id: 'zone_id',
       after: 'x',
       before: 'x',
-      expand: ['total_count'],
+      'expand[]': 'total_count',
       format: 'cedar',
       limit: 1,
       order: 'asc',
