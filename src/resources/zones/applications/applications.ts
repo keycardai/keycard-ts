@@ -13,6 +13,8 @@ import {
   DependencyRetrieveParams,
   Resource,
 } from './dependencies';
+import * as RolesAPI from './roles';
+import { RoleAssignParams, RoleListParams, RoleListResponse, RoleRevokeParams, Roles } from './roles';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
@@ -20,6 +22,7 @@ import { path } from '../../../internal/utils/path';
 
 export class Applications extends APIResource {
   dependencies: DependenciesAPI.Dependencies = new DependenciesAPI.Dependencies(this._client);
+  roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
 
   /**
    * Creates a new Application - a software system with an identity that can access
@@ -330,11 +333,6 @@ export interface ApplicationListResourcesResponse {
    * Cursor-based pagination metadata
    */
   pagination: ApplicationListResourcesResponse.Pagination;
-
-  /**
-   * Pagination information
-   */
-  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace ApplicationListResourcesResponse {
@@ -538,6 +536,17 @@ export interface ApplicationListParams {
   'filter[identifier]'?: string | Array<string>;
 
   /**
+   * Filter by owner type: `platform` (Keycard-managed) or `customer` (org-created).
+   */
+  'filter[owner_type]'?: 'platform' | 'customer';
+
+  /**
+   * Exclude applications with this owner type, e.g.
+   * `filter[owner_type][ne]=platform` returns only org-created applications.
+   */
+  'filter[owner_type][ne]'?: 'platform' | 'customer';
+
+  /**
    * Filter by exact application slug
    */
   'filter[slug]'?: string | Array<string>;
@@ -596,11 +605,6 @@ export interface ApplicationListCredentialsParams {
   /**
    * Query param
    */
-  cursor?: string;
-
-  /**
-   * Query param
-   */
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
@@ -642,6 +646,7 @@ export interface ApplicationListResourcesParams {
 }
 
 Applications.Dependencies = Dependencies;
+Applications.Roles = Roles;
 
 export declare namespace Applications {
   export {
@@ -669,5 +674,13 @@ export declare namespace Applications {
     type DependencyListParams as DependencyListParams,
     type DependencyAddParams as DependencyAddParams,
     type DependencyRemoveParams as DependencyRemoveParams,
+  };
+
+  export {
+    Roles as Roles,
+    type RoleListResponse as RoleListResponse,
+    type RoleListParams as RoleListParams,
+    type RoleAssignParams as RoleAssignParams,
+    type RoleRevokeParams as RoleRevokeParams,
   };
 }
