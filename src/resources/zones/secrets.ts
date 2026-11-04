@@ -266,7 +266,15 @@ export interface SecretListParams {
   entity_id?: string;
 
   /**
-   * Query param: The type of secrets to list
+   * Query param: Filter by secret ownership. Services can select either owner type;
+   * other principals can select only customer-owned secrets. If omitted, services
+   * see both owner types and other principals see customer-owned secrets. Requires
+   * type=token or type=password when specified.
+   */
+  owner_type?: 'platform' | 'customer';
+
+  /**
+   * Query param: The type of secrets to list. Required when owner_type is specified.
    */
   type?: 'token' | 'password';
 
