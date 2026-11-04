@@ -29,8 +29,6 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
-import * as MembersAPI from './members';
-import { Members } from './members';
 import * as PolicySchemasAPI from './policy-schemas';
 import {
   PolicySchemaListParams,
@@ -194,7 +192,6 @@ export class Zones extends APIResource {
   sessions: SessionsAPI.Sessions = new SessionsAPI.Sessions(this._client);
   userAgents: UserAgentsAPI.UserAgents = new UserAgentsAPI.UserAgents(this._client);
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
-  members: MembersAPI.Members = new MembersAPI.Members(this._client);
   roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
   groups: GroupsAPI.Groups = new GroupsAPI.Groups(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
@@ -780,7 +777,6 @@ Zones.Resources = Resources;
 Zones.Sessions = Sessions;
 Zones.UserAgents = UserAgents;
 Zones.Users = Users;
-Zones.Members = Members;
 Zones.Roles = Roles;
 Zones.Groups = Groups;
 Zones.Secrets = Secrets;
@@ -896,8 +892,6 @@ export declare namespace Zones {
     type UserListParams as UserListParams,
     type UserDeleteParams as UserDeleteParams,
   };
-
-  export { Members as Members };
 
   export {
     Roles as Roles,
