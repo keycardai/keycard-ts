@@ -61,7 +61,7 @@ describe('resource policySets', () => {
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.policySets.retrieve('policy_set_id', {
       zone_id: 'zone_id',
-      expand: ['user'],
+      'expand[]': 'user',
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -112,14 +112,14 @@ describe('resource policySets', () => {
           active: true,
           after: 'x',
           before: 'x',
-          expand: ['total_count'],
+          'expand[]': 'total_count',
           'filter[active]': true,
           'filter[owner_type]': ['string'],
           'filter[scope_type]': ['string'],
           'filter[target_type]': ['string'],
           limit: 1,
           order: 'asc',
-          query: ['x'],
+          'query[]': 'string',
           'query[name]': ['x'],
           sort: 'created_at',
           'X-API-Version': 'X-API-Version',

@@ -637,7 +637,7 @@ export interface ApplicationListResourcesParams {
   /**
    * Query param
    */
-  'expand[]'?: 'total_count' | Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'credential_provider' | Array<'total_count' | 'credential_provider'>;
 
   /**
    * Query param: Maximum number of items to return

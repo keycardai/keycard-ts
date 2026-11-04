@@ -19,7 +19,6 @@ export {
   type OrganizationListParams,
   type OrganizationDeleteParams,
 } from './organizations/organizations';
-export { PolicyBundle } from './policy-bundle';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,

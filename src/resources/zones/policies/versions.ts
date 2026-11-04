@@ -309,7 +309,7 @@ export interface VersionRetrieveParams {
    * Query param: Opt-in to additional response fields on a single resource (`user`).
    * Repeatable.
    */
-  expand?: Array<'user'>;
+  'expand[]'?: 'user' | Array<'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When
@@ -350,13 +350,10 @@ export interface VersionListParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
-  expand?: Array<'total_count' | 'user'>;
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When
