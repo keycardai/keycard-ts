@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../core/resource';
 import * as OrganizationsAPI from './organizations';
-import * as UsersAPI from './users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -99,7 +98,7 @@ export interface Invitation {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: OrganizationsAPI.OrganizationRole;
 
   /**
    * Status of an invitation
@@ -151,7 +150,7 @@ export interface InvitationCreateParams {
   /**
    * Body param: Role to assign when invitation is accepted
    */
-  role: UsersAPI.OrganizationRole;
+  role: OrganizationsAPI.OrganizationRole;
 
   /**
    * Header param: Unique request identifier specified by the originating caller and
@@ -173,12 +172,22 @@ export interface InvitationListParams {
 
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
+
+  /**
+   * Query param: Return only invitations with these statuses. Repeat the parameter
+   * to match any of several statuses
+   * (`?filter[status]=pending&filter[status]=accepted`). Expired invitations are
+   * never listed, so `expired` matches nothing. When absent, no status filter is
+   * applied.
+   */
+  'filter[status]'?: Array<InvitationStatus>;
 
   /**
    * Query param: Maximum number of invitations to return
