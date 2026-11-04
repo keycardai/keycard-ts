@@ -65,7 +65,7 @@ describe('resource versions', () => {
     const response = await client.zones.policySets.versions.retrieve('version_id', {
       zone_id: 'zone_id',
       policy_set_id: 'policy_set_id',
-      expand: ['user'],
+      'expand[]': 'user',
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -116,6 +116,7 @@ describe('resource versions', () => {
       zone_id: 'zone_id',
       after: 'x',
       before: 'x',
+      'expand[]': 'total_count',
       limit: 1,
       order: 'asc',
       sort: 'created_at',
@@ -171,6 +172,7 @@ describe('resource versions', () => {
       policy_set_id: 'policy_set_id',
       after: 'x',
       before: 'x',
+      'expand[]': 'total_count',
       format: 'cedar',
       limit: 1,
       order: 'asc',

@@ -407,7 +407,7 @@ export interface VersionRetrieveParams {
    * Query param: Opt-in to additional response fields on a single resource (`user`).
    * Repeatable.
    */
-  expand?: Array<'user'>;
+  'expand[]'?: 'user' | Array<'user'>;
 
   /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
@@ -466,6 +466,12 @@ export interface VersionListParams {
    * `Pagination.before_cursor`. Mutually exclusive with `after`.
    */
   before?: string;
+
+  /**
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
+   */
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Maximum number of items to return per page.
@@ -539,6 +545,12 @@ export interface VersionListPoliciesParams {
    * `Pagination.before_cursor`. Mutually exclusive with `after`.
    */
   before?: string;
+
+  /**
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
+   */
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Narrows which Cedar representation the response includes. When

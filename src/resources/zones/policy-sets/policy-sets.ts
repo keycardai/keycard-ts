@@ -792,7 +792,7 @@ export interface PolicySetRetrieveParams {
    * Query param: Opt-in to additional response fields on a single resource (`user`).
    * Repeatable.
    */
-  expand?: Array<'user'>;
+  'expand[]'?: 'user' | Array<'user'>;
 
   /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
@@ -860,6 +860,12 @@ export interface PolicySetListParams {
    * `Pagination.before_cursor`. Mutually exclusive with `after`.
    */
   before?: string;
+
+  /**
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
+   */
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Filter by active binding status. When `true`, returns only policy
@@ -931,6 +937,13 @@ export interface PolicySetListParams {
    * Query param: Sort direction. Default is desc (newest first).
    */
   order?: 'asc' | 'desc';
+
+  /**
+   * Query param: Case-insensitive substring search across all searchable fields of
+   * the resource. For policies that is `name` and `description`; for policy sets
+   * that is `name`. Repeatable; if multiple terms are supplied they are OR-ed.
+   */
+  'query[]'?: string | Array<string>;
 
   /**
    * Query param: Case-insensitive substring search on `name`. Repeatable; if
