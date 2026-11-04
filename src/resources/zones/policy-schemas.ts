@@ -222,15 +222,6 @@ export interface PolicySchemaListParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
-   */
-  expand?: Array<'total_count'>;
-
-  /**
    * Query param: Filter schemas by default status. When `true`, returns only the
    * zone's default schema. When `false`, returns only non-default schemas. Omit to
    * return all schemas.
