@@ -31,7 +31,6 @@ import {
   OrganizationListParams,
   OrganizationListResponse,
   OrganizationRetrieveParams,
-  OrganizationRole,
   OrganizationUpdateParams,
   Organizations,
   PageInfoCursor,
@@ -898,7 +897,6 @@ export declare namespace KeycardAPI {
   export {
     Organizations as Organizations,
     type Organization as Organization,
-    type OrganizationRole as OrganizationRole,
     type PageInfoCursor as PageInfoCursor,
     type TokenResponse as TokenResponse,
     type OrganizationListResponse as OrganizationListResponse,

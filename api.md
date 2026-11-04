@@ -349,7 +349,6 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/organizations/organizations.ts">Organization</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationRole</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">PageInfoCursor</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">TokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListResponse</a></code>
@@ -361,6 +360,14 @@ Methods:
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
 - <code title="delete /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">delete</a>(organizationID, { ...params }) -> void</code>
+
+## Users
+
+Types:
+
+- <code><a href="./src/resources/organizations/users.ts">OrganizationRole</a></code>
+- <code><a href="./src/resources/organizations/users.ts">OrganizationStatus</a></code>
+- <code><a href="./src/resources/organizations/users.ts">OrganizationUser</a></code>
 
 ## Invitations
 

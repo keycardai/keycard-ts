@@ -10,7 +10,6 @@ export {
 export {
   Organizations,
   type Organization,
-  type OrganizationRole,
   type PageInfoCursor,
   type TokenResponse,
   type OrganizationListResponse,

@@ -2,7 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as OrganizationsInvitationsAPI from './organizations/invitations';
-import * as OrganizationsAPI from './organizations/organizations';
+import * as UsersAPI from './organizations/users';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -74,7 +74,7 @@ export interface InvitationRetrieveResponse {
   /**
    * Role that will be assigned when invitation is accepted
    */
-  role: OrganizationsAPI.OrganizationRole;
+  role: UsersAPI.OrganizationRole;
 
   /**
    * Status of an invitation
