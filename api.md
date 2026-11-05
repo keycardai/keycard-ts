@@ -184,8 +184,6 @@ Methods:
 - <code title="post /zones/{zoneId}/users/{userId}/roles">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">assign</a>(userID, { ...params }) -> RoleAssignment</code>
 - <code title="delete /zones/{zoneId}/users/{userId}/roles/{roleId}">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">revoke</a>(roleID, { ...params }) -> void</code>
 
-## Members
-
 ## Roles
 
 Types:
@@ -441,5 +439,3 @@ Methods:
 
 - <code title="get /invitations/{token}">client.invitations.<a href="./src/resources/invitations.ts">retrieve</a>(token, { ...params }) -> InvitationRetrieveResponse</code>
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
-
-# PolicyBundle

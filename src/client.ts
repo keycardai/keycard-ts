@@ -24,7 +24,6 @@ import {
   InvitationRetrieveResponse,
   Invitations,
 } from './resources/invitations';
-import { PolicyBundle } from './resources/policy-bundle';
 import {
   Organization,
   OrganizationCreateParams,
@@ -874,13 +873,11 @@ export class KeycardAPI {
   zones: API.Zones = new API.Zones(this);
   organizations: API.Organizations = new API.Organizations(this);
   invitations: API.Invitations = new API.Invitations(this);
-  policyBundle: API.PolicyBundle = new API.PolicyBundle(this);
 }
 
 KeycardAPI.Zones = Zones;
 KeycardAPI.Organizations = Organizations;
 KeycardAPI.Invitations = Invitations;
-KeycardAPI.PolicyBundle = PolicyBundle;
 
 export declare namespace KeycardAPI {
   export type RequestOptions = Opts.RequestOptions;
@@ -917,6 +914,4 @@ export declare namespace KeycardAPI {
     type InvitationRetrieveParams as InvitationRetrieveParams,
     type InvitationAcceptParams as InvitationAcceptParams,
   };
-
-  export { PolicyBundle as PolicyBundle };
 }
