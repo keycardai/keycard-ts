@@ -33,9 +33,18 @@ export class Providers extends APIResource {
   }
 
   /**
-   * Returns a list of providers in the specified zone. Pass `filter[id]`
-   * (repeatable, max 100) to restrict results to a known set of provider IDs;
-   * unknown or malformed IDs are silently omitted.
+   * Returns a paginated list of providers in the specified zone. Use cursor
+   * pagination via `after`/`before`. Sort: comma-separated field list; prefix with
+   * `-` for descending. Use `expand[]=total_count` to include the matching row
+   * count. Filter by exact slug via `filter[slug]`, exact identifier via
+   * `filter[identifier]` and provider type via `filter[type]`. Search via
+   * `query[name]` / `query[identifier]` / `query[]` (substring match, OR'd across
+   * repeated values). `query[]` matches against name and identifier. Pass
+   * `filter[id]` (repeatable, max 100) to restrict results to a known set of
+   * provider IDs — mutually exclusive with `after`/`before` (returns 400 if
+   * combined). When `filter[id]` is set, `limit` is ignored and the response
+   * contains every requested provider that exists in the zone, in a single page.
+   * Unknown or malformed IDs are silently omitted.
    */
   list(
     zoneID: string,
@@ -54,6 +63,21 @@ export class Providers extends APIResource {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
+  }
+
+  /**
+   * Runs on-demand OIDC connection checks (issuer reachability, metadata retrieval,
+   * endpoint consistency, authorization endpoint reachability, and a demonstration
+   * client_credentials exchange) against the provider and returns a per-check
+   * result. Results are not persisted.
+   */
+  validate(
+    id: string,
+    params: ProviderValidateParams,
+    options?: RequestOptions,
+  ): APIPromise<ValidationResult> {
+    const { zoneId } = params;
+    return this._client.post(path`/zones/${zoneId}/providers/${id}/validate`, options);
   }
 }
 
@@ -224,13 +248,6 @@ export namespace Provider {
      */
     export interface Openid {
       /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId.
-       */
-      external_id_claim?: string | null;
-
-      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
        */
@@ -253,11 +270,71 @@ export namespace Provider {
   }
 }
 
+/**
+ * Result of running the provider OIDC connection checks on demand. Not persisted.
+ */
+export interface ValidationResult {
+  /**
+   * Per-check results, in execution order
+   */
+  checks: Array<ValidationResult.Check>;
+
+  /**
+   * Provider that was validated
+   */
+  provider_id: string;
+
+  /**
+   * Overall outcome. `fail` when any individual check failed; skipped checks do not
+   * fail the run.
+   */
+  status: 'pass' | 'fail';
+
+  /**
+   * When the validation run completed
+   */
+  validated_at: string;
+}
+
+export namespace ValidationResult {
+  /**
+   * Result of a single provider validation check
+   */
+  export interface Check {
+    /**
+     * Identifier of an individual provider validation check
+     */
+    check:
+      | 'issuer_reachability'
+      | 'metadata_retrieval'
+      | 'endpoint_consistency'
+      | 'authorization_endpoint_reachability'
+      | 'credential_exchange';
+
+    /**
+     * Outcome of a single check. `pass`/`fail` mean the check ran.
+     * `skipped_with_reason` means it could not run because a prerequisite is missing
+     * on our side (e.g. no credential stored). `not_applicable` means the check does
+     * not apply to this provider class (e.g. a login-flow-only provider that does not
+     * advertise the `client_credentials` grant) — render as a neutral state, distinct
+     * from a failure. Neither `skipped_with_reason` nor `not_applicable` fails the
+     * overall run.
+     */
+    status: 'pass' | 'fail' | 'skipped_with_reason' | 'not_applicable';
+
+    /**
+     * Human-readable explanation, present on `fail`, `skipped_with_reason`, and
+     * `not_applicable`.
+     */
+    detail?: string;
+  }
+}
+
 export interface ProviderListResponse {
   items: Array<Provider>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
 
@@ -419,13 +496,6 @@ export namespace ProviderCreateParams {
      * OpenID Connect protocol configuration for provider creation
      */
     export interface Openid {
-      /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId.
-       */
-      external_id_claim?: string;
-
       /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email).
@@ -590,14 +660,6 @@ export namespace ProviderUpdateParams {
      */
     export interface Openid {
       /**
-       * Name of the OIDC claim carrying the stable external id used to correlate logins
-       * with externally provisioned (SCIM) users. Defaults to "sub". Set to "oid" for
-       * Entra, whose pairwise "sub" differs from the SCIM externalId. Set to null to
-       * revert to default.
-       */
-      external_id_claim?: string | null;
-
-      /**
        * Additional OIDC scopes to request from this provider during authentication (e.g.
        * "groups"). Merged with the default scopes (openid, profile, email). Set to null
        * to clear.
@@ -638,9 +700,29 @@ export interface ProviderListParams {
   'expand[]'?: 'total_count' | Array<'total_count'>;
 
   /**
-   * Restrict results to providers with this ID. Repeatable, max 100.
+   * Restrict results to providers with this ID. Repeatable, max 100. Mutually
+   * exclusive with after/before.
    */
   'filter[id]'?: string | Array<string>;
+
+  /**
+   * Filter by exact provider identifier
+   */
+  'filter[identifier]'?: string | Array<string>;
+
+  /**
+   * Filter by exact provider slug
+   */
+  'filter[slug]'?: string | Array<string>;
+
+  /**
+   * Filter by provider type
+   */
+  'filter[type]'?:
+    | 'external'
+    | 'keycard-vault'
+    | 'keycard-sts'
+    | Array<'external' | 'keycard-vault' | 'keycard-sts'>;
 
   identifier?: string;
 
@@ -649,7 +731,28 @@ export interface ProviderListParams {
    */
   limit?: number;
 
+  /**
+   * Search across name and identifier (substring match)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by identifier (substring match)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by name (substring match)
+   */
+  'query[name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at,
+   * name, identifier
+   */
+  sort?: string;
 
   type?: 'external' | 'keycard-vault' | 'keycard-sts';
 }
@@ -658,14 +761,20 @@ export interface ProviderDeleteParams {
   zoneId: string;
 }
 
+export interface ProviderValidateParams {
+  zoneId: string;
+}
+
 export declare namespace Providers {
   export {
     type Provider as Provider,
+    type ValidationResult as ValidationResult,
     type ProviderListResponse as ProviderListResponse,
     type ProviderCreateParams as ProviderCreateParams,
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
     type ProviderDeleteParams as ProviderDeleteParams,
+    type ProviderValidateParams as ProviderValidateParams,
   };
 }
