@@ -39,6 +39,16 @@ describe('resource providers', () => {
           authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],
           issuer: 'https://example.com',
+          jwks: {
+            keys: [
+              {
+                kid: 'x',
+                kty: 'kty',
+                alg: 'alg',
+                use: 'use',
+              },
+            ],
+          },
           jwks_uri: 'https://example.com',
           registration_endpoint: 'https://example.com',
           scope_parameter: 'scope_parameter',
@@ -48,7 +58,6 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
-          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
@@ -105,6 +114,16 @@ describe('resource providers', () => {
           authorization_resource_parameter: 'authorization_resource_parameter',
           code_challenge_methods_supported: ['string'],
           issuer: 'https://example.com',
+          jwks: {
+            keys: [
+              {
+                kid: 'x',
+                kty: 'kty',
+                alg: 'alg',
+                use: 'use',
+              },
+            ],
+          },
           jwks_uri: 'https://example.com',
           registration_endpoint: 'https://example.com',
           scope_parameter: 'scope_parameter',
@@ -114,7 +133,6 @@ describe('resource providers', () => {
           token_response_access_token_pointer: 'token_response_access_token_pointer',
         },
         openid: {
-          external_id_claim: 'external_id_claim',
           scopes: ['string'],
           single_logout_enabled: true,
           user_identifier_claim: 'user_identifier_claim',
@@ -148,9 +166,16 @@ describe('resource providers', () => {
           cursor: 'cursor',
           'expand[]': 'total_count',
           'filter[id]': 'string',
+          'filter[identifier]': 'string',
+          'filter[slug]': 'string',
+          'filter[type]': 'external',
           identifier: 'identifier',
           limit: 1,
+          'query[]': 'x',
+          'query[identifier]': 'x',
+          'query[name]': 'x',
           slug: 'slug',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
           type: 'external',
         },
         { path: '/_stainless_unknown_path' },
@@ -173,5 +198,22 @@ describe('resource providers', () => {
   // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.zones.providers.delete('id', { zoneId: 'zoneId' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('validate: only required params', async () => {
+    const responsePromise = client.zones.providers.validate('id', { zoneId: 'zoneId' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('validate: required and optional params', async () => {
+    const response = await client.zones.providers.validate('id', { zoneId: 'zoneId' });
   });
 });
