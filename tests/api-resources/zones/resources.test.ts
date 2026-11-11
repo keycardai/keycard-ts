@@ -52,7 +52,10 @@ describe('resource resources', () => {
 
   // Mock server tests are disabled
   test.skip('retrieve: required and optional params', async () => {
-    const response = await client.zones.resources.retrieve('id', { zoneId: 'zoneId' });
+    const response = await client.zones.resources.retrieve('id', {
+      zoneId: 'zoneId',
+      'expand[]': 'credential_provider',
+    });
   });
 
   // Mock server tests are disabled
@@ -107,12 +110,19 @@ describe('resource resources', () => {
           before: 'x',
           credentialProviderId: 'credentialProviderId',
           'expand[]': 'total_count',
+          'filter[dependency_of_application_id][ne]': 'string',
+          'filter[id]': 'string',
           'filter[identifier]': 'string',
           'filter[owner_type]': 'platform',
+          'filter[slug]': 'string',
           'filter[traits]': 'string',
           identifier: 'identifier',
           limit: 1,
+          'query[]': 'x',
+          'query[identifier]': 'x',
+          'query[name]': 'x',
           slug: 'slug',
+          sort: '-identifier,\t\r\r \tidentifier,\n\t\ncreated_at',
         },
         { path: '/_stainless_unknown_path' },
       ),
