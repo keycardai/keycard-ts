@@ -103,6 +103,7 @@ describe('resource secrets', () => {
         'x',
         {
           entity_id: 'entity_id',
+          owner_type: 'platform',
           type: 'token',
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
