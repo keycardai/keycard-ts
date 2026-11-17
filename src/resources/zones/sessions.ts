@@ -30,7 +30,7 @@ export class Sessions extends APIResource {
    * Returns sessions in the specified zone. By default, returns entry sessions (app
    * user sessions with an initiator that are roots or direct children of a root user
    * session). Use include_nested=true to include nested sessions. Can be filtered by
-   * session type, status, and user.
+   * session type, status, user, and background access.
    */
   list(
     zoneID: string,
@@ -99,6 +99,11 @@ export namespace Session {
      * Date when the session was authenticated
      */
     authenticated_at?: string;
+
+    /**
+     * Whether the session has background access
+     */
+    background?: boolean;
 
     /**
      * Entity creation timestamp
@@ -240,6 +245,11 @@ export namespace Session {
     authenticated_at?: string;
 
     /**
+     * Whether the session has background access
+     */
+    background?: boolean;
+
+    /**
      * Entity creation timestamp
      */
     created_at?: string;
@@ -356,6 +366,11 @@ export interface SessionListParams {
   before?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Filter by background access. Omit to list both.
+   */
+  'filter[background]'?: boolean;
 
   /**
    * Include nested sessions. When false (default), only returns entry sessions
