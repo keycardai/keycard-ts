@@ -49,7 +49,7 @@ describe('resource serviceAccounts', () => {
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.organizations.serviceAccounts.retrieve('ab3def8hij2klm9opq5rst7uvw', {
       organization_id: 'x',
-      expand: ['permissions'],
+      'expand[]': 'permissions',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
@@ -99,8 +99,9 @@ describe('resource serviceAccounts', () => {
         {
           after: 'x',
           before: 'x',
-          expand: ['permissions'],
+          'expand[]': 'permissions',
           limit: 1,
+          query: ['x'],
           'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         },
         { path: '/_stainless_unknown_path' },
