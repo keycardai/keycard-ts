@@ -41,7 +41,9 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Permanently deletes a session, effectively logging out the user or application
+   * Revokes a session and all its child sessions, including nested descendants,
+   * without deleting their stored records. Revoking an already-revoked session is
+   * idempotent and returns 204 No Content.
    */
   delete(id: string, params: SessionDeleteParams, options?: RequestOptions): APIPromise<void> {
     const { zoneId } = params;
