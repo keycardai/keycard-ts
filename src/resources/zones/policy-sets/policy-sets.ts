@@ -1,6 +1,26 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as PolicyBindingsAPI from '../policy-bindings';
+import * as DraftAPI from './draft';
+import {
+  Draft,
+  DraftCreateParams,
+  DraftDeleteParams,
+  DraftListPoliciesParams,
+  DraftListPoliciesResponse,
+  DraftRetrieveParams,
+  DraftUpdateParams,
+  DraftUpsertParams,
+} from './draft';
+import * as ManifestAPI from './manifest';
+import {
+  Manifest as ManifestAPIManifest,
+  ManifestApplyParams,
+  ManifestApplyResponse,
+  ManifestRetrieveParams,
+  ManifestRetrieveResponse,
+} from './manifest';
 import * as VersionsAPI from './versions';
 import {
   PolicySetVersion,
@@ -24,10 +44,31 @@ import { path } from '../../../internal/utils/path';
  */
 export class PolicySets extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
+  draft: DraftAPI.Draft = new DraftAPI.Draft(this._client);
+  manifest: ManifestAPI.Manifest = new ManifestAPI.Manifest(this._client);
 
   /**
-   * Creates an unbound policy set. Use updatePolicySet to bind after creating a
-   * version.
+   * Creates a policy set. Supply `manifest` to create its first version and any new
+   * policies in the same transaction. A failure rolls back every write. Without
+   * `manifest`, creates a versionless set and preserves the existing response body.
+   *
+   * Entries use manifest apply semantics with no predecessor: bare pins use each
+   * policy's latest version; supplied content reuses that version when its SHA and
+   * schema match. Omitted `schema_version` uses the zone default. This operation
+   * supports neither `dry_run` nor `If-Match`. Set `manifest.activate: true` to bind
+   * v1 to the zone's active slot in the same transaction. Requires
+   * `target_type: zone` (the default) and the `activate` permission on
+   * `policy_set_bindings`, in addition to the route's `create` permission. Omitted
+   * or false leaves the set unbound.
+   *
+   * The `ETag` header is the set revision, as on `GET`. The manifest digest is
+   * `policy_set_version.manifest_sha` and the `ETag` of `GET .../manifest`.
+   *
+   * Domain error codes: `policy_set_name_conflict`, `policy_name_conflict`,
+   * `policy_not_found`, `policy_archived`, `policy_version_not_found`,
+   * `version_archived`, `schema_version_mismatch`, `manifest_duplicate_policy`,
+   * `missing_cedar_content`, `invalid_cedar`, `schema_version_unsupported`,
+   * `activate_requires_zone_target`.
    */
   create(
     zoneID: string,
@@ -56,8 +97,14 @@ export class PolicySets extends APIResource {
     params: PolicySetRetrieveParams,
     options?: RequestOptions,
   ): APIPromise<PolicySetWithBinding> {
-    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params;
+    const {
+      zone_id,
+      'X-API-Version': xAPIVersion,
+      'X-Client-Request-ID': xClientRequestID,
+      ...query
+    } = params;
     return this._client.get(path`/zones/${zone_id}/policy-sets/${policySetID}`, {
+      query,
       ...options,
       headers: buildHeaders([
         {
@@ -70,8 +117,8 @@ export class PolicySets extends APIResource {
   }
 
   /**
-   * Update metadata or manage binding. Set active=true to bind, active=false to
-   * unbind.
+   * Update policy set metadata (name). Binding is managed by activating a policy set
+   * version or via the policy-bindings API.
    */
   update(
     policySetID: string,
@@ -145,6 +192,76 @@ export class PolicySets extends APIResource {
       headers: buildHeaders([
         {
           ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined),
+          ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
+          ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Creates a new customer-owned policy set whose first version reproduces the
+   * manifest of a source version: the source's latest non-archived version by
+   * default, or the one named by `source_version_id`. The set, any copied policies
+   * and their versions, the first policy set version, and its attestation are
+   * written in one transaction. Any failure leaves zero writes. The source is never
+   * modified.
+   *
+   * Platform-owned sets (for example the zone default `default-zone-policies`)
+   * cannot be updated or versioned by customers. Clone is how a customer forks one
+   * into a set they can edit with `PUT .../manifest`.
+   *
+   * `copy_policies` decides what is shared and what is duplicated (default
+   * `platform`):
+   *
+   * - `none`: every entry pins the same policy version as the source. No new
+   *   policies are created.
+   * - `platform`: platform-owned pins are copied into new customer-owned policies;
+   *   customer-owned pins are shared. The result is fully editable with minimal
+   *   duplication.
+   * - `all`: every pin is copied.
+   *
+   * Copied policies get `owner_type: customer`, the source policy's description, and
+   * a first version whose `cedar_json`, `schema_version` and `sha` are copied
+   * verbatim from the pinned source version. There is no Cedar revalidation and no
+   * rewrite of the embedded static-policy keys; the evaluator namespaces them by
+   * policy version ID.
+   *
+   * A copied policy is named after its source, with the platform catalog prefix
+   * `default-` stripped for platform-owned sources (`default-user-grants` becomes
+   * `user-grants`). Customer-owned names are kept as-is. A derived name that
+   * collides with a non-archived policy in the zone gets the first free numeric
+   * suffix (`user-grants-2`, `user-grants-3`, ...). Names are resolved inside the
+   * transaction; a concurrent race still surfaces as `409 policy_name_conflict`.
+   *
+   * Manifest order is the source's, with shared and copied pins interleaved as they
+   * were. `schema_version` is the source version's. `target_type` defaults to the
+   * source set's and may be overridden.
+   *
+   * The `ETag` header is the digest of the first version's manifest, so clone, then
+   * conditional `PUT .../manifest`, needs no intermediate GET.
+   *
+   * Domain error codes: `policy_set_not_found`, `policy_set_version_not_found`,
+   * `policy_set_name_conflict`, `policy_name_conflict`, `set_archived`,
+   * `version_archived`, `schema_version_unsupported`.
+   */
+  clone(
+    policySetID: string,
+    params: PolicySetCloneParams,
+    options?: RequestOptions,
+  ): APIPromise<PolicySetCloneResponse> {
+    const {
+      zone_id,
+      'X-API-Version': xAPIVersion,
+      'X-Client-Request-ID': xClientRequestID,
+      ...body
+    } = params;
+    return this._client.post(path`/zones/${zone_id}/policy-sets/${policySetID}/clones`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
           ...(xAPIVersion != null ? { 'X-API-Version': xAPIVersion } : undefined),
           ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined),
         },
@@ -270,6 +387,12 @@ export interface PolicySet {
   archived_at?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  created_by_user?: PolicySet.CreatedByUser;
+
+  /**
    * Human-readable version number of the latest version (e.g., 1, 2, 3)
    */
   latest_version?: number | null;
@@ -277,6 +400,60 @@ export interface PolicySet {
   latest_version_id?: string | null;
 
   updated_by?: string | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: PolicySet.UpdatedByUser;
+}
+
+export namespace PolicySet {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface CreatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface PolicySetDraft {
@@ -303,6 +480,12 @@ export interface PolicySetDraft {
   name?: string | null;
 
   /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: PolicySetDraft.UpdatedByUser;
+
+  /**
    * Warnings about manifest entries that would prevent creating a version from this
    * draft. Present only when there are warnings; omitted when empty.
    */
@@ -310,6 +493,29 @@ export interface PolicySetDraft {
 }
 
 export namespace PolicySetDraft {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
   export interface Warning {
     /**
      * Human-readable description of the warning, e.g. 'validated against schema
@@ -324,18 +530,16 @@ export namespace PolicySetDraft {
     type: 'policy_version_archived' | 'schema_version_mismatch';
 
     /**
-     * Structured detail payload. Present for warning types that carry additional
-     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
-     * when the type alone is sufficient (e.g. policy_version_archived).
+     * Additional structured context for a manifest warning. The shape depends on the
+     * warning type.
      */
     detail?: Warning.Detail;
   }
 
   export namespace Warning {
     /**
-     * Structured detail payload. Present for warning types that carry additional
-     * context (e.g. schema_version_mismatch includes the two schema versions). Omitted
-     * when the type alone is sufficient (e.g. policy_version_archived).
+     * Additional structured context for a manifest warning. The shape depends on the
+     * warning type.
      */
     export interface Detail {
       /**
@@ -384,7 +588,22 @@ export interface PolicySetWithBinding extends PolicySet {
    */
   active_version_id?: string | null;
 
+  /**
+   * Active zone binding, present when created with `manifest.activate` set to true.
+   */
+  binding?: PolicyBindingsAPI.PolicySetBinding;
+
+  /**
+   * Per-policy outcomes, present only when created with a manifest.
+   */
+  changes?: Array<PolicySetWithBinding.Change>;
+
   mode?: 'active' | 'shadow' | null;
+
+  /**
+   * First version, present only when created with a manifest.
+   */
+  policy_set_version?: VersionsAPI.PolicySetVersion;
 
   /**
    * @deprecated **Deprecated.** Use `target_id` instead. Carries the active
@@ -408,6 +627,43 @@ export interface PolicySetWithBinding extends PolicySet {
    * predate target tracking.
    */
   target_id?: string | null;
+
+  /**
+   * Non-fatal findings, present only when non-empty on create.
+   */
+  warnings?: Array<PolicySetWithBinding.Warning>;
+}
+
+export namespace PolicySetWithBinding {
+  export interface Change {
+    /**
+     * `repinned`: an explicit `policy_version_id` replaced a different version the set
+     * already pinned for that policy; no version minted.
+     */
+    action: 'created_policy' | 'created_version' | 'reused' | 'repinned' | 'dropped';
+
+    /**
+     * The policy's name. Lets a caller correlate a `created_policy` row with its
+     * `new_policy` request entry without a re-list.
+     */
+    name: string;
+
+    policy_id: string;
+
+    /**
+     * Absent when action is dropped.
+     */
+    policy_version_id?: string;
+  }
+
+  export interface Warning {
+    /**
+     * Machine-readable warning code, e.g. unknown_actions.
+     */
+    code: string;
+
+    message: string;
+  }
 }
 
 export interface PolicySetListResponse {
@@ -442,11 +698,60 @@ export namespace PolicySetListResponse {
   }
 }
 
+export interface PolicySetCloneResponse {
+  /**
+   * One row per manifest entry, in manifest order.
+   */
+  policies: Array<PolicySetCloneResponse.Policy>;
+
+  /**
+   * The new set. `latest_version_id` is the first version; it is unbound.
+   */
+  policy_set: PolicySetWithBinding;
+
+  /**
+   * The new set's first version, with manifest and attestation.
+   */
+  policy_set_version: VersionsAPI.PolicySetVersion;
+}
+
+export namespace PolicySetCloneResponse {
+  export interface Policy {
+    action: 'shared' | 'copied';
+
+    /**
+     * The pinned policy's name (the derived name when `copied`).
+     */
+    name: string;
+
+    /**
+     * Public ID of the policy pinned by the clone. Equals `source_policy_id` when
+     * `shared`.
+     */
+    policy_id: string;
+
+    /**
+     * Public ID of the pinned policy version. Equals the source's when `shared`.
+     */
+    policy_version_id: string;
+
+    /**
+     * Public ID of the policy pinned by the source version.
+     */
+    source_policy_id: string;
+  }
+}
+
 export interface PolicySetCreateParams {
   /**
    * Body param
    */
   name: string;
+
+  /**
+   * Body param: Content for the first version, created atomically with the set.
+   */
+  manifest?: PolicySetCreateParams.Manifest;
 
   /**
    * @deprecated Body param: **Deprecated.** Use `target_type` instead. Only `zone`
@@ -474,11 +779,109 @@ export interface PolicySetCreateParams {
   'X-Client-Request-ID'?: string;
 }
 
+export namespace PolicySetCreateParams {
+  /**
+   * Content for the first version, created atomically with the set.
+   */
+  export interface Manifest {
+    /**
+     * Initial manifest entries, in request order.
+     */
+    entries: Array<Manifest.PdpExistingPolicyEntry | Manifest.PdpNewPolicyEntry>;
+
+    /**
+     * Bind the first version to the zone's active slot in the same transaction.
+     * Requires a zone-targeted set and the activate permission on policy_set_bindings.
+     */
+    activate?: boolean;
+
+    /**
+     * Schema to validate and pin v1 against. Defaults to the zone default.
+     */
+    schema_version?: string;
+  }
+
+  export namespace Manifest {
+    /**
+     * Reference to an existing (non-archived) policy in the zone — not limited to
+     * policies already in this set. With `cedar_raw`/`cedar_json` (mutually
+     * exclusive): the server diffs by content SHA; unchanged content under the
+     * resolved schema reuses the pinned policy version, changed content mints a new
+     * one. Without content ("pin as-is"): reuses the version pinned in the latest
+     * manifest, or the policy's latest version when the policy is newly added to this
+     * set. Bare pins are re-versioned when the resolved schema differs from the pinned
+     * version's schema. With `policy_version_id`: pins exactly that existing version
+     * and mints nothing. Mutually exclusive with `cedar_raw`/`cedar_json` (a version
+     * is content; 400 when both are supplied). The version must belong to `policy_id`,
+     * must not be archived (`version_archived`), and must have been validated against
+     * the resolved schema (`schema_version_mismatch`; no re-versioning). Reported as
+     * `repinned` when the set already pins a different version of the policy,
+     * otherwise `reused`. Platform-owned policies accept bare pins and
+     * `policy_version_id` (customers cannot mint versions of those).
+     */
+    export interface PdpExistingPolicyEntry {
+      /**
+       * Public ID of an existing policy in the zone.
+       */
+      policy_id: string;
+
+      /**
+       * Cedar policy JSON. Mutually exclusive with cedar_raw.
+       */
+      cedar_json?: unknown;
+
+      /**
+       * Cedar policy text. Mutually exclusive with cedar_json.
+       */
+      cedar_raw?: string;
+
+      /**
+       * Public ID of an existing version of `policy_id` to pin. Mutually exclusive with
+       * cedar_raw and cedar_json.
+       */
+      policy_version_id?: string;
+    }
+
+    /**
+     * Mints a new customer-owned policy with the requested name (409
+     * `policy_name_conflict` on collision) plus its first version from the supplied
+     * content. Exactly one of `cedar_raw`/`cedar_json` is required.
+     */
+    export interface PdpNewPolicyEntry {
+      new_policy: PdpNewPolicyEntry.NewPolicy;
+
+      /**
+       * Cedar policy JSON. Mutually exclusive with cedar_raw.
+       */
+      cedar_json?: unknown;
+
+      /**
+       * Cedar policy text. Mutually exclusive with cedar_json.
+       */
+      cedar_raw?: string;
+    }
+
+    export namespace PdpNewPolicyEntry {
+      export interface NewPolicy {
+        name: string;
+
+        description?: string;
+      }
+    }
+  }
+}
+
 export interface PolicySetRetrieveParams {
   /**
    * Path param: The zone identifier
    */
   zone_id: string;
+
+  /**
+   * Query param: Opt-in to additional response fields on a single resource (`user`).
+   * Repeatable.
+   */
+  'expand[]'?: 'user' | Array<'user'>;
 
   /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
@@ -548,13 +951,10 @@ export interface PolicySetListParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
-  expand?: Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Filter by active binding status. When `true`, returns only policy
@@ -632,7 +1032,7 @@ export interface PolicySetListParams {
    * the resource. For policies that is `name` and `description`; for policy sets
    * that is `name`. Repeatable; if multiple terms are supplied they are OR-ed.
    */
-  query?: Array<string>;
+  'query[]'?: string | Array<string>;
 
   /**
    * Query param: Case-insensitive substring search on `name`. Repeatable; if
@@ -685,7 +1085,51 @@ export interface PolicySetArchiveParams {
   'X-Client-Request-ID'?: string;
 }
 
+export interface PolicySetCloneParams {
+  /**
+   * Path param: The zone identifier
+   */
+  zone_id: string;
+
+  /**
+   * Body param: Name of the new policy set. 409 `policy_set_name_conflict` on
+   * collision.
+   */
+  name: string;
+
+  /**
+   * Body param: Which pinned policies are duplicated as new customer-owned policies.
+   * `none` shares every pin; `platform` copies platform-owned pins and shares
+   * customer-owned ones; `all` copies every pin.
+   */
+  copy_policies?: 'none' | 'platform' | 'all';
+
+  /**
+   * Body param: Policy set version public ID on the source set. Defaults to the
+   * source's latest non-archived version.
+   */
+  source_version_id?: string;
+
+  /**
+   * Body param: Defaults to the source set's target type.
+   */
+  target_type?: 'zone' | 'user';
+
+  /**
+   * Header param: API version header (date-based, e.g. 2026-02-01)
+   */
+  'X-API-Version'?: string;
+
+  /**
+   * Header param: Unique request identifier specified by the originating caller and
+   * passed along by proxies.
+   */
+  'X-Client-Request-ID'?: string;
+}
+
 PolicySets.Versions = Versions;
+PolicySets.Draft = Draft;
+PolicySets.Manifest = ManifestAPIManifest;
 
 export declare namespace PolicySets {
   export {
@@ -697,11 +1141,13 @@ export declare namespace PolicySets {
     type PolicySetManifestEntry as PolicySetManifestEntry,
     type PolicySetWithBinding as PolicySetWithBinding,
     type PolicySetListResponse as PolicySetListResponse,
+    type PolicySetCloneResponse as PolicySetCloneResponse,
     type PolicySetCreateParams as PolicySetCreateParams,
     type PolicySetRetrieveParams as PolicySetRetrieveParams,
     type PolicySetUpdateParams as PolicySetUpdateParams,
     type PolicySetListParams as PolicySetListParams,
     type PolicySetArchiveParams as PolicySetArchiveParams,
+    type PolicySetCloneParams as PolicySetCloneParams,
   };
 
   export {
@@ -715,5 +1161,24 @@ export declare namespace PolicySets {
     type VersionListParams as VersionListParams,
     type VersionArchiveParams as VersionArchiveParams,
     type VersionListPoliciesParams as VersionListPoliciesParams,
+  };
+
+  export {
+    Draft as Draft,
+    type DraftListPoliciesResponse as DraftListPoliciesResponse,
+    type DraftCreateParams as DraftCreateParams,
+    type DraftRetrieveParams as DraftRetrieveParams,
+    type DraftUpdateParams as DraftUpdateParams,
+    type DraftDeleteParams as DraftDeleteParams,
+    type DraftListPoliciesParams as DraftListPoliciesParams,
+    type DraftUpsertParams as DraftUpsertParams,
+  };
+
+  export {
+    ManifestAPIManifest as Manifest,
+    type ManifestRetrieveResponse as ManifestRetrieveResponse,
+    type ManifestApplyResponse as ManifestApplyResponse,
+    type ManifestRetrieveParams as ManifestRetrieveParams,
+    type ManifestApplyParams as ManifestApplyParams,
   };
 }
