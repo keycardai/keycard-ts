@@ -10,7 +10,11 @@ import { path } from '../../internal/utils/path';
 
 export class Invitations extends APIResource {
   /**
-   * Create an invitation to join an organization
+   * Create an invitation to join an organization and queue the invitation email. The
+   * invitation is created even when the email service cannot be reached; the
+   * response's `delivery_status` is `failed` then, no email was queued, and the
+   * caller must resend. A 4xx from the email service, such as a recipient send cap,
+   * creates no invitation.
    */
   create(
     organizationID: string,
@@ -110,6 +114,15 @@ export interface Invitation {
    * The time the entity was mostly recently updated in utc
    */
   updated_at: string;
+
+  /**
+   * Delivery state of the most recent invitation email. `queued` and `sending` mean
+   * the email service still holds the message. `sent` means the provider accepted
+   * it. `failed` means the email service could not be reached or rejected the
+   * message. `expired` means the invitation expired before the message was
+   * delivered. Absent for invitations created before delivery tracking existed.
+   */
+  delivery_status?: 'queued' | 'sending' | 'sent' | 'failed' | 'expired';
 
   /**
    * Permissions granted to the authenticated principal for this resource. Only

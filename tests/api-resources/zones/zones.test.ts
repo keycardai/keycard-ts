@@ -32,9 +32,11 @@ describe('resource zones', () => {
       organization_id: 'organization_id',
       protocols: {
         oauth2: {
+          background_session_max_lifetime_seconds: 3600,
           cimd: { allowed_client_ids: ['string'], enabled: true },
           dcr_enabled: true,
           pkce_required: true,
+          session_max_lifetime_seconds: 3600,
         },
       },
     });
@@ -87,9 +89,11 @@ describe('resource zones', () => {
           name: 'x',
           protocols: {
             oauth2: {
+              background_session_max_lifetime_seconds: 3600,
               cimd: { allowed_client_ids: ['string'], enabled: true },
               dcr_enabled: true,
               pkce_required: true,
+              session_max_lifetime_seconds: 3600,
             },
           },
           user_identity_provider_id: 'user_identity_provider_id',
