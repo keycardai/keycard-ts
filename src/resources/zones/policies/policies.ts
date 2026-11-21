@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as DraftAPI from './draft';
+import { Draft, DraftDeleteParams, DraftRetrieveParams, DraftUpsertParams } from './draft';
 import * as VersionsAPI from './versions';
 import {
   PolicyVersion,
@@ -21,6 +23,7 @@ import { path } from '../../../internal/utils/path';
  */
 export class Policies extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
+  draft: DraftAPI.Draft = new DraftAPI.Draft(this._client);
 
   /**
    * Create a new policy
@@ -534,6 +537,7 @@ export interface PolicyArchiveParams {
 }
 
 Policies.Versions = Versions;
+Policies.Draft = Draft;
 
 export declare namespace Policies {
   export {
@@ -555,5 +559,12 @@ export declare namespace Policies {
     type VersionRetrieveParams as VersionRetrieveParams,
     type VersionListParams as VersionListParams,
     type VersionArchiveParams as VersionArchiveParams,
+  };
+
+  export {
+    Draft as Draft,
+    type DraftRetrieveParams as DraftRetrieveParams,
+    type DraftDeleteParams as DraftDeleteParams,
+    type DraftUpsertParams as DraftUpsertParams,
   };
 }

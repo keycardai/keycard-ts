@@ -306,6 +306,14 @@ Methods:
 - <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
 
+### Draft
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">retrieve</a>(policyID, { ...params }) -> PolicyDraft</code>
+- <code title="delete /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">delete</a>(policyID, { ...params }) -> void</code>
+- <code title="put /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">upsert</a>(policyID, { ...params }) -> PolicyDraft</code>
+
 ## PolicySets
 
 Types:
@@ -318,6 +326,7 @@ Types:
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetManifestEntry</a></code>
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetWithBinding</a></code>
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetListResponse</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetCloneResponse</a></code>
 
 Methods:
 
@@ -326,6 +335,7 @@ Methods:
 - <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">update</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
 - <code title="get /zones/{zone_id}/policy-sets">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">list</a>(zoneID, { ...params }) -> PolicySetListResponse</code>
 - <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">archive</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
+- <code title="post /zones/{zone_id}/policy-sets/{policy_set_id}/clones">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">clone</a>(policySetID, { ...params }) -> PolicySetCloneResponse</code>
 
 ### Versions
 
@@ -343,6 +353,71 @@ Methods:
 - <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">list</a>(policySetID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">archive</a>(versionID, { ...params }) -> PolicySetVersion</code>
 - <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}/policies">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">listPolicies</a>(versionID, { ...params }) -> VersionListPoliciesResponse</code>
+
+### Draft
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/draft.ts">DraftListPoliciesResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">create</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">retrieve</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">update</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">delete</a>(policySetID, { ...params }) -> void</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/draft/policies">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">listPolicies</a>(policySetID, { ...params }) -> DraftListPoliciesResponse</code>
+- <code title="put /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">upsert</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+
+### Manifest
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/manifest.ts">ManifestRetrieveResponse</a></code>
+- <code><a href="./src/resources/zones/policy-sets/manifest.ts">ManifestApplyResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/manifest">client.zones.policySets.manifest.<a href="./src/resources/zones/policy-sets/manifest.ts">retrieve</a>(policySetID, { ...params }) -> ManifestRetrieveResponse</code>
+- <code title="put /zones/{zone_id}/policy-sets/{policy_set_id}/manifest">client.zones.policySets.manifest.<a href="./src/resources/zones/policy-sets/manifest.ts">apply</a>(policySetID, { ...params }) -> ManifestApplyResponse</code>
+
+## PolicyBindings
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicySetBinding</a></code>
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicyBindingListResponse</a></code>
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicyBindingRetrieveMetricsResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policy-bindings/{binding_id}">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">retrieve</a>(bindingID, { ...params }) -> PolicySetBinding</code>
+- <code title="get /zones/{zone_id}/policy-bindings">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">list</a>(zoneID, { ...params }) -> PolicyBindingListResponse</code>
+- <code title="delete /zones/{zone_id}/policy-bindings/{binding_id}">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">delete</a>(bindingID, { ...params }) -> void</code>
+- <code title="get /zones/{zone_id}/policy-bindings/{binding_id}/metrics">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">retrieveMetrics</a>(bindingID, { ...params }) -> PolicyBindingRetrieveMetricsResponse</code>
+- <code title="put /zones/{zone_id}/policy-bindings">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">set</a>(zoneID, { ...params }) -> PolicySetBinding</code>
+
+## PolicyValidations
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-validations.ts">PolicyValidationCreateResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-validations">client.zones.policyValidations.<a href="./src/resources/zones/policy-validations.ts">create</a>(zoneID, { ...params }) -> PolicyValidationCreateResponse</code>
+
+## PolicyEvaluations
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-evaluations.ts">PolicyEvaluationCreateResponse</a></code>
+- <code><a href="./src/resources/zones/policy-evaluations.ts">PolicyEvaluationListRequestsResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-evaluations">client.zones.policyEvaluations.<a href="./src/resources/zones/policy-evaluations.ts">create</a>(zoneID, { ...params }) -> PolicyEvaluationCreateResponse</code>
+- <code title="get /zones/{zone_id}/policy-evaluations/requests">client.zones.policyEvaluations.<a href="./src/resources/zones/policy-evaluations.ts">listRequests</a>(zoneID, { ...params }) -> PolicyEvaluationListRequestsResponse</code>
 
 # Organizations
 

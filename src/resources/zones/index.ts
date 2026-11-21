@@ -67,6 +67,24 @@ export {
   type PolicyArchiveParams,
 } from './policies/index';
 export {
+  PolicyBindings,
+  type PolicySetBinding,
+  type PolicyBindingListResponse,
+  type PolicyBindingRetrieveMetricsResponse,
+  type PolicyBindingRetrieveParams,
+  type PolicyBindingListParams,
+  type PolicyBindingDeleteParams,
+  type PolicyBindingRetrieveMetricsParams,
+  type PolicyBindingSetParams,
+} from './policy-bindings';
+export {
+  PolicyEvaluations,
+  type PolicyEvaluationCreateResponse,
+  type PolicyEvaluationListRequestsResponse,
+  type PolicyEvaluationCreateParams,
+  type PolicyEvaluationListRequestsParams,
+} from './policy-evaluations';
+export {
   PolicySchemas,
   type SchemaVersion,
   type SchemaVersionWithZoneInfo,
@@ -85,12 +103,19 @@ export {
   type PolicySetManifestEntry,
   type PolicySetWithBinding,
   type PolicySetListResponse,
+  type PolicySetCloneResponse,
   type PolicySetCreateParams,
   type PolicySetRetrieveParams,
   type PolicySetUpdateParams,
   type PolicySetListParams,
   type PolicySetArchiveParams,
+  type PolicySetCloneParams,
 } from './policy-sets/index';
+export {
+  PolicyValidations,
+  type PolicyValidationCreateResponse,
+  type PolicyValidationCreateParams,
+} from './policy-validations';
 export {
   Providers,
   type Provider,
