@@ -216,6 +216,14 @@ export namespace Provider {
 
       code_challenge_methods_supported?: Array<string> | null;
 
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      jwks?: Oauth2.Jwks | null;
+
       jwks_uri?: string | null;
 
       registration_endpoint?: string | null;
@@ -241,6 +249,49 @@ export namespace Provider {
        * "access_token". Slack v2 uses "authed_user.access_token".
        */
       token_response_access_token_pointer?: string | null;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      export interface Jwks {
+        keys: Array<Jwks.Key>;
+      }
+
+      export namespace Jwks {
+        /**
+         * A public JSON Web Key (RFC 7517). Members beyond those listed, such as n and e,
+         * or crv, x and y, are kept as given. Private key material is rejected.
+         */
+        export interface Key {
+          /**
+           * Key ID, unique within the set.
+           */
+          kid: string;
+
+          /**
+           * Key type: "RSA", or "EC" on P-256, P-384 or P-521.
+           */
+          kty: string;
+
+          /**
+           * Algorithm the key verifies: RS256 for RSA, ES256, ES384 or ES512 for EC on the
+           * matching curve.
+           */
+          alg?: string;
+
+          /**
+           * Public key use. Must be "sig" when set.
+           */
+          use?: string;
+
+          [k: string]: unknown;
+        }
+      }
     }
 
     /**
@@ -465,6 +516,14 @@ export namespace ProviderCreateParams {
        */
       issuer?: string;
 
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      jwks?: Oauth2.Jwks | null;
+
       jwks_uri?: string;
 
       registration_endpoint?: string;
@@ -490,6 +549,49 @@ export namespace ProviderCreateParams {
        * "access_token". Slack v2 uses "authed_user.access_token".
        */
       token_response_access_token_pointer?: string;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      export interface Jwks {
+        keys: Array<Jwks.Key>;
+      }
+
+      export namespace Jwks {
+        /**
+         * A public JSON Web Key (RFC 7517). Members beyond those listed, such as n and e,
+         * or crv, x and y, are kept as given. Private key material is rejected.
+         */
+        export interface Key {
+          /**
+           * Key ID, unique within the set.
+           */
+          kid: string;
+
+          /**
+           * Key type: "RSA", or "EC" on P-256, P-384 or P-521.
+           */
+          kty: string;
+
+          /**
+           * Algorithm the key verifies: RS256 for RSA, ES256, ES384 or ES512 for EC on the
+           * matching curve.
+           */
+          alg?: string;
+
+          /**
+           * Public key use. Must be "sig" when set.
+           */
+          use?: string;
+
+          [k: string]: unknown;
+        }
+      }
     }
 
     /**
@@ -628,6 +730,14 @@ export namespace ProviderUpdateParams {
        */
       issuer?: string;
 
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      jwks?: Oauth2.Jwks | null;
+
       jwks_uri?: string | null;
 
       registration_endpoint?: string | null;
@@ -653,6 +763,49 @@ export namespace ProviderUpdateParams {
        * "access_token". Set to null to unset.
        */
       token_response_access_token_pointer?: string | null;
+    }
+
+    export namespace Oauth2 {
+      /**
+       * Inline JSON Web Key Set (RFC 7517) used to verify the provider's tokens instead
+       * of fetching jwks_uri or discovery, for issuers Keycard can't reach, such as a
+       * local Kubernetes cluster. Mutually exclusive with jwks_uri. Keys stay trusted
+       * until removed, so add a rotated key before the issuer signs with it.
+       */
+      export interface Jwks {
+        keys: Array<Jwks.Key>;
+      }
+
+      export namespace Jwks {
+        /**
+         * A public JSON Web Key (RFC 7517). Members beyond those listed, such as n and e,
+         * or crv, x and y, are kept as given. Private key material is rejected.
+         */
+        export interface Key {
+          /**
+           * Key ID, unique within the set.
+           */
+          kid: string;
+
+          /**
+           * Key type: "RSA", or "EC" on P-256, P-384 or P-521.
+           */
+          kty: string;
+
+          /**
+           * Algorithm the key verifies: RS256 for RSA, ES256, ES384 or ES512 for EC on the
+           * matching curve.
+           */
+          alg?: string;
+
+          /**
+           * Public key use. Must be "sig" when set.
+           */
+          use?: string;
+
+          [k: string]: unknown;
+        }
+      }
     }
 
     /**

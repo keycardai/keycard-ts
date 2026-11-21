@@ -409,6 +409,11 @@ export namespace Zone {
       authorization_server_metadata: string;
 
       /**
+       * Maximum age of a background session.
+       */
+      background_session_max_lifetime_seconds: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd: Oauth2.Cimd;
@@ -442,6 +447,11 @@ export namespace Zone {
        * OAuth 2.0 Dynamic Client Registration endpoint
        */
       registration_endpoint: string;
+
+      /**
+       * Maximum age of a regular session.
+       */
+      session_max_lifetime_seconds: number;
 
       /**
        * OAuth 2.0 token endpoint
@@ -578,6 +588,11 @@ export namespace ZoneCreateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -591,6 +606,11 @@ export namespace ZoneCreateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number;
     }
 
     export namespace Oauth2 {
@@ -697,6 +717,11 @@ export namespace ZoneUpdateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number | null;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -710,6 +735,11 @@ export namespace ZoneUpdateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean | null;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number | null;
     }
 
     export namespace Oauth2 {

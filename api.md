@@ -382,6 +382,7 @@ Methods:
 - <code title="post /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">create</a>(organizationID, { ...params }) -> Invitation</code>
 - <code title="get /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">list</a>(organizationID, { ...params }) -> InvitationListResponse</code>
 - <code title="delete /organizations/{organization_id}/invitations/{invitation_id}">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">delete</a>(invitationID, { ...params }) -> void</code>
+- <code title="post /organizations/{organization_id}/invitations/{invitation_id}/resend">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">resend</a>(invitationID, { ...params }) -> Invitation</code>
 
 ## ServiceAccounts
 

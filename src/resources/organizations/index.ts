@@ -8,6 +8,7 @@ export {
   type InvitationCreateParams,
   type InvitationListParams,
   type InvitationDeleteParams,
+  type InvitationResendParams,
 } from './invitations';
 export {
   Organizations,
