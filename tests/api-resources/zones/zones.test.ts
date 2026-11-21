@@ -32,12 +32,13 @@ describe('resource zones', () => {
       organization_id: 'organization_id',
       protocols: {
         oauth2: {
+          background_session_max_lifetime_seconds: 3600,
           cimd: { allowed_client_ids: ['string'], enabled: true },
           dcr_enabled: true,
           pkce_required: true,
+          session_max_lifetime_seconds: 3600,
         },
       },
-      requires_invitation: true,
     });
   });
 
@@ -84,15 +85,17 @@ describe('resource zones', () => {
           default_resource_id: 'default_resource_id',
           description: 'description',
           encryption_key: { arn: 'x', type: 'aws' },
+          external_sync_enabled: true,
           name: 'x',
           protocols: {
             oauth2: {
+              background_session_max_lifetime_seconds: 3600,
               cimd: { allowed_client_ids: ['string'], enabled: true },
               dcr_enabled: true,
               pkce_required: true,
+              session_max_lifetime_seconds: 3600,
             },
           },
-          requires_invitation: true,
           user_identity_provider_id: 'user_identity_provider_id',
         },
         { path: '/_stainless_unknown_path' },
@@ -123,6 +126,7 @@ describe('resource zones', () => {
           cursor: 'cursor',
           'expand[]': 'total_count',
           'filter[organization_id]': 'filter[organization_id]',
+          'filter[permission][in]': 'string',
           limit: 1,
           slug: 'slug',
         },
