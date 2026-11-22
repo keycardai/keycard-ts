@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../../core/resource';
 import * as ProvidersAPI from '../providers';
-import * as ZonesAPI from '../zones';
 import * as ApplicationsAPI from './applications';
 import { APIPromise } from '../../../core/api-promise';
 import { buildHeaders } from '../../../internal/headers';
@@ -144,8 +143,8 @@ export interface Resource {
   credential_lifetime_seconds?: number | null;
 
   /**
-   * @deprecated A Provider is a system that supplies access to Resources and allows
-   * actors (Users or Applications) to authenticate.
+   * A Provider is a system that supplies access to Resources and allows actors
+   * (Users or Applications) to authenticate.
    */
   credential_provider?: ProvidersAPI.Provider;
 
@@ -183,11 +182,6 @@ export interface DependencyListResponse {
    * Cursor-based pagination metadata
    */
   pagination: DependencyListResponse.Pagination;
-
-  /**
-   * Pagination information
-   */
-  page_info?: ZonesAPI.PageInfoPagination;
 }
 
 export namespace DependencyListResponse {
@@ -243,7 +237,7 @@ export interface DependencyListParams {
   /**
    * Query param
    */
-  'expand[]'?: 'total_count' | Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'credential_provider' | Array<'total_count' | 'credential_provider'>;
 
   /**
    * Query param: Maximum number of items to return

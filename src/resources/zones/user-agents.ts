@@ -15,9 +15,14 @@ export class UserAgents extends APIResource {
   }
 
   /**
-   * Returns a list of user agents in the specified zone. User agents represent
-   * client software (browsers, desktop apps, CLI tools) registered via OAuth 2.0
-   * Dynamic Client Registration.
+   * Returns the user agents in the specified zone, cursor-paginated and ordered by
+   * name. User agents represent client software (browsers, desktop apps, CLI tools)
+   * registered via OAuth 2.0 Dynamic Client Registration. Pass `filter[id]`
+   * (repeatable, max 100) to restrict results to a known set of user agents —
+   * mutually exclusive with `after`/`before` (returns 400 if combined). When
+   * `filter[id]` is set, `limit` is ignored and the response contains every
+   * requested user agent that exists in the zone, in a single page. IDs not in the
+   * zone are silently omitted.
    */
   list(
     zoneID: string,
@@ -125,6 +130,17 @@ export interface UserAgentListParams {
   before?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Restrict results to user agents with this ID. Repeatable, max 100. Mutually
+   * exclusive with after/before.
+   */
+  'filter[id]'?: string | Array<string>;
+
+  /**
+   * Filter by exact identifier (OAuth client_id)
+   */
+  'filter[identifier]'?: string | Array<string>;
 
   /**
    * Maximum number of items to return
