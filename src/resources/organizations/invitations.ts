@@ -10,7 +10,11 @@ import { path } from '../../internal/utils/path';
 
 export class Invitations extends APIResource {
   /**
-   * Create an invitation to join an organization
+   * Create an invitation to join an organization and queue the invitation email. The
+   * invitation is created even when the email service cannot be reached; the
+   * response's `delivery_status` is `failed` then, no email was queued, and the
+   * caller must resend. A 4xx from the email service, such as a recipient send cap,
+   * creates no invitation.
    */
   create(
     organizationID: string,
@@ -112,6 +116,15 @@ export interface Invitation {
   updated_at: string;
 
   /**
+   * Delivery state of the most recent invitation email. `queued` and `sending` mean
+   * the email service still holds the message. `sent` means the provider accepted
+   * it. `failed` means the email service could not be reached or rejected the
+   * message. `expired` means the invitation expired before the message was
+   * delivered. Absent for invitations created before delivery tracking existed.
+   */
+  delivery_status?: 'queued' | 'sending' | 'sent' | 'failed' | 'expired';
+
+  /**
    * Permissions granted to the authenticated principal for this resource. Only
    * populated when the 'expand[]=permissions' query parameter is provided. Keys are
    * resource types (e.g., "organizations"), values are objects mapping permission
@@ -173,12 +186,22 @@ export interface InvitationListParams {
 
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
+
+  /**
+   * Query param: Return only invitations with these statuses. Repeat the parameter
+   * to match any of several statuses
+   * (`?filter[status]=pending&filter[status]=accepted`). Expired invitations are
+   * never listed, so `expired` matches nothing. When absent, no status filter is
+   * applied.
+   */
+  'filter[status]'?: Array<InvitationStatus>;
 
   /**
    * Query param: Maximum number of invitations to return
