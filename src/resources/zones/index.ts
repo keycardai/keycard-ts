@@ -44,16 +44,17 @@ export {
   type DelegatedGrantDeleteParams,
 } from './delegated-grants';
 export {
-  Members,
-  type ZoneMember,
-  type ZoneRole,
-  type MemberListResponse,
-  type MemberRetrieveParams,
-  type MemberUpdateParams,
-  type MemberListParams,
-  type MemberDeleteParams,
-  type MemberAddParams,
-} from './members';
+  Groups,
+  type Group,
+  type GroupCreate,
+  type GroupUpdate,
+  type GroupListResponse,
+  type GroupCreateParams,
+  type GroupRetrieveParams,
+  type GroupUpdateParams,
+  type GroupListParams,
+  type GroupDeleteParams,
+} from './groups/index';
 export {
   Policies,
   type Policy,
@@ -65,6 +66,24 @@ export {
   type PolicyListParams,
   type PolicyArchiveParams,
 } from './policies/index';
+export {
+  PolicyBindings,
+  type PolicySetBinding,
+  type PolicyBindingListResponse,
+  type PolicyBindingRetrieveMetricsResponse,
+  type PolicyBindingRetrieveParams,
+  type PolicyBindingListParams,
+  type PolicyBindingDeleteParams,
+  type PolicyBindingRetrieveMetricsParams,
+  type PolicyBindingSetParams,
+} from './policy-bindings';
+export {
+  PolicyEvaluations,
+  type PolicyEvaluationCreateResponse,
+  type PolicyEvaluationListRequestsResponse,
+  type PolicyEvaluationCreateParams,
+  type PolicyEvaluationListRequestsParams,
+} from './policy-evaluations';
 export {
   PolicySchemas,
   type SchemaVersion,
@@ -84,21 +103,30 @@ export {
   type PolicySetManifestEntry,
   type PolicySetWithBinding,
   type PolicySetListResponse,
+  type PolicySetCloneResponse,
   type PolicySetCreateParams,
   type PolicySetRetrieveParams,
   type PolicySetUpdateParams,
   type PolicySetListParams,
   type PolicySetArchiveParams,
+  type PolicySetCloneParams,
 } from './policy-sets/index';
+export {
+  PolicyValidations,
+  type PolicyValidationCreateResponse,
+  type PolicyValidationCreateParams,
+} from './policy-validations';
 export {
   Providers,
   type Provider,
+  type ValidationResult,
   type ProviderListResponse,
   type ProviderCreateParams,
   type ProviderRetrieveParams,
   type ProviderUpdateParams,
   type ProviderListParams,
   type ProviderDeleteParams,
+  type ProviderValidateParams,
 } from './providers';
 export {
   Resources,
@@ -109,6 +137,18 @@ export {
   type ResourceListParams,
   type ResourceDeleteParams,
 } from './resources';
+export {
+  Roles,
+  type Role,
+  type RoleCreate,
+  type RoleUpdate,
+  type RoleListResponse,
+  type RoleCreateParams,
+  type RoleRetrieveParams,
+  type RoleUpdateParams,
+  type RoleListParams,
+  type RoleDeleteParams,
+} from './roles';
 export {
   Secrets,
   type Secret,
@@ -143,8 +183,10 @@ export {
   type User,
   type UserListResponse,
   type UserRetrieveParams,
+  type UserUpdateParams,
   type UserListParams,
-} from './users';
+  type UserDeleteParams,
+} from './users/index';
 export {
   Zones,
   type EncryptionKeyAwsKmsConfig,

@@ -51,6 +51,18 @@ Methods:
 - <code title="put /zones/{zoneId}/applications/{id}/dependencies/{dependencyId}">client.zones.applications.dependencies.<a href="./src/resources/zones/applications/dependencies.ts">add</a>(dependencyID, { ...params }) -> void</code>
 - <code title="delete /zones/{zoneId}/applications/{id}/dependencies/{dependencyId}">client.zones.applications.dependencies.<a href="./src/resources/zones/applications/dependencies.ts">remove</a>(dependencyID, { ...params }) -> void</code>
 
+### Roles
+
+Types:
+
+- <code><a href="./src/resources/zones/applications/roles.ts">RoleListResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zoneId}/applications/{applicationId}/roles">client.zones.applications.roles.<a href="./src/resources/zones/applications/roles.ts">list</a>(applicationID, { ...params }) -> RoleListResponse</code>
+- <code title="post /zones/{zoneId}/applications/{applicationId}/roles">client.zones.applications.roles.<a href="./src/resources/zones/applications/roles.ts">assign</a>(applicationID, { ...params }) -> RoleAssignment</code>
+- <code title="delete /zones/{zoneId}/applications/{applicationId}/roles/{roleId}">client.zones.applications.roles.<a href="./src/resources/zones/applications/roles.ts">revoke</a>(roleID, { ...params }) -> void</code>
+
 ## ApplicationCredentials
 
 Types:
@@ -92,6 +104,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/zones/providers.ts">Provider</a></code>
+- <code><a href="./src/resources/zones/providers.ts">ValidationResult</a></code>
 - <code><a href="./src/resources/zones/providers.ts">ProviderListResponse</a></code>
 
 Methods:
@@ -101,6 +114,7 @@ Methods:
 - <code title="patch /zones/{zoneId}/providers/{id}">client.zones.providers.<a href="./src/resources/zones/providers.ts">update</a>(id, { ...params }) -> Provider</code>
 - <code title="get /zones/{zoneId}/providers">client.zones.providers.<a href="./src/resources/zones/providers.ts">list</a>(zoneID, { ...params }) -> ProviderListResponse</code>
 - <code title="delete /zones/{zoneId}/providers/{id}">client.zones.providers.<a href="./src/resources/zones/providers.ts">delete</a>(id, { ...params }) -> void</code>
+- <code title="post /zones/{zoneId}/providers/{id}/validate">client.zones.providers.<a href="./src/resources/zones/providers.ts">validate</a>(id, { ...params }) -> ValidationResult</code>
 
 ## Resources
 
@@ -146,29 +160,89 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/zones/users.ts">User</a></code>
-- <code><a href="./src/resources/zones/users.ts">UserListResponse</a></code>
+- <code><a href="./src/resources/zones/users/users.ts">User</a></code>
+- <code><a href="./src/resources/zones/users/users.ts">UserListResponse</a></code>
 
 Methods:
 
-- <code title="get /zones/{zoneId}/users/{id}">client.zones.users.<a href="./src/resources/zones/users.ts">retrieve</a>(id, { ...params }) -> User</code>
-- <code title="get /zones/{zoneId}/users">client.zones.users.<a href="./src/resources/zones/users.ts">list</a>(zoneID, { ...params }) -> UserListResponse</code>
+- <code title="get /zones/{zoneId}/users/{id}">client.zones.users.<a href="./src/resources/zones/users/users.ts">retrieve</a>(id, { ...params }) -> User</code>
+- <code title="patch /zones/{zoneId}/users/{id}">client.zones.users.<a href="./src/resources/zones/users/users.ts">update</a>(id, { ...params }) -> User</code>
+- <code title="get /zones/{zoneId}/users">client.zones.users.<a href="./src/resources/zones/users/users.ts">list</a>(zoneID, { ...params }) -> UserListResponse</code>
+- <code title="delete /zones/{zoneId}/users/{id}">client.zones.users.<a href="./src/resources/zones/users/users.ts">delete</a>(id, { ...params }) -> void</code>
 
-## Members
+### Roles
 
 Types:
 
-- <code><a href="./src/resources/zones/members.ts">ZoneMember</a></code>
-- <code><a href="./src/resources/zones/members.ts">ZoneRole</a></code>
-- <code><a href="./src/resources/zones/members.ts">MemberListResponse</a></code>
+- <code><a href="./src/resources/zones/users/roles.ts">RoleAssignment</a></code>
+- <code><a href="./src/resources/zones/users/roles.ts">RoleAssignmentCreate</a></code>
+- <code><a href="./src/resources/zones/users/roles.ts">RoleListResponse</a></code>
 
 Methods:
 
-- <code title="get /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">retrieve</a>(organizationUserID, { ...params }) -> ZoneMember</code>
-- <code title="patch /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">update</a>(organizationUserID, { ...params }) -> ZoneMember</code>
-- <code title="get /zones/{zoneId}/members">client.zones.members.<a href="./src/resources/zones/members.ts">list</a>(zoneID, { ...params }) -> MemberListResponse</code>
-- <code title="delete /zones/{zoneId}/members/{organizationUserId}">client.zones.members.<a href="./src/resources/zones/members.ts">delete</a>(organizationUserID, { ...params }) -> void</code>
-- <code title="post /zones/{zoneId}/members">client.zones.members.<a href="./src/resources/zones/members.ts">add</a>(zoneID, { ...params }) -> ZoneMember</code>
+- <code title="get /zones/{zoneId}/users/{userId}/roles">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">list</a>(userID, { ...params }) -> RoleListResponse</code>
+- <code title="post /zones/{zoneId}/users/{userId}/roles">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">assign</a>(userID, { ...params }) -> RoleAssignment</code>
+- <code title="delete /zones/{zoneId}/users/{userId}/roles/{roleId}">client.zones.users.roles.<a href="./src/resources/zones/users/roles.ts">revoke</a>(roleID, { ...params }) -> void</code>
+
+## Roles
+
+Types:
+
+- <code><a href="./src/resources/zones/roles.ts">Role</a></code>
+- <code><a href="./src/resources/zones/roles.ts">RoleCreate</a></code>
+- <code><a href="./src/resources/zones/roles.ts">RoleUpdate</a></code>
+- <code><a href="./src/resources/zones/roles.ts">RoleListResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zoneId}/roles">client.zones.roles.<a href="./src/resources/zones/roles.ts">create</a>(zoneID, { ...params }) -> Role</code>
+- <code title="get /zones/{zoneId}/roles/{roleId}">client.zones.roles.<a href="./src/resources/zones/roles.ts">retrieve</a>(roleID, { ...params }) -> Role</code>
+- <code title="patch /zones/{zoneId}/roles/{roleId}">client.zones.roles.<a href="./src/resources/zones/roles.ts">update</a>(roleID, { ...params }) -> Role</code>
+- <code title="get /zones/{zoneId}/roles">client.zones.roles.<a href="./src/resources/zones/roles.ts">list</a>(zoneID, { ...params }) -> RoleListResponse</code>
+- <code title="delete /zones/{zoneId}/roles/{roleId}">client.zones.roles.<a href="./src/resources/zones/roles.ts">delete</a>(roleID, { ...params }) -> void</code>
+
+## Groups
+
+Types:
+
+- <code><a href="./src/resources/zones/groups/groups.ts">Group</a></code>
+- <code><a href="./src/resources/zones/groups/groups.ts">GroupCreate</a></code>
+- <code><a href="./src/resources/zones/groups/groups.ts">GroupUpdate</a></code>
+- <code><a href="./src/resources/zones/groups/groups.ts">GroupListResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zoneId}/groups">client.zones.groups.<a href="./src/resources/zones/groups/groups.ts">create</a>(zoneID, { ...params }) -> Group</code>
+- <code title="get /zones/{zoneId}/groups/{groupId}">client.zones.groups.<a href="./src/resources/zones/groups/groups.ts">retrieve</a>(groupID, { ...params }) -> Group</code>
+- <code title="patch /zones/{zoneId}/groups/{groupId}">client.zones.groups.<a href="./src/resources/zones/groups/groups.ts">update</a>(groupID, { ...params }) -> Group</code>
+- <code title="get /zones/{zoneId}/groups">client.zones.groups.<a href="./src/resources/zones/groups/groups.ts">list</a>(zoneID, { ...params }) -> GroupListResponse</code>
+- <code title="delete /zones/{zoneId}/groups/{groupId}">client.zones.groups.<a href="./src/resources/zones/groups/groups.ts">delete</a>(groupID, { ...params }) -> void</code>
+
+### Members
+
+Types:
+
+- <code><a href="./src/resources/zones/groups/members.ts">GroupMember</a></code>
+- <code><a href="./src/resources/zones/groups/members.ts">GroupMemberCreate</a></code>
+- <code><a href="./src/resources/zones/groups/members.ts">MemberListResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zoneId}/groups/{groupId}/members">client.zones.groups.members.<a href="./src/resources/zones/groups/members.ts">list</a>(groupID, { ...params }) -> MemberListResponse</code>
+- <code title="post /zones/{zoneId}/groups/{groupId}/members">client.zones.groups.members.<a href="./src/resources/zones/groups/members.ts">add</a>(groupID, { ...params }) -> GroupMember</code>
+- <code title="delete /zones/{zoneId}/groups/{groupId}/members/{userId}">client.zones.groups.members.<a href="./src/resources/zones/groups/members.ts">remove</a>(userID, { ...params }) -> void</code>
+
+### Roles
+
+Types:
+
+- <code><a href="./src/resources/zones/groups/roles.ts">RoleListResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zoneId}/groups/{groupId}/roles">client.zones.groups.roles.<a href="./src/resources/zones/groups/roles.ts">list</a>(groupID, { ...params }) -> RoleListResponse</code>
+- <code title="post /zones/{zoneId}/groups/{groupId}/roles">client.zones.groups.roles.<a href="./src/resources/zones/groups/roles.ts">add</a>(groupID, { ...params }) -> RoleAssignment</code>
+- <code title="delete /zones/{zoneId}/groups/{groupId}/roles/{roleId}">client.zones.groups.roles.<a href="./src/resources/zones/groups/roles.ts">remove</a>(roleID, { ...params }) -> void</code>
 
 ## Secrets
 
@@ -232,6 +306,14 @@ Methods:
 - <code title="get /zones/{zone_id}/policies/{policy_id}/versions">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">list</a>(policyID, { ...params }) -> VersionListResponse</code>
 - <code title="delete /zones/{zone_id}/policies/{policy_id}/versions/{version_id}">client.zones.policies.versions.<a href="./src/resources/zones/policies/versions.ts">archive</a>(versionID, { ...params }) -> PolicyVersion</code>
 
+### Draft
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">retrieve</a>(policyID, { ...params }) -> PolicyDraft</code>
+- <code title="delete /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">delete</a>(policyID, { ...params }) -> void</code>
+- <code title="put /zones/{zone_id}/policies/{policy_id}/draft">client.zones.policies.draft.<a href="./src/resources/zones/policies/draft.ts">upsert</a>(policyID, { ...params }) -> PolicyDraft</code>
+
 ## PolicySets
 
 Types:
@@ -244,6 +326,7 @@ Types:
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetManifestEntry</a></code>
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetWithBinding</a></code>
 - <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetListResponse</a></code>
+- <code><a href="./src/resources/zones/policy-sets/policy-sets.ts">PolicySetCloneResponse</a></code>
 
 Methods:
 
@@ -252,6 +335,7 @@ Methods:
 - <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">update</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
 - <code title="get /zones/{zone_id}/policy-sets">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">list</a>(zoneID, { ...params }) -> PolicySetListResponse</code>
 - <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">archive</a>(policySetID, { ...params }) -> PolicySetWithBinding</code>
+- <code title="post /zones/{zone_id}/policy-sets/{policy_set_id}/clones">client.zones.policySets.<a href="./src/resources/zones/policy-sets/policy-sets.ts">clone</a>(policySetID, { ...params }) -> PolicySetCloneResponse</code>
 
 ### Versions
 
@@ -270,17 +354,79 @@ Methods:
 - <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">archive</a>(versionID, { ...params }) -> PolicySetVersion</code>
 - <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/versions/{version_id}/policies">client.zones.policySets.versions.<a href="./src/resources/zones/policy-sets/versions.ts">listPolicies</a>(versionID, { ...params }) -> VersionListPoliciesResponse</code>
 
+### Draft
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/draft.ts">DraftListPoliciesResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">create</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">retrieve</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="patch /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">update</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+- <code title="delete /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">delete</a>(policySetID, { ...params }) -> void</code>
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/draft/policies">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">listPolicies</a>(policySetID, { ...params }) -> DraftListPoliciesResponse</code>
+- <code title="put /zones/{zone_id}/policy-sets/{policy_set_id}/draft">client.zones.policySets.draft.<a href="./src/resources/zones/policy-sets/draft.ts">upsert</a>(policySetID, { ...params }) -> PolicySetDraft</code>
+
+### Manifest
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-sets/manifest.ts">ManifestRetrieveResponse</a></code>
+- <code><a href="./src/resources/zones/policy-sets/manifest.ts">ManifestApplyResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policy-sets/{policy_set_id}/manifest">client.zones.policySets.manifest.<a href="./src/resources/zones/policy-sets/manifest.ts">retrieve</a>(policySetID, { ...params }) -> ManifestRetrieveResponse</code>
+- <code title="put /zones/{zone_id}/policy-sets/{policy_set_id}/manifest">client.zones.policySets.manifest.<a href="./src/resources/zones/policy-sets/manifest.ts">apply</a>(policySetID, { ...params }) -> ManifestApplyResponse</code>
+
+## PolicyBindings
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicySetBinding</a></code>
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicyBindingListResponse</a></code>
+- <code><a href="./src/resources/zones/policy-bindings.ts">PolicyBindingRetrieveMetricsResponse</a></code>
+
+Methods:
+
+- <code title="get /zones/{zone_id}/policy-bindings/{binding_id}">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">retrieve</a>(bindingID, { ...params }) -> PolicySetBinding</code>
+- <code title="get /zones/{zone_id}/policy-bindings">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">list</a>(zoneID, { ...params }) -> PolicyBindingListResponse</code>
+- <code title="delete /zones/{zone_id}/policy-bindings/{binding_id}">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">delete</a>(bindingID, { ...params }) -> void</code>
+- <code title="get /zones/{zone_id}/policy-bindings/{binding_id}/metrics">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">retrieveMetrics</a>(bindingID, { ...params }) -> PolicyBindingRetrieveMetricsResponse</code>
+- <code title="put /zones/{zone_id}/policy-bindings">client.zones.policyBindings.<a href="./src/resources/zones/policy-bindings.ts">set</a>(zoneID, { ...params }) -> PolicySetBinding</code>
+
+## PolicyValidations
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-validations.ts">PolicyValidationCreateResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-validations">client.zones.policyValidations.<a href="./src/resources/zones/policy-validations.ts">create</a>(zoneID, { ...params }) -> PolicyValidationCreateResponse</code>
+
+## PolicyEvaluations
+
+Types:
+
+- <code><a href="./src/resources/zones/policy-evaluations.ts">PolicyEvaluationCreateResponse</a></code>
+- <code><a href="./src/resources/zones/policy-evaluations.ts">PolicyEvaluationListRequestsResponse</a></code>
+
+Methods:
+
+- <code title="post /zones/{zone_id}/policy-evaluations">client.zones.policyEvaluations.<a href="./src/resources/zones/policy-evaluations.ts">create</a>(zoneID, { ...params }) -> PolicyEvaluationCreateResponse</code>
+- <code title="get /zones/{zone_id}/policy-evaluations/requests">client.zones.policyEvaluations.<a href="./src/resources/zones/policy-evaluations.ts">listRequests</a>(zoneID, { ...params }) -> PolicyEvaluationListRequestsResponse</code>
+
 # Organizations
 
 Types:
 
 - <code><a href="./src/resources/organizations/organizations.ts">Organization</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">PageInfoCursor</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">RoleScope</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">TokenResponse</a></code>
 - <code><a href="./src/resources/organizations/organizations.ts">OrganizationListResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationListIdentitiesResponse</a></code>
-- <code><a href="./src/resources/organizations/organizations.ts">OrganizationListRolesResponse</a></code>
 
 Methods:
 
@@ -288,8 +434,7 @@ Methods:
 - <code title="get /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">retrieve</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="patch /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">update</a>(organizationID, { ...params }) -> Organization</code>
 - <code title="get /organizations">client.organizations.<a href="./src/resources/organizations/organizations.ts">list</a>({ ...params }) -> OrganizationListResponse</code>
-- <code title="get /organizations/{organization_id}/identities">client.organizations.<a href="./src/resources/organizations/organizations.ts">listIdentities</a>(organizationID, { ...params }) -> OrganizationListIdentitiesResponse</code>
-- <code title="get /organizations/{organization_id}/roles">client.organizations.<a href="./src/resources/organizations/organizations.ts">listRoles</a>(organizationID, { ...params }) -> OrganizationListRolesResponse</code>
+- <code title="delete /organizations/{organization_id}">client.organizations.<a href="./src/resources/organizations/organizations.ts">delete</a>(organizationID, { ...params }) -> void</code>
 
 ## Users
 
@@ -298,14 +443,6 @@ Types:
 - <code><a href="./src/resources/organizations/users.ts">OrganizationRole</a></code>
 - <code><a href="./src/resources/organizations/users.ts">OrganizationStatus</a></code>
 - <code><a href="./src/resources/organizations/users.ts">OrganizationUser</a></code>
-- <code><a href="./src/resources/organizations/users.ts">UserListResponse</a></code>
-
-Methods:
-
-- <code title="get /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">retrieve</a>(userID, { ...params }) -> OrganizationUser</code>
-- <code title="patch /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">update</a>(userID, { ...params }) -> OrganizationUser</code>
-- <code title="get /organizations/{organization_id}/users">client.organizations.users.<a href="./src/resources/organizations/users.ts">list</a>(organizationID, { ...params }) -> UserListResponse</code>
-- <code title="delete /organizations/{organization_id}/users/{user_id}">client.organizations.users.<a href="./src/resources/organizations/users.ts">delete</a>(userID, { ...params }) -> void</code>
 
 ## Invitations
 
@@ -320,6 +457,7 @@ Methods:
 - <code title="post /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">create</a>(organizationID, { ...params }) -> Invitation</code>
 - <code title="get /organizations/{organization_id}/invitations">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">list</a>(organizationID, { ...params }) -> InvitationListResponse</code>
 - <code title="delete /organizations/{organization_id}/invitations/{invitation_id}">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">delete</a>(invitationID, { ...params }) -> void</code>
+- <code title="post /organizations/{organization_id}/invitations/{invitation_id}/resend">client.organizations.invitations.<a href="./src/resources/organizations/invitations.ts">resend</a>(invitationID, { ...params }) -> Invitation</code>
 
 ## ServiceAccounts
 
@@ -377,11 +515,3 @@ Methods:
 
 - <code title="get /invitations/{token}">client.invitations.<a href="./src/resources/invitations.ts">retrieve</a>(token, { ...params }) -> InvitationRetrieveResponse</code>
 - <code title="post /invitations/{token}/accept">client.invitations.<a href="./src/resources/invitations.ts">accept</a>(token, { ...params }) -> InvitationAcceptResponse</code>
-
-# PolicyBundle
-
-Methods:
-
-- <code title="get /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">retrieve</a>({ ...params }) -> Response</code>
-- <code title="put /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">update</a>(body, { ...params }) -> Response</code>
-- <code title="delete /policy/bundle">client.policyBundle.<a href="./src/resources/policy-bundle.ts">reset</a>({ ...params }) -> void</code>
