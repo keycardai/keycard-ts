@@ -10,7 +10,11 @@ import { path } from '../../internal/utils/path';
 
 export class Invitations extends APIResource {
   /**
-   * Create an invitation to join an organization
+   * Create an invitation to join an organization and queue the invitation email. The
+   * invitation is created even when the email service cannot be reached; the
+   * response's `delivery_status` is `failed` then, no email was queued, and the
+   * caller must resend. A 4xx from the email service, such as a recipient send cap,
+   * creates no invitation.
    */
   create(
     organizationID: string,
@@ -112,6 +116,41 @@ export interface Invitation {
   updated_at: string;
 
   /**
+   * Kind of bounce when `delivery_outcome` is `bounced`. `permanent` means the
+   * address does not accept mail; the provider suppresses later sends to it until it
+   * is removed from the suppression list. `transient` means a temporary rejection,
+   * such as a full mailbox. `undetermined` means the provider could not tell.
+   */
+  bounce_type?: 'permanent' | 'transient' | 'undetermined';
+
+  /**
+   * What happened to the most recent invitation email after the provider accepted it
+   * (`delivery_status` is `sent`). `delayed` means the recipient's server has not
+   * accepted it yet. `delivered` means the recipient's server accepted it. `failed`
+   * means the provider could not send it. `suppressed` means the provider did not
+   * send it because the address bounced or complained before. `bounced` means the
+   * recipient's server rejected it; see `bounce_type`. `complained` means the
+   * recipient marked it as spam. Absent until an outcome is known, and for
+   * invitations sent before outcomes were tracked. Cleared on resend. `delivered`
+   * can later change to `complained` within the 24 hours the outcome is tracked.
+   */
+  delivery_outcome?: 'delayed' | 'delivered' | 'failed' | 'suppressed' | 'bounced' | 'complained';
+
+  /**
+   * Delivery state of the most recent invitation email. `queued` and `sending` mean
+   * the email service still holds the message. `sent` means the provider accepted
+   * it. `failed` means the email service could not be reached or rejected the
+   * message. `expired` means the invitation expired before the message was
+   * delivered. Absent for invitations created before delivery tracking existed.
+   */
+  delivery_status?: 'queued' | 'sending' | 'sent' | 'failed' | 'expired';
+
+  /**
+   * When `delivery_outcome` last changed in the email service.
+   */
+  delivery_updated_at?: string;
+
+  /**
    * Permissions granted to the authenticated principal for this resource. Only
    * populated when the 'expand[]=permissions' query parameter is provided. Keys are
    * resource types (e.g., "organizations"), values are objects mapping permission
@@ -173,12 +212,22 @@ export interface InvitationListParams {
 
   /**
    * Query param: Fields to expand in the response. Supports "permissions" to include
-   * the permissions field with the caller's permissions for the resource. For list
-   * organization identities only, "total_count" populates pagination.total_count
-   * with the number of identities matching the same filters as the list (excluding
-   * cursor and limit). Other operations ignore expand values they do not use.
+   * the permissions field with the caller's permissions for the resource. For the
+   * service account and service account credential list operations, "total_count"
+   * populates pagination.total_count with the number of items matching the same
+   * filters as the list (excluding cursor and limit). Other operations ignore expand
+   * values they do not use.
    */
-  expand?: Array<'permissions' | 'total_count'>;
+  'expand[]'?: 'permissions' | 'total_count' | Array<'permissions' | 'total_count'>;
+
+  /**
+   * Query param: Return only invitations with these statuses. Repeat the parameter
+   * to match any of several statuses
+   * (`?filter[status]=pending&filter[status]=accepted`). Expired invitations are
+   * never listed, so `expired` matches nothing. When absent, no status filter is
+   * applied.
+   */
+  'filter[status]'?: Array<InvitationStatus>;
 
   /**
    * Query param: Maximum number of invitations to return
