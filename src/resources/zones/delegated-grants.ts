@@ -2,8 +2,8 @@
 
 import { APIResource } from '../../core/resource';
 import * as ProvidersAPI from './providers';
-import * as UsersAPI from './users';
 import * as DependenciesAPI from './applications/dependencies';
+import * as UsersAPI from './users/users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -27,10 +27,10 @@ export class DelegatedGrants extends APIResource {
   }
 
   /**
-   * Returns a list of delegated grants in the specified zone. Can be filtered by
-   * user, resource, or status. Use cursor pagination via `after`/`before`. Sort:
-   * comma-separated field list; prefix with `-` for descending. Use
-   * `expand[]=total_count` to include the matching row count.
+   * Returns a paginated list of delegated grants in the specified zone. Can be
+   * filtered by user, resource, or status. Use cursor pagination via
+   * `after`/`before`. Sort: comma-separated field list; prefix with `-` for
+   * descending. Use `expand[]=total_count` to include the matching row count.
    */
   list(
     zoneID: string,
