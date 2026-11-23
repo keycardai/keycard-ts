@@ -29,6 +29,26 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
+import * as PolicyBindingsAPI from './policy-bindings';
+import {
+  PolicyBindingDeleteParams,
+  PolicyBindingListParams,
+  PolicyBindingListResponse,
+  PolicyBindingRetrieveMetricsParams,
+  PolicyBindingRetrieveMetricsResponse,
+  PolicyBindingRetrieveParams,
+  PolicyBindingSetParams,
+  PolicyBindings,
+  PolicySetBinding,
+} from './policy-bindings';
+import * as PolicyEvaluationsAPI from './policy-evaluations';
+import {
+  PolicyEvaluationCreateParams,
+  PolicyEvaluationCreateResponse,
+  PolicyEvaluationListRequestsParams,
+  PolicyEvaluationListRequestsResponse,
+  PolicyEvaluations,
+} from './policy-evaluations';
 import * as PolicySchemasAPI from './policy-schemas';
 import {
   PolicySchemaListParams,
@@ -39,6 +59,12 @@ import {
   SchemaVersion,
   SchemaVersionWithZoneInfo,
 } from './policy-schemas';
+import * as PolicyValidationsAPI from './policy-validations';
+import {
+  PolicyValidationCreateParams,
+  PolicyValidationCreateResponse,
+  PolicyValidations,
+} from './policy-validations';
 import * as ProvidersAPI from './providers';
 import {
   Provider,
@@ -156,6 +182,8 @@ import {
   AttestationStatement,
   PolicySet,
   PolicySetArchiveParams,
+  PolicySetCloneParams,
+  PolicySetCloneResponse,
   PolicySetCreateParams,
   PolicySetDraft,
   PolicySetListParams,
@@ -198,6 +226,13 @@ export class Zones extends APIResource {
   policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
   policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
   policySets: PolicySetsAPI.PolicySets = new PolicySetsAPI.PolicySets(this._client);
+  policyBindings: PolicyBindingsAPI.PolicyBindings = new PolicyBindingsAPI.PolicyBindings(this._client);
+  policyValidations: PolicyValidationsAPI.PolicyValidations = new PolicyValidationsAPI.PolicyValidations(
+    this._client,
+  );
+  policyEvaluations: PolicyEvaluationsAPI.PolicyEvaluations = new PolicyEvaluationsAPI.PolicyEvaluations(
+    this._client,
+  );
 
   /**
    * Creates a new zone for the authenticated organization. A zone is an isolated
@@ -409,6 +444,11 @@ export namespace Zone {
       authorization_server_metadata: string;
 
       /**
+       * Maximum age of a background session.
+       */
+      background_session_max_lifetime_seconds: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd: Oauth2.Cimd;
@@ -442,6 +482,11 @@ export namespace Zone {
        * OAuth 2.0 Dynamic Client Registration endpoint
        */
       registration_endpoint: string;
+
+      /**
+       * Maximum age of a regular session.
+       */
+      session_max_lifetime_seconds: number;
 
       /**
        * OAuth 2.0 token endpoint
@@ -578,6 +623,11 @@ export namespace ZoneCreateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -591,6 +641,11 @@ export namespace ZoneCreateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number;
     }
 
     export namespace Oauth2 {
@@ -697,6 +752,11 @@ export namespace ZoneUpdateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number | null;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -710,6 +770,11 @@ export namespace ZoneUpdateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean | null;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number | null;
     }
 
     export namespace Oauth2 {
@@ -783,6 +848,9 @@ Zones.Secrets = Secrets;
 Zones.PolicySchemas = PolicySchemas;
 Zones.Policies = Policies;
 Zones.PolicySets = PolicySets;
+Zones.PolicyBindings = PolicyBindings;
+Zones.PolicyValidations = PolicyValidations;
+Zones.PolicyEvaluations = PolicyEvaluations;
 
 export declare namespace Zones {
   export {
@@ -965,10 +1033,38 @@ export declare namespace Zones {
     type PolicySetManifestEntry as PolicySetManifestEntry,
     type PolicySetWithBinding as PolicySetWithBinding,
     type PolicySetListResponse as PolicySetListResponse,
+    type PolicySetCloneResponse as PolicySetCloneResponse,
     type PolicySetCreateParams as PolicySetCreateParams,
     type PolicySetRetrieveParams as PolicySetRetrieveParams,
     type PolicySetUpdateParams as PolicySetUpdateParams,
     type PolicySetListParams as PolicySetListParams,
     type PolicySetArchiveParams as PolicySetArchiveParams,
+    type PolicySetCloneParams as PolicySetCloneParams,
+  };
+
+  export {
+    PolicyBindings as PolicyBindings,
+    type PolicySetBinding as PolicySetBinding,
+    type PolicyBindingListResponse as PolicyBindingListResponse,
+    type PolicyBindingRetrieveMetricsResponse as PolicyBindingRetrieveMetricsResponse,
+    type PolicyBindingRetrieveParams as PolicyBindingRetrieveParams,
+    type PolicyBindingListParams as PolicyBindingListParams,
+    type PolicyBindingDeleteParams as PolicyBindingDeleteParams,
+    type PolicyBindingRetrieveMetricsParams as PolicyBindingRetrieveMetricsParams,
+    type PolicyBindingSetParams as PolicyBindingSetParams,
+  };
+
+  export {
+    PolicyValidations as PolicyValidations,
+    type PolicyValidationCreateResponse as PolicyValidationCreateResponse,
+    type PolicyValidationCreateParams as PolicyValidationCreateParams,
+  };
+
+  export {
+    PolicyEvaluations as PolicyEvaluations,
+    type PolicyEvaluationCreateResponse as PolicyEvaluationCreateResponse,
+    type PolicyEvaluationListRequestsResponse as PolicyEvaluationListRequestsResponse,
+    type PolicyEvaluationCreateParams as PolicyEvaluationCreateParams,
+    type PolicyEvaluationListRequestsParams as PolicyEvaluationListRequestsParams,
   };
 }

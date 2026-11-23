@@ -8,6 +8,7 @@ import {
   InvitationDeleteParams,
   InvitationListParams,
   InvitationListResponse,
+  InvitationResendParams,
   InvitationStatus,
   Invitations,
 } from './invitations';
@@ -394,6 +395,7 @@ export declare namespace Organizations {
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,
     type InvitationDeleteParams as InvitationDeleteParams,
+    type InvitationResendParams as InvitationResendParams,
   };
 
   export {
