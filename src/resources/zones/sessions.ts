@@ -2,8 +2,8 @@
 
 import { APIResource } from '../../core/resource';
 import * as UserAgentsAPI from './user-agents';
-import * as UsersAPI from './users';
 import * as ApplicationsAPI from './applications/applications';
+import * as UsersAPI from './users/users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -30,7 +30,7 @@ export class Sessions extends APIResource {
    * Returns sessions in the specified zone. By default, returns entry sessions (app
    * user sessions with an initiator that are roots or direct children of a root user
    * session). Use include_nested=true to include nested sessions. Can be filtered by
-   * session type, status, and user.
+   * session type, status, user, and background access.
    */
   list(
     zoneID: string,
@@ -41,7 +41,9 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Permanently deletes a session, effectively logging out the user or application
+   * Revokes a session and all its child sessions, including nested descendants,
+   * without deleting their stored records. Revoking an already-revoked session is
+   * idempotent and returns 204 No Content.
    */
   delete(id: string, params: SessionDeleteParams, options?: RequestOptions): APIPromise<void> {
     const { zoneId } = params;
@@ -99,6 +101,11 @@ export namespace Session {
      * Date when the session was authenticated
      */
     authenticated_at?: string;
+
+    /**
+     * Whether the session has background access
+     */
+    background?: boolean;
 
     /**
      * Entity creation timestamp
@@ -240,6 +247,11 @@ export namespace Session {
     authenticated_at?: string;
 
     /**
+     * Whether the session has background access
+     */
+    background?: boolean;
+
+    /**
      * Entity creation timestamp
      */
     created_at?: string;
@@ -356,6 +368,11 @@ export interface SessionListParams {
   before?: string;
 
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Filter by background access. Omit to list both.
+   */
+  'filter[background]'?: boolean;
 
   /**
    * Include nested sessions. When false (default), only returns entry sessions
