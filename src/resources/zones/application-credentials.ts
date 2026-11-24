@@ -34,7 +34,8 @@ export class ApplicationCredentials extends APIResource {
   }
 
   /**
-   * Updates an application credential's configuration
+   * Updates an application credential's configuration. A field the credential type
+   * cannot change returns 400, unless it matches the stored value.
    */
   update(
     id: string,
@@ -46,7 +47,11 @@ export class ApplicationCredentials extends APIResource {
   }
 
   /**
-   * Returns a list of application credentials in the specified zone
+   * Returns a paginated list of application credentials in the specified zone. Use
+   * cursor pagination via `after`/`before`. Use `expand[]=total_count` to include
+   * the matching row count. Search via `query[identifier]`, `query[provider_name]`,
+   * or `query[]` (identifier or provider name); all are substring matches, OR'd
+   * across repeated values.
    */
   list(
     zoneID: string,
@@ -172,8 +177,9 @@ export interface PublicKey extends BaseFields {
  */
 export interface Token extends BaseFields {
   /**
-   * Identifier for this credential. For token type, this equals the subject value,
-   * or '\*' when subject is not specified.
+   * Identifier for this credential. For version 2, this equals the credential ID and
+   * is the OAuth 2.0 client ID the workload sends. For version 1, this equals the
+   * subject value, or '\*' when subject is not specified.
    */
   identifier: string;
 
@@ -183,6 +189,18 @@ export interface Token extends BaseFields {
   provider_id: string;
 
   type: 'token';
+
+  /**
+   * Version 2 only. Audience the token's `aud` must contain. `null` when unset, in
+   * which case the zone's issuer URL is required.
+   */
+  allowed_audience?: string | null;
+
+  /**
+   * Version 2 only. CEL predicate over the token's `claims` that must evaluate to
+   * true. `null` when unset.
+   */
+  authentication_condition?: string | null;
 
   /**
    * @deprecated A Provider is a system that supplies access to Resources and allows
@@ -195,6 +213,11 @@ export interface Token extends BaseFields {
    * provider is accepted without checking application-specific claims.
    */
   subject?: string | null;
+
+  /**
+   * Credential behavior version.
+   */
+  version?: 1 | 2;
 }
 
 /**
@@ -218,7 +241,7 @@ export interface ApplicationCredentialListResponse {
   items: Array<Credential>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: ZonesAPI.PageInfoPagination;
 
@@ -273,10 +296,29 @@ export declare namespace ApplicationCredentialCreateParams {
     type: 'token';
 
     /**
+     * Version 2 only. Audience the token's `aud` must contain. When omitted, the
+     * zone's issuer URL is required.
+     */
+    allowed_audience?: string;
+
+    /**
+     * Version 2 only. CEL predicate over the token's `claims` that must evaluate to
+     * true.
+     */
+    authentication_condition?: string;
+
+    /**
      * Subject identifier for the token. When omitted, any token from the provider is
-     * accepted without checking application-specific claims.
+     * accepted without checking application-specific claims. A version 2 credential
+     * must set subject or authentication_condition.
      */
     subject?: string;
+
+    /**
+     * Credential behavior version. Immutable. Defaults to 1 when omitted. A version 2
+     * credential's identifier is its ID, which the workload sends as client_id.
+     */
+    version?: 1 | 2;
   }
 
   export interface IamApplicationCredentialCreatePassword {
@@ -363,6 +405,18 @@ export declare namespace ApplicationCredentialUpdateParams {
     zoneId: string;
 
     /**
+     * Body param: Version 2 only. Audience the token's `aud` must contain. Set to null
+     * to unset, which requires the zone's issuer URL.
+     */
+    allowed_audience?: string | null;
+
+    /**
+     * Body param: Version 2 only. CEL predicate over the token's `claims` that must
+     * evaluate to true. Set to null to unset.
+     */
+    authentication_condition?: string | null;
+
+    /**
      * Body param: Subject identifier for the token. Set to null to unset, which allows
      * any token from the provider to be accepted without checking application-specific
      * claims.
@@ -373,6 +427,11 @@ export declare namespace ApplicationCredentialUpdateParams {
      * Body param
      */
     type?: 'token';
+
+    /**
+     * Body param: Immutable. When provided, must equal the credential's version.
+     */
+    version?: 1 | 2;
   }
 
   export interface IamPasswordCredentialUpdate {
@@ -392,6 +451,11 @@ export declare namespace ApplicationCredentialUpdateParams {
      * Path param
      */
     zoneId: string;
+
+    /**
+     * Body param: JWKS URI to retrieve public keys from
+     */
+    jwks_uri?: string;
 
     /**
      * Body param
@@ -447,16 +511,64 @@ export interface ApplicationCredentialListParams {
    */
   before?: string;
 
-  cursor?: string;
-
   'expand[]'?: 'total_count' | Array<'total_count'>;
+
+  /**
+   * Exclude credentials whose owning application has this owner type, e.g.
+   * `filter[owner_type][ne]=platform` returns only credentials of org-created
+   * applications.
+   */
+  'filter[owner_type][ne]'?: 'platform' | 'customer';
+
+  /**
+   * Exclude credentials whose owning application has this trait. A single value
+   * excludes that trait; repeated params accumulate into a not-in set (max 100), so
+   * a credential matches when its application's traits contain none of them. Each
+   * value is a single literal trait; a comma is a literal character in the value,
+   * not a delimiter.
+   */
+  'filter[traits][ne]'?: string | Array<string>;
+
+  /**
+   * Filter by credential type; repeated values are OR'd, e.g.
+   * `filter[type]=token&filter[type]=password`.
+   */
+  'filter[type]'?:
+    | 'token'
+    | 'password'
+    | 'public-key'
+    | 'url'
+    | 'public'
+    | Array<'token' | 'password' | 'public-key' | 'url' | 'public'>;
 
   /**
    * Maximum number of items to return
    */
   limit?: number;
 
+  /**
+   * Search across credential identifier and linked provider name (substring match,
+   * OR'd across repeated values)
+   */
+  'query[]'?: string | Array<string>;
+
+  /**
+   * Search by credential identifier (substring match, OR'd across repeated values)
+   */
+  'query[identifier]'?: string | Array<string>;
+
+  /**
+   * Search by the linked provider's name (substring match, OR'd across repeated
+   * values)
+   */
+  'query[provider_name]'?: string | Array<string>;
+
   slug?: string;
+
+  /**
+   * Comma-separated sort fields. Prefix with - for descending. Allowed: created_at
+   */
+  sort?: string;
 }
 
 export interface ApplicationCredentialDeleteParams {
