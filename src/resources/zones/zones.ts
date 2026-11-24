@@ -29,18 +29,26 @@ import {
   DelegatedGrants,
   Grant,
 } from './delegated-grants';
-import * as MembersAPI from './members';
+import * as PolicyBindingsAPI from './policy-bindings';
 import {
-  MemberAddParams,
-  MemberDeleteParams,
-  MemberListParams,
-  MemberListResponse,
-  MemberRetrieveParams,
-  MemberUpdateParams,
-  Members,
-  ZoneMember,
-  ZoneRole,
-} from './members';
+  PolicyBindingDeleteParams,
+  PolicyBindingListParams,
+  PolicyBindingListResponse,
+  PolicyBindingRetrieveMetricsParams,
+  PolicyBindingRetrieveMetricsResponse,
+  PolicyBindingRetrieveParams,
+  PolicyBindingSetParams,
+  PolicyBindings,
+  PolicySetBinding,
+} from './policy-bindings';
+import * as PolicyEvaluationsAPI from './policy-evaluations';
+import {
+  PolicyEvaluationCreateParams,
+  PolicyEvaluationCreateResponse,
+  PolicyEvaluationListRequestsParams,
+  PolicyEvaluationListRequestsResponse,
+  PolicyEvaluations,
+} from './policy-evaluations';
 import * as PolicySchemasAPI from './policy-schemas';
 import {
   PolicySchemaListParams,
@@ -51,6 +59,12 @@ import {
   SchemaVersion,
   SchemaVersionWithZoneInfo,
 } from './policy-schemas';
+import * as PolicyValidationsAPI from './policy-validations';
+import {
+  PolicyValidationCreateParams,
+  PolicyValidationCreateResponse,
+  PolicyValidations,
+} from './policy-validations';
 import * as ProvidersAPI from './providers';
 import {
   Provider,
@@ -60,7 +74,9 @@ import {
   ProviderListResponse,
   ProviderRetrieveParams,
   ProviderUpdateParams,
+  ProviderValidateParams,
   Providers,
+  ValidationResult,
 } from './providers';
 import * as ResourcesAPI from './resources';
 import {
@@ -72,6 +88,19 @@ import {
   ResourceUpdateParams,
   Resources,
 } from './resources';
+import * as RolesAPI from './roles';
+import {
+  Role,
+  RoleCreate,
+  RoleCreateParams,
+  RoleDeleteParams,
+  RoleListParams,
+  RoleListResponse,
+  RoleRetrieveParams,
+  RoleUpdate,
+  RoleUpdateParams,
+  Roles,
+} from './roles';
 import * as SecretsAPI from './secrets';
 import {
   Secret,
@@ -104,8 +133,6 @@ import {
   UserAgentRetrieveParams,
   UserAgents,
 } from './user-agents';
-import * as UsersAPI from './users';
-import { User, UserListParams, UserListResponse, UserRetrieveParams, Users } from './users';
 import * as ApplicationsAPI from './applications/applications';
 import {
   Application,
@@ -124,6 +151,19 @@ import {
   Metadata,
   MetadataUpdate,
 } from './applications/applications';
+import * as GroupsAPI from './groups/groups';
+import {
+  Group,
+  GroupCreate,
+  GroupCreateParams,
+  GroupDeleteParams,
+  GroupListParams,
+  GroupListResponse,
+  GroupRetrieveParams,
+  GroupUpdate,
+  GroupUpdateParams,
+  Groups,
+} from './groups/groups';
 import * as PoliciesAPI from './policies/policies';
 import {
   Policies,
@@ -142,6 +182,8 @@ import {
   AttestationStatement,
   PolicySet,
   PolicySetArchiveParams,
+  PolicySetCloneParams,
+  PolicySetCloneResponse,
   PolicySetCreateParams,
   PolicySetDraft,
   PolicySetListParams,
@@ -153,6 +195,16 @@ import {
   PolicySetWithBinding,
   PolicySets,
 } from './policy-sets/policy-sets';
+import * as UsersAPI from './users/users';
+import {
+  User,
+  UserDeleteParams,
+  UserListParams,
+  UserListResponse,
+  UserRetrieveParams,
+  UserUpdateParams,
+  Users,
+} from './users/users';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -168,11 +220,19 @@ export class Zones extends APIResource {
   sessions: SessionsAPI.Sessions = new SessionsAPI.Sessions(this._client);
   userAgents: UserAgentsAPI.UserAgents = new UserAgentsAPI.UserAgents(this._client);
   users: UsersAPI.Users = new UsersAPI.Users(this._client);
-  members: MembersAPI.Members = new MembersAPI.Members(this._client);
+  roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
+  groups: GroupsAPI.Groups = new GroupsAPI.Groups(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   policySchemas: PolicySchemasAPI.PolicySchemas = new PolicySchemasAPI.PolicySchemas(this._client);
   policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
   policySets: PolicySetsAPI.PolicySets = new PolicySetsAPI.PolicySets(this._client);
+  policyBindings: PolicyBindingsAPI.PolicyBindings = new PolicyBindingsAPI.PolicyBindings(this._client);
+  policyValidations: PolicyValidationsAPI.PolicyValidations = new PolicyValidationsAPI.PolicyValidations(
+    this._client,
+  );
+  policyEvaluations: PolicyEvaluationsAPI.PolicyEvaluations = new PolicyEvaluationsAPI.PolicyEvaluations(
+    this._client,
+  );
 
   /**
    * Creates a new zone for the authenticated organization. A zone is an isolated
@@ -205,7 +265,11 @@ export class Zones extends APIResource {
   }
 
   /**
-   * Returns a list of zones for the authenticated organization
+   * Returns a list of zones for the authenticated organization. Cursor pagination
+   * via `after`/`before` and `limit`, plus `expand[]=total_count`, name substring
+   * search, and `sort`, are supported on every request. `filter[permission][in]`
+   * narrows the list to zones where the caller holds at least one of the given
+   * permissions.
    */
   list(
     query: ZoneListParams | null | undefined = {},
@@ -278,6 +342,12 @@ export interface Zone {
   created_at: string;
 
   /**
+   * Whether external directory sync (SCIM) is enabled for this zone. Required to
+   * create external sync tokens.
+   */
+  external_sync_enabled: boolean;
+
+  /**
    * Human-readable name
    */
   name: string;
@@ -336,12 +406,6 @@ export interface Zone {
   permissions?: { [key: string]: { [key: string]: boolean } };
 
   /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
-
-  /**
    * Provider ID configured for user login
    */
   user_identity_provider_id?: string;
@@ -380,6 +444,11 @@ export namespace Zone {
       authorization_server_metadata: string;
 
       /**
+       * Maximum age of a background session.
+       */
+      background_session_max_lifetime_seconds: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd: Oauth2.Cimd;
@@ -413,6 +482,11 @@ export namespace Zone {
        * OAuth 2.0 Dynamic Client Registration endpoint
        */
       registration_endpoint: string;
+
+      /**
+       * Maximum age of a regular session.
+       */
+      session_max_lifetime_seconds: number;
 
       /**
        * OAuth 2.0 token endpoint
@@ -462,7 +536,7 @@ export interface ZoneListResponse {
   items: Array<Zone>;
 
   /**
-   * Pagination information
+   * @deprecated Pagination information
    */
   page_info: PageInfoPagination;
 
@@ -530,12 +604,6 @@ export interface ZoneCreateParams {
    * Protocol configuration for zone creation
    */
   protocols?: ZoneCreateParams.Protocols;
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set. Defaults to true.
-   */
-  requires_invitation?: boolean;
 }
 
 export namespace ZoneCreateParams {
@@ -555,6 +623,11 @@ export namespace ZoneCreateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -568,6 +641,11 @@ export namespace ZoneCreateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number;
     }
 
     export namespace Oauth2 {
@@ -622,6 +700,12 @@ export interface ZoneUpdateParams {
   encryption_key?: ZoneUpdateParams.EncryptionKey | null;
 
   /**
+   * Turns external directory sync (SCIM) on or off for this zone. Required to create
+   * external sync tokens.
+   */
+  external_sync_enabled?: boolean;
+
+  /**
    * Human-readable name. Must not contain HTML tags (e.g. `<script>`, `<div>`) or
    * control characters.
    */
@@ -631,12 +715,6 @@ export interface ZoneUpdateParams {
    * Protocol configuration update for a zone (partial update)
    */
   protocols?: ZoneUpdateParams.Protocols | null;
-
-  /**
-   * Whether the zone requires an invitation for email/password registration, only
-   * applies when user_identity_provider_id is not set
-   */
-  requires_invitation?: boolean;
 
   /**
    * Provider ID to configure for user login (set to null to unset)
@@ -674,6 +752,11 @@ export namespace ZoneUpdateParams {
      */
     export interface Oauth2 {
       /**
+       * Maximum age of a background session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      background_session_max_lifetime_seconds?: number | null;
+
+      /**
        * Client ID Metadata Document auto-provisioning configuration
        */
       cimd?: Oauth2.Cimd;
@@ -687,6 +770,11 @@ export namespace ZoneUpdateParams {
        * Whether PKCE is required for authorization code flows
        */
       pkce_required?: boolean | null;
+
+      /**
+       * Maximum age of a regular session. Range: 1 hour to 1 year. Default: 90 days.
+       */
+      session_max_lifetime_seconds?: number | null;
     }
 
     export namespace Oauth2 {
@@ -729,6 +817,16 @@ export interface ZoneListParams {
   'filter[organization_id]'?: string;
 
   /**
+   * Only return zones where the caller is allowed ANY of these permissions
+   * (`<resource_type>:<action>`, e.g. `applications:list`). Repeatable (one
+   * permission per occurrence); values are unioned, max 20 (a stricter cap than the
+   * authorization service's 50). The accessible zone set is resolved by the
+   * authorization service and composes with cursor pagination, search, sort and
+   * `expand[]=total_count`. Malformed values are a 400.
+   */
+  'filter[permission][in]'?: string | Array<string>;
+
+  /**
    * Maximum number of items to return
    */
   limit?: number;
@@ -744,11 +842,15 @@ Zones.Resources = Resources;
 Zones.Sessions = Sessions;
 Zones.UserAgents = UserAgents;
 Zones.Users = Users;
-Zones.Members = Members;
+Zones.Roles = Roles;
+Zones.Groups = Groups;
 Zones.Secrets = Secrets;
 Zones.PolicySchemas = PolicySchemas;
 Zones.Policies = Policies;
 Zones.PolicySets = PolicySets;
+Zones.PolicyBindings = PolicyBindings;
+Zones.PolicyValidations = PolicyValidations;
+Zones.PolicyEvaluations = PolicyEvaluations;
 
 export declare namespace Zones {
   export {
@@ -811,12 +913,14 @@ export declare namespace Zones {
   export {
     Providers as Providers,
     type Provider as Provider,
+    type ValidationResult as ValidationResult,
     type ProviderListResponse as ProviderListResponse,
     type ProviderCreateParams as ProviderCreateParams,
     type ProviderRetrieveParams as ProviderRetrieveParams,
     type ProviderUpdateParams as ProviderUpdateParams,
     type ProviderListParams as ProviderListParams,
     type ProviderDeleteParams as ProviderDeleteParams,
+    type ProviderValidateParams as ProviderValidateParams,
   };
 
   export {
@@ -852,19 +956,35 @@ export declare namespace Zones {
     type User as User,
     type UserListResponse as UserListResponse,
     type UserRetrieveParams as UserRetrieveParams,
+    type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
+    type UserDeleteParams as UserDeleteParams,
   };
 
   export {
-    Members as Members,
-    type ZoneMember as ZoneMember,
-    type ZoneRole as ZoneRole,
-    type MemberListResponse as MemberListResponse,
-    type MemberRetrieveParams as MemberRetrieveParams,
-    type MemberUpdateParams as MemberUpdateParams,
-    type MemberListParams as MemberListParams,
-    type MemberDeleteParams as MemberDeleteParams,
-    type MemberAddParams as MemberAddParams,
+    Roles as Roles,
+    type Role as Role,
+    type RoleCreate as RoleCreate,
+    type RoleUpdate as RoleUpdate,
+    type RoleListResponse as RoleListResponse,
+    type RoleCreateParams as RoleCreateParams,
+    type RoleRetrieveParams as RoleRetrieveParams,
+    type RoleUpdateParams as RoleUpdateParams,
+    type RoleListParams as RoleListParams,
+    type RoleDeleteParams as RoleDeleteParams,
+  };
+
+  export {
+    Groups as Groups,
+    type Group as Group,
+    type GroupCreate as GroupCreate,
+    type GroupUpdate as GroupUpdate,
+    type GroupListResponse as GroupListResponse,
+    type GroupCreateParams as GroupCreateParams,
+    type GroupRetrieveParams as GroupRetrieveParams,
+    type GroupUpdateParams as GroupUpdateParams,
+    type GroupListParams as GroupListParams,
+    type GroupDeleteParams as GroupDeleteParams,
   };
 
   export {
@@ -913,10 +1033,38 @@ export declare namespace Zones {
     type PolicySetManifestEntry as PolicySetManifestEntry,
     type PolicySetWithBinding as PolicySetWithBinding,
     type PolicySetListResponse as PolicySetListResponse,
+    type PolicySetCloneResponse as PolicySetCloneResponse,
     type PolicySetCreateParams as PolicySetCreateParams,
     type PolicySetRetrieveParams as PolicySetRetrieveParams,
     type PolicySetUpdateParams as PolicySetUpdateParams,
     type PolicySetListParams as PolicySetListParams,
     type PolicySetArchiveParams as PolicySetArchiveParams,
+    type PolicySetCloneParams as PolicySetCloneParams,
+  };
+
+  export {
+    PolicyBindings as PolicyBindings,
+    type PolicySetBinding as PolicySetBinding,
+    type PolicyBindingListResponse as PolicyBindingListResponse,
+    type PolicyBindingRetrieveMetricsResponse as PolicyBindingRetrieveMetricsResponse,
+    type PolicyBindingRetrieveParams as PolicyBindingRetrieveParams,
+    type PolicyBindingListParams as PolicyBindingListParams,
+    type PolicyBindingDeleteParams as PolicyBindingDeleteParams,
+    type PolicyBindingRetrieveMetricsParams as PolicyBindingRetrieveMetricsParams,
+    type PolicyBindingSetParams as PolicyBindingSetParams,
+  };
+
+  export {
+    PolicyValidations as PolicyValidations,
+    type PolicyValidationCreateResponse as PolicyValidationCreateResponse,
+    type PolicyValidationCreateParams as PolicyValidationCreateParams,
+  };
+
+  export {
+    PolicyEvaluations as PolicyEvaluations,
+    type PolicyEvaluationCreateResponse as PolicyEvaluationCreateResponse,
+    type PolicyEvaluationListRequestsResponse as PolicyEvaluationListRequestsResponse,
+    type PolicyEvaluationCreateParams as PolicyEvaluationCreateParams,
+    type PolicyEvaluationListRequestsParams as PolicyEvaluationListRequestsParams,
   };
 }
