@@ -67,6 +67,38 @@ export class Invitations extends APIResource {
       ]),
     });
   }
+
+  /**
+   * Send a fresh invitation email. The invitation token is rotated, so the link in
+   * any earlier email stops working. Returns 409 while a previous email is still
+   * queued or sending, or when the invitation is no longer pending. Returns 200 even
+   * when the email service cannot be reached: the token has already been rotated,
+   * the response's `delivery_status` is `failed`, no new email was queued, and the
+   * caller must resend. Each resend counts toward the organization's daily
+   * invitation limit. Returns 429 with a `Retry-After` header when that limit or the
+   * per-recipient send cap is reached. If the email service rejects the send, the
+   * earlier link keeps working.
+   *
+   * After the organization access check succeeds, the service sends
+   * `X-Should-Retry: false` on 409, 429, and 5xx responses to tell SDKs to surface
+   * the error without retrying. A retry can rotate the token and invalidate an email
+   * link, including when the first send succeeded but the response did not reach the
+   * caller.
+   */
+  resend(
+    invitationID: string,
+    params: InvitationResendParams,
+    options?: RequestOptions,
+  ): APIPromise<Invitation> {
+    const { organization_id, 'X-Client-Request-ID': xClientRequestID } = params;
+    return this._client.post(path`/organizations/${organization_id}/invitations/${invitationID}/resend`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(xClientRequestID != null ? { 'X-Client-Request-ID': xClientRequestID } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
 }
 
 export interface Invitation {
@@ -254,6 +286,19 @@ export interface InvitationDeleteParams {
   'X-Client-Request-ID'?: string;
 }
 
+export interface InvitationResendParams {
+  /**
+   * Path param: Organization ID or label identifier
+   */
+  organization_id: string;
+
+  /**
+   * Header param: Unique request identifier specified by the originating caller and
+   * passed along by proxies.
+   */
+  'X-Client-Request-ID'?: string;
+}
+
 export declare namespace Invitations {
   export {
     type Invitation as Invitation,
@@ -262,5 +307,6 @@ export declare namespace Invitations {
     type InvitationCreateParams as InvitationCreateParams,
     type InvitationListParams as InvitationListParams,
     type InvitationDeleteParams as InvitationDeleteParams,
+    type InvitationResendParams as InvitationResendParams,
   };
 }

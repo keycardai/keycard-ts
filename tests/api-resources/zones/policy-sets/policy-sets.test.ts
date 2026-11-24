@@ -151,4 +151,32 @@ describe('resource policySets', () => {
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
+
+  // Mock server tests are disabled
+  test.skip('clone: only required params', async () => {
+    const responsePromise = client.zones.policySets.clone('policy_set_id', {
+      zone_id: 'zone_id',
+      name: 'name',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('clone: required and optional params', async () => {
+    const response = await client.zones.policySets.clone('policy_set_id', {
+      zone_id: 'zone_id',
+      name: 'name',
+      copy_policies: 'none',
+      source_version_id: 'source_version_id',
+      target_type: 'zone',
+      'X-API-Version': 'X-API-Version',
+      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
 });

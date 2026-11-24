@@ -32,7 +32,10 @@ describe('resource applicationCredentials', () => {
       application_id: 'application_id',
       provider_id: 'provider_id',
       type: 'token',
+      allowed_audience: 'x',
+      authentication_condition: 'x',
       subject: 'subject',
+      version: 1,
     });
   });
 
@@ -69,8 +72,11 @@ describe('resource applicationCredentials', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.zones.applicationCredentials.update('id', {
       zoneId: 'zoneId',
+      allowed_audience: 'x',
+      authentication_condition: 'x',
       subject: 'subject',
       type: 'token',
+      version: 1,
     });
   });
 
