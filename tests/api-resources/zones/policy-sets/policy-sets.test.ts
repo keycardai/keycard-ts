@@ -26,6 +26,18 @@ describe('resource policySets', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.zones.policySets.create('zone_id', {
       name: 'name',
+      manifest: {
+        entries: [
+          {
+            policy_id: 'policy_id',
+            cedar_json: {},
+            cedar_raw: 'cedar_raw',
+            policy_version_id: 'policy_version_id',
+          },
+        ],
+        activate: true,
+        schema_version: 'schema_version',
+      },
       scope_type: 'zone',
       target_type: 'zone',
       'X-API-Version': 'X-API-Version',
@@ -49,6 +61,7 @@ describe('resource policySets', () => {
   test.skip('retrieve: required and optional params', async () => {
     const response = await client.zones.policySets.retrieve('policy_set_id', {
       zone_id: 'zone_id',
+      'expand[]': 'user',
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
@@ -99,14 +112,14 @@ describe('resource policySets', () => {
           active: true,
           after: 'x',
           before: 'x',
-          expand: ['total_count'],
+          'expand[]': 'total_count',
           'filter[active]': true,
           'filter[owner_type]': ['string'],
           'filter[scope_type]': ['string'],
           'filter[target_type]': ['string'],
           limit: 1,
           order: 'asc',
-          query: ['x'],
+          'query[]': 'string',
           'query[name]': ['x'],
           sort: 'created_at',
           'X-API-Version': 'X-API-Version',
@@ -134,6 +147,34 @@ describe('resource policySets', () => {
     const response = await client.zones.policySets.archive('policy_set_id', {
       zone_id: 'zone_id',
       'If-Match': 'If-Match',
+      'X-API-Version': 'X-API-Version',
+      'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('clone: only required params', async () => {
+    const responsePromise = client.zones.policySets.clone('policy_set_id', {
+      zone_id: 'zone_id',
+      name: 'name',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('clone: required and optional params', async () => {
+    const response = await client.zones.policySets.clone('policy_set_id', {
+      zone_id: 'zone_id',
+      name: 'name',
+      copy_policies: 'none',
+      source_version_id: 'source_version_id',
+      target_type: 'zone',
       'X-API-Version': 'X-API-Version',
       'X-Client-Request-ID': '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
