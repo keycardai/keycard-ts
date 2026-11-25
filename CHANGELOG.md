@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.25.1](https://github.com/keycardai/keycard-ts/compare/v0.25.0...v0.25.1) (2026-11-25)
+
+
+### Chores
+
+* add CODEOWNERS ([#49](https://github.com/keycardai/keycard-ts/issues/49)) ([659912e](https://github.com/keycardai/keycard-ts/commit/659912e8abe4b9eb7b566744c6710860b3e3559b))
+* record Stainless generation base for stlc tracking ([#52](https://github.com/keycardai/keycard-ts/issues/52)) ([0195b99](https://github.com/keycardai/keycard-ts/commit/0195b99c1dcbe019975bd49d315a6a7bc67be8d6))
+
 ## [0.25.0](https://github.com/keycardai/keycard-ts/compare/v0.24.0...v0.25.0) (2026-11-19)
 
 
