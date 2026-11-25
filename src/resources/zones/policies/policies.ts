@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as DraftAPI from './draft';
+import { Draft, DraftDeleteParams, DraftRetrieveParams, DraftUpsertParams } from './draft';
 import * as VersionsAPI from './versions';
 import {
   PolicyVersion,
@@ -21,6 +23,7 @@ import { path } from '../../../internal/utils/path';
  */
 export class Policies extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
+  draft: DraftAPI.Draft = new DraftAPI.Draft(this._client);
 
   /**
    * Create a new policy
@@ -44,8 +47,14 @@ export class Policies extends APIResource {
    * Get a policy by ID
    */
   retrieve(policyID: string, params: PolicyRetrieveParams, options?: RequestOptions): APIPromise<Policy> {
-    const { zone_id, 'X-API-Version': xAPIVersion, 'X-Client-Request-ID': xClientRequestID } = params;
+    const {
+      zone_id,
+      'X-API-Version': xAPIVersion,
+      'X-Client-Request-ID': xClientRequestID,
+      ...query
+    } = params;
     return this._client.get(path`/zones/${zone_id}/policies/${policyID}`, {
+      query,
       ...options,
       headers: buildHeaders([
         {
@@ -154,6 +163,12 @@ export interface Policy {
 
   archived_at?: string | null;
 
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  created_by_user?: Policy.CreatedByUser;
+
   description?: string | null;
 
   /**
@@ -171,6 +186,60 @@ export interface Policy {
   latest_version_id?: string | null;
 
   updated_by?: string | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: Policy.UpdatedByUser;
+}
+
+export namespace Policy {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface CreatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface PolicyDraft {
@@ -204,6 +273,37 @@ export interface PolicyDraft {
    * JSON representation only.
    */
   cedar_raw?: string | null;
+
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  updated_by_user?: PolicyDraft.UpdatedByUser;
+}
+
+export namespace PolicyDraft {
+  /**
+   * The organization user behind a `created_by`, `updated_by` or `archived_by`
+   * value. Returned only when `expand[]=user` is requested.
+   */
+  export interface UpdatedByUser {
+    /**
+     * Public ID of the user in the organization's platform zone. This is not the same
+     * value as the `*_by` field it expands; use it to link to
+     * `/zones/{zone_id}/users/{id}`.
+     */
+    id: string;
+
+    /**
+     * The user's email address, or null when not known.
+     */
+    email: string | null;
+
+    /**
+     * Public ID of the organization's platform zone the user belongs to.
+     */
+    zone_id: string;
+  }
 }
 
 export interface PolicyListResponse {
@@ -268,6 +368,12 @@ export interface PolicyRetrieveParams {
   zone_id: string;
 
   /**
+   * Query param: Opt-in to additional response fields on a single resource (`user`).
+   * Repeatable.
+   */
+  'expand[]'?: 'user' | Array<'user'>;
+
+  /**
    * Header param: API version header (date-based, e.g. 2026-02-01)
    */
   'X-API-Version'?: string;
@@ -328,13 +434,10 @@ export interface PolicyListParams {
   before?: string;
 
   /**
-   * Query param: **Deprecated.** Use `expand[]` instead.
-   *
-   * Opt-in to additional response fields. Still honored for backward compatibility;
-   * supplying both `expand` and `expand[]` with disagreeing values returns
-   * `400 Bad Request`.
+   * Query param: Opt-in to additional response fields (`total_count`, `user`).
+   * Repeatable; matches the `expand[]` convention used across the Keycard API.
    */
-  expand?: Array<'total_count'>;
+  'expand[]'?: 'total_count' | 'user' | Array<'total_count' | 'user'>;
 
   /**
    * Query param: Filter by policy ID. Repeatable; multiple values are OR-ed (e.g.
@@ -384,7 +487,7 @@ export interface PolicyListParams {
    * the resource. For policies that is `name` and `description`; for policy sets
    * that is `name`. Repeatable; if multiple terms are supplied they are OR-ed.
    */
-  query?: Array<string>;
+  'query[]'?: string | Array<string>;
 
   /**
    * Query param: Case-insensitive substring search on `description` (policies only).
@@ -434,6 +537,7 @@ export interface PolicyArchiveParams {
 }
 
 Policies.Versions = Versions;
+Policies.Draft = Draft;
 
 export declare namespace Policies {
   export {
@@ -455,5 +559,12 @@ export declare namespace Policies {
     type VersionRetrieveParams as VersionRetrieveParams,
     type VersionListParams as VersionListParams,
     type VersionArchiveParams as VersionArchiveParams,
+  };
+
+  export {
+    Draft as Draft,
+    type DraftRetrieveParams as DraftRetrieveParams,
+    type DraftDeleteParams as DraftDeleteParams,
+    type DraftUpsertParams as DraftUpsertParams,
   };
 }
