@@ -191,6 +191,18 @@ export interface Token extends BaseFields {
   type: 'token';
 
   /**
+   * Version 2 only. Audience the token's `aud` must contain. `null` when unset, in
+   * which case the zone's issuer URL is required.
+   */
+  allowed_audience?: string | null;
+
+  /**
+   * Version 2 only. CEL predicate over the token's `claims` that must evaluate to
+   * true. `null` when unset.
+   */
+  authentication_condition?: string | null;
+
+  /**
    * @deprecated A Provider is a system that supplies access to Resources and allows
    * actors (Users or Applications) to authenticate.
    */
@@ -201,6 +213,11 @@ export interface Token extends BaseFields {
    * provider is accepted without checking application-specific claims.
    */
   subject?: string | null;
+
+  /**
+   * Credential behavior version.
+   */
+  version?: 1 | 2;
 }
 
 /**
@@ -279,11 +296,29 @@ export declare namespace ApplicationCredentialCreateParams {
     type: 'token';
 
     /**
+     * Version 2 only. Audience the token's `aud` must contain. When omitted, the
+     * zone's issuer URL is required.
+     */
+    allowed_audience?: string;
+
+    /**
+     * Version 2 only. CEL predicate over the token's `claims` that must evaluate to
+     * true.
+     */
+    authentication_condition?: string;
+
+    /**
      * Subject identifier for the token. When omitted, any token from the provider is
      * accepted without checking application-specific claims. A version 2 credential
      * must set subject or authentication_condition.
      */
     subject?: string;
+
+    /**
+     * Credential behavior version. Immutable. Defaults to 1 when omitted. A version 2
+     * credential's identifier is its ID, which the workload sends as client_id.
+     */
+    version?: 1 | 2;
   }
 
   export interface IamApplicationCredentialCreatePassword {
@@ -370,6 +405,18 @@ export declare namespace ApplicationCredentialUpdateParams {
     zoneId: string;
 
     /**
+     * Body param: Version 2 only. Audience the token's `aud` must contain. Set to null
+     * to unset, which requires the zone's issuer URL.
+     */
+    allowed_audience?: string | null;
+
+    /**
+     * Body param: Version 2 only. CEL predicate over the token's `claims` that must
+     * evaluate to true. Set to null to unset.
+     */
+    authentication_condition?: string | null;
+
+    /**
      * Body param: Subject identifier for the token. Set to null to unset, which allows
      * any token from the provider to be accepted without checking application-specific
      * claims.
@@ -380,6 +427,11 @@ export declare namespace ApplicationCredentialUpdateParams {
      * Body param
      */
     type?: 'token';
+
+    /**
+     * Body param: Immutable. When provided, must equal the credential's version.
+     */
+    version?: 1 | 2;
   }
 
   export interface IamPasswordCredentialUpdate {
