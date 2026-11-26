@@ -8,19 +8,18 @@ on:
     branches:
       - main
 
-concurrency:
-  group: ${{ github.workflow }}
-  # Several merges in a row only need one sync.
-  cancel-in-progress: true
-
 permissions: {}
 
 jobs:
   seal-dispatch:
     runs-on: ubuntu-latest
-    # Skip codegen merges (autogen.yml auto-merges `autogen` → `main` as this app), so an SDK
-    # build doesn't trigger another build.
+    # Skip SDK codegen pushes: stlc pushes generated code straight to `main` as this app,
+    # so an SDK build doesn't trigger another build.
     if: github.actor != 'keycard-sdk-release[bot]'
+    concurrency:
+      group: ${{ github.workflow }}
+      # Collapse eligible changes; skipped SDK bot jobs never enter this group.
+      cancel-in-progress: true
     timeout-minutes: 5
     steps:
       - name: mint keycard-api app token

@@ -69,15 +69,16 @@ export class Invitations extends APIResource {
   }
 
   /**
-   * Send a fresh invitation email. The invitation token is rotated, so the link in
-   * any earlier email stops working. Returns 409 while a previous email is still
-   * queued or sending, or when the invitation is no longer pending. Returns 200 even
-   * when the email service cannot be reached: the token has already been rotated,
-   * the response's `delivery_status` is `failed`, no new email was queued, and the
-   * caller must resend. Each resend counts toward the organization's daily
-   * invitation limit. Returns 429 with a `Retry-After` header when that limit or the
-   * per-recipient send cap is reached. If the email service rejects the send, the
-   * earlier link keeps working.
+   * Send a fresh invitation email. The invitation token is rotated and the
+   * expiration is refreshed, so the link in any earlier email stops working. Returns
+   * 409 while a previous email is still queued or sending, or when the invitation is
+   * no longer pending. Returns 200 even when the email service cannot be reached:
+   * the token has already been rotated, the response's `delivery_status` is
+   * `failed`, no new email was queued, and the caller must resend. Each resend
+   * counts toward the organization's daily invitation limit. Returns 429 with a
+   * `Retry-After` header when that limit or the per-recipient send cap is reached.
+   * If the email service rejects the send, the earlier link and its original expiry
+   * are restored.
    *
    * After the organization access check succeeds, the service sends
    * `X-Should-Retry: false` on 409, 429, and 5xx responses to tell SDKs to surface
@@ -169,6 +170,12 @@ export interface Invitation {
   delivery_outcome?: 'delayed' | 'delivered' | 'failed' | 'suppressed' | 'bounced' | 'complained';
 
   /**
+   * Whole seconds in the current user-visible delivery state, calculated by the
+   * server. Omitted when the state or its timestamp is unknown.
+   */
+  delivery_state_age_seconds?: number;
+
+  /**
    * Delivery state of the most recent invitation email. `queued` and `sending` mean
    * the email service still holds the message. `sent` means the provider accepted
    * it. `failed` means the email service could not be reached or rejected the
@@ -189,6 +196,12 @@ export interface Invitation {
    * names to boolean values indicating if the permission is granted.
    */
   permissions?: { [key: string]: { [key: string]: boolean } };
+
+  /**
+   * Whether this invitation can reserve a resend at response time. Does not account
+   * for organization policy, rate limits, or concurrent changes.
+   */
+  resend_available?: boolean;
 }
 
 /**
